@@ -63,6 +63,7 @@ function isFolderExists(dir) {
   }
 }
 
+// can be renamed into a generateFileName
 const generateTemplateName = (suffix, ext = 'html') => `${suffix}-${Date.now()}.${ext}`;
 
 //--------
