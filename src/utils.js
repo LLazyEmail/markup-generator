@@ -6,6 +6,7 @@ import {
 } from 'fs';
 import write from 'write';
 
+// ---
 const CONST_FILE_CREATED = '';
 const CONST_FILE_NOT_WRITTEN = 'file not written';
 
@@ -17,6 +18,7 @@ const ERROR_NO_PREVIEW_TEXT = '`previewText` is a required option for `renderTem
 // 'It is recommended to keep the delivered HTML to smaller ' +
 // 'than 100KB, to avoid getting emails cut off or rejected due to spam.';
 
+// ---
 
 function writeHTML(fileName, content, dir = "generated", message) {
   const _path = `${dir}/${fileName}`; // @todo it's not an ideal thing
