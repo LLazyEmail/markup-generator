@@ -176,6 +176,8 @@ const checkingPreviewText = (previewText) => {
  }
 }
 
+// ---
+
 export {
   displayCLIErrors,
   checkErrors,
