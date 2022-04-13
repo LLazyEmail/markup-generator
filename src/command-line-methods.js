@@ -9,7 +9,7 @@ import { readSourceFile } from './utils';
 // const HTML_EMAIL_SUCCESS = Content has correct html!!!;
 // const HTML_EMAIL_ERROR = 'Content has not correct html!!!';    
 
-
+// convert into singleton
 const stateInit = (source) => {
   // TODO rename
   const markdown = readSourceFile(source);
