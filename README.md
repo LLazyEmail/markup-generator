@@ -1,3 +1,7 @@
+
+
+## generator-module aka "markup-generator"
+
 It's just an HTML file generator
 
 Main reason - we want to generate an HTML email newsletter automatically, so generator must have methods that can help you to save a file.
