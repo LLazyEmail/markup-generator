@@ -66,6 +66,7 @@ function isFolderExists(dir) {
 }
 
 // can be renamed into a generateFileName
+// https://befused.com/javascript/get-filename-url/
 const generateTemplateName = (suffix, ext = 'html') => `${suffix}-${Date.now()}.${ext}`;
 
 //--------
