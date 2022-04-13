@@ -9,6 +9,9 @@ import { readSourceFile } from './utils';
 // const HTML_EMAIL_SUCCESS = Content has correct html!!!;
 // const HTML_EMAIL_ERROR = 'Content has not correct html!!!';    
 
+// import { WARNING_IMAGE_VERSION, ERROR_SOURCE_DONT_HAVE, FULL_TEMPLATE_ERROR, HTML_EMAIL_SUCCESS, HTML_EMAIL_ERROR } from './constants';
+
+
 // convert into singleton
 const stateInit = (source) => {
   // TODO rename
@@ -67,6 +70,7 @@ function checkErrors(errors) {
   return false;
 }
 
+// move inside...
 function displayCLIErrors(errors, warnings) {
   if (checkErrors(errors)) {
     // there should be something in here
@@ -74,6 +78,9 @@ function displayCLIErrors(errors, warnings) {
     checkWarnings(warnings);
   }
 }
+
+// @todo should we move away checks?
+
 
 function checkHtml(content) {
   const searchPattern = new RegExp('(<table|<tr>|<td|<tbody>)', 'i');
@@ -103,25 +110,49 @@ function checkHtml(content) {
 
 const printMessage = ({ message, type }) => {
   if (!message) return;
-
-  if (type == 'yellow') {
-    console.log(chalk.yellow(message));
+  
+  
+  switch (type) {
+    case 'yellow':
+      console.log(chalk.yellow(message));
+      break;
+    case 'red':
+      console.log(chalk.red(message));
+      break;
+    case 'red2':
+      console.log(chalk.red.bold(message));
+      break;
+     case 'green1':
+      console.log(chalk.green(message));
+      break; 
+    case 'green2':
+      console.log(chalk.green.bold(message));
+      break;   
+      
+    default:
+      console.log(`Sorry, we are out of ${type}.`);
   }
 
-  if (type == 'red') {
-    console.log(chalk.red(message));
-  }
+//  if (type == 'yellow') {
+//    console.log(chalk.yellow(message));
+//  }
 
-  if (type == 'red2') {
-    console.log(chalk.red.bold(message));
-  }
+//  if (type == 'red') {
+//    console.log(chalk.red(message));
+//  }
 
-  if (type == 'green1') {
-    console.log(chalk.green(message));
-  }
-  if (type == 'green2') {
-    console.log(chalk.green.bold(message));
-  }
+//  if (type == 'red2') {
+//    console.log(chalk.red.bold(message));
+//  }
+
+//  if (type == 'green1') {
+//    console.log(chalk.green(message));
+//  }
+//  if (type == 'green2') {
+//    console.log(chalk.green.bold(message));
+//  }
+  
+  
 };
 
 // const ERROR_TITLE = '`title` is a required option for `renderTemplate`'
