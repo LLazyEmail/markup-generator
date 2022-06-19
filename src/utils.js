@@ -14,6 +14,8 @@ const ERROR_NO_TITLE = '`title` is a required option for `renderTemplate`';
 const ERROR_NO_BODY_CONTENT = '`bodyContent` is a required option for `renderTemplate`';
 const ERROR_NO_PREVIEW_TEXT = '`previewText` is a required option for `renderTemplate`';
 
+const ERROR_NO_CONTENT = 'content variable is empty';
+
 // const WARNING_EMAIL_LENGTH = `Email output is ${Math.round(bytes / 1024)}KB. ` +
 // 'It is recommended to keep the delivered HTML to smaller ' +
 // 'than 100KB, to avoid getting emails cut off or rejected due to spam.';
@@ -23,6 +25,10 @@ const ERROR_NO_PREVIEW_TEXT = '`previewText` is a required option for `renderTem
 function writeHTML(fileName, content, dir = "generated", message) {
   const _path = `${dir}/${fileName}`; // @todo it's not an ideal thing
 
+  if(!content) {
+    throw new Error(ERROR_NO_CONTENT);
+  }
+  
   // promise
   write(_path, content)
     .then(() => {
