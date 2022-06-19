@@ -184,7 +184,7 @@ export {
   checkWarnings,
   checkHtml,
   
-  checkingTitle, checkingBodyContent, checkingPreviewText
+  checkingTitle, checkingBodyContent, checkingPreviewText,
 
   printMessage,
   stateInit
