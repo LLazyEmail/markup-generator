@@ -2,12 +2,25 @@
 
 ## generator-module aka "markup-generator"
 
+`yarn add markup-generator`
+
 It's just an HTML file generator
 
 Main reason - we want to generate an HTML email newsletter automatically, so generator must have methods that can help you to save a file.
 
 
 Submodule for https://github.com/atherdon/markdown-to-email
+
+
+```
+import { writeHTML, generateTemplateName } from 'markup-generator'
+
+const content = '<html></html>'; // long html template stored in this variable
+const fileName = generateTemplateName('prefix-for-your-generated-file');
+
+writeHTML(fileName, content);
+```
+
 
 ### TODO
 - [ ] move tests here
