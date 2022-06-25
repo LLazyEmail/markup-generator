@@ -5,7 +5,6 @@
   "main": "dist/index.cjs.js",
   "module": "dist/index.es.js",
   "browser": "dist/index.iife.js",
-  "type": "module",
   "scripts": {
     "bundle": "rollup -c",
     "dev": "rollup -c -w",
