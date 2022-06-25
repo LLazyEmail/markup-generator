@@ -1,8 +1,11 @@
-const fs = require('fs');
-const chalk = require('chalk');
-const { 
-  readSourceFile, displayCLIErrors, FULL_SOURCE 
-} = require('../../../../src/utils');
+import fs from 'fs';
+import chalk from 'chalk';
+// const { 
+//   readSourceFile, displayCLIErrors, FULL_SOURCE
+// } = require ('../../src/utils');
+
+
+import { readSourceFile, displayCLIErrors, FULL_SOURCE } from '../../src/utils'
 
 // @TODO we can add tests, related to new layouts structure.
 // just dont want to remove it without replacing

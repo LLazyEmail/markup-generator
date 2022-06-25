@@ -76,17 +76,46 @@ function isFolderExists(dir) {
 const generateTemplateName = (suffix, ext = 'html') => `${suffix}-${Date.now()}.${ext}`;
 
 //--------
-// const countingBytes = (html) => {
-//   const bytes = Buffer.byteLength(html, 'utf8');
 
-//   if (bytes > 1024 * 100) {
-//     console.warn( WARNING_EMAIL_LENGTH );
-//   }
+function checkWarnings(warnings) {
+  forEach(warnings, (index, element) => {
+    if (index) {
+      const message = `WARNING source.md has ${index} ${element}. Replace it with memes`;
 
-//   return bytes;
-// };
+      printMessage(message, 'yellow');
+    }
+  });
+}
+
+function checkErrors(errors) {
+  if (Object.values(errors).includes(false)) {
+    // TODO replace with lodash
+    forEach(errors, (_, error) => {
+      if (!errors[error]) {
+        const message = `ERROR source.md doesn't have ${error}`;
+
+        printMessage(message, 'red');
+      }
+    });
+
+    const message = 'The full template has not been parsed!';
+    printMessage(message, 'red2');
+
+    return true;
+  }
+  return false;
+}
+
+function displayCLIErrors(errors, warnings) {
+  if (checkErrors(errors)) {
+    // there should be something in here
+  } else {
+    checkWarnings(warnings);
+  }
+}
 
 
+const FULL_SOURCE = 'tests/methods/source.md';
 
 //-----------
 
@@ -96,7 +125,12 @@ export {
   readSourceFile,
   isFolderExists,
   generateTemplateName,
-  // countingBytes,
+  
+  checkWarnings,
+  checkErrors,
+  displayCLIErrors,
+
+  FULL_SOURCE,
 
   ERROR_NO_TITLE,
   ERROR_NO_BODY_CONTENT,
