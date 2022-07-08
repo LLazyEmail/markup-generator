@@ -15,6 +15,8 @@ import {
   stateInit
 } from './command-line-methods';
 
+import { writingFile } from './write';
+
 export {
   writeHTML,
   readSourceFile,
@@ -28,4 +30,6 @@ export {
 
   printMessage,
   stateInit,
+  //-----
+  writingFile
 };
