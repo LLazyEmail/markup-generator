@@ -1,6 +1,6 @@
 
 
-## generator-module aka "markup-generator"
+##  markup-generator module
 
 `yarn add markup-generator`
 
