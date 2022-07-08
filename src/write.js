@@ -1,4 +1,4 @@
-import generateTemplateName from './utils';
+import {generateTemplateName} from './utils';
 
 const writingFile = (content, name) => {
   if (!content) {
