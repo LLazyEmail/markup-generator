@@ -7,10 +7,9 @@ import { readSourceFile } from './utils';
 
 // const FULL_TEMPLATE_ERROR = 'The full template has not been parsed!';
 // const HTML_EMAIL_SUCCESS = Content has correct html!!!;
-// const HTML_EMAIL_ERROR = 'Content has not correct html!!!';    
+// const HTML_EMAIL_ERROR = 'Content has not correct html!!!';
 
 // import { WARNING_IMAGE_VERSION, ERROR_SOURCE_DONT_HAVE, FULL_TEMPLATE_ERROR, HTML_EMAIL_SUCCESS, HTML_EMAIL_ERROR } from './constants';
-
 
 // convert into singleton
 const stateInit = (source) => {
@@ -35,7 +34,7 @@ const stateInit = (source) => {
     },
     innerWarnings() {
       checkWarnings(this.warnings);
-    }
+    },
   };
 
   return stateObject;
@@ -81,11 +80,10 @@ function displayCLIErrors(errors, warnings) {
 
 // @todo should we move away checks?
 
-
 function checkHtml(content) {
   const searchPattern = new RegExp('(<table|<tr>|<td|<tbody>)', 'i');
-  
-  let ind; 
+
+  let ind;
   let tempStr = '';
 
   if (process.env.noAdv) {
@@ -110,8 +108,7 @@ function checkHtml(content) {
 
 const printMessage = ({ message, type }) => {
   if (!message) return;
-  
-  
+
   switch (type) {
     case 'yellow':
       console.log(chalk.yellow(message));
@@ -122,59 +119,57 @@ const printMessage = ({ message, type }) => {
     case 'red2':
       console.log(chalk.red.bold(message));
       break;
-     case 'green1':
+    case 'green1':
       console.log(chalk.green(message));
-      break; 
+      break;
     case 'green2':
       console.log(chalk.green.bold(message));
-      break;   
-      
+      break;
+
     default:
       console.log(`Sorry, we are out of ${type}.`);
   }
 
-//  if (type == 'yellow') {
-//    console.log(chalk.yellow(message));
-//  }
+  //  if (type == 'yellow') {
+  //    console.log(chalk.yellow(message));
+  //  }
 
-//  if (type == 'red') {
-//    console.log(chalk.red(message));
-//  }
+  //  if (type == 'red') {
+  //    console.log(chalk.red(message));
+  //  }
 
-//  if (type == 'red2') {
-//    console.log(chalk.red.bold(message));
-//  }
+  //  if (type == 'red2') {
+  //    console.log(chalk.red.bold(message));
+  //  }
 
-//  if (type == 'green1') {
-//    console.log(chalk.green(message));
-//  }
-//  if (type == 'green2') {
-//    console.log(chalk.green.bold(message));
-//  }
-  
-  
+  //  if (type == 'green1') {
+  //    console.log(chalk.green(message));
+  //  }
+  //  if (type == 'green2') {
+  //    console.log(chalk.green.bold(message));
+  //  }
 };
 
 // const ERROR_TITLE = '`title` is a required option for `renderTemplate`'
 const checkingTitle = (title) => {
-   if (!title) {
-     throw new Error('`title` is a required option for `renderTemplate`');
-    }
-}
+  if (!title) {
+    throw new Error('`title` is a required option for `renderTemplate`');
+  }
+};
 
 // const ERROR_BODY = '`bodyContent` is a required option for `renderTemplate`';
 const checkingBodyContent = (bodyContent) => {
-   if (!bodyContent) {
-   throw new Error('`bodyContent` is a required option for `renderTemplate`');
- }
-}
+  if (!bodyContent) {
+    throw new Error('`bodyContent` is a required option for `renderTemplate`');
+  }
+};
 
 //const ERROR_PREVIEW = '`previewText` is a required option for `renderTemplate`';
 const checkingPreviewText = (previewText) => {
- if (!previewText) {
-   throw new Error('`previewText` is a required option for `renderTemplate`');
- }
-}
+  if (!previewText) {
+    throw new Error('`previewText` is a required option for `renderTemplate`');
+  }
+};
 
 // ---
 
@@ -183,9 +178,9 @@ export {
   checkErrors,
   checkWarnings,
   checkHtml,
-  
-  checkingTitle, checkingBodyContent, checkingPreviewText,
-
+  checkingTitle,
+  checkingBodyContent,
+  checkingPreviewText,
   printMessage,
-  stateInit
+  stateInit,
 };

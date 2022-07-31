@@ -1,6 +1,6 @@
 {
   "name": "markup-generator",
-  "version": "0.5.5",
+  "version": "0.6.0",
   "description": "generator for files. working with 2 options at this moment",
   "main": "dist/index.cjs.js",
   "module": "dist/index.es.js",
@@ -20,12 +20,12 @@
   "devDependencies": {
     "@babel/cli": "7.18.9",
     "@babel/core": "7.18.9",
+    "@babel/eslint-parser": "^7.18.9",
     "@babel/plugin-syntax-dynamic-import": "7.8.3",
     "@babel/preset-env": "7.18.9",
     "@rollup/plugin-babel": "5.3.1",
     "@rollup/plugin-commonjs": "22.0.1",
     "@rollup/plugin-node-resolve": "13.3.0",
-    "babel-eslint": "10.1.0",
     "eslint": "8.20.0",
     "eslint-plugin-json": "3.1.0",
     "jest": "28.1.3",

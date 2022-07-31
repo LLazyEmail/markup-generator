@@ -1,9 +1,4 @@
-import {
-  readFileSync, 
-  writeFileSync, 
-  existsSync, 
-  mkdirSync
-} from 'fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
 import write from 'write';
 
 // ---
@@ -11,8 +6,10 @@ const CONST_FILE_CREATED = '';
 const CONST_FILE_NOT_WRITTEN = 'file not written';
 
 const ERROR_NO_TITLE = '`title` is a required option for `renderTemplate`';
-const ERROR_NO_BODY_CONTENT = '`bodyContent` is a required option for `renderTemplate`';
-const ERROR_NO_PREVIEW_TEXT = '`previewText` is a required option for `renderTemplate`';
+const ERROR_NO_BODY_CONTENT =
+  '`bodyContent` is a required option for `renderTemplate`';
+const ERROR_NO_PREVIEW_TEXT =
+  '`previewText` is a required option for `renderTemplate`';
 
 const ERROR_NO_CONTENT = 'content variable is empty';
 
@@ -22,25 +19,23 @@ const ERROR_NO_CONTENT = 'content variable is empty';
 
 // ---
 
-function writeHTML(fileName, content, dir = "generated", message) {
+function writeHTML(fileName, content, dir = 'generated', message) {
   const _path = `${dir}/${fileName}`; // @todo it's not an ideal thing
 
-  if(!content) {
+  if (!content) {
     throw new Error(ERROR_NO_CONTENT);
   }
-  
+
   // promise
   write(_path, content)
     .then(() => {
-      
       // i dont like this line @TODO change it
       message && console.log(`file has been written successfully${fileName}`);
     })
-    .catch(err => { 
-      // console.log(err) 
+    .catch((err) => {
+      // console.log(err)
       throw new Error(CONST_FILE_NOT_WRITTEN);
     });
-
 }
 
 // __write - an old version of a method that we have
@@ -61,7 +56,6 @@ function readSourceFile(fileName) {
   return readFileSync(fileName, { encoding: 'utf-8' });
 }
 
-
 // https://www.npmjs.com/package/directory-exists
 // https://www.npmjs.com/package/path-exists this is better
 
@@ -73,7 +67,8 @@ function isFolderExists(dir) {
 
 // can be renamed into a generateFileName
 // https://befused.com/javascript/get-filename-url/
-const generateTemplateName = (suffix, ext = 'html') => `${suffix}-${Date.now()}.${ext}`;
+const generateTemplateName = (suffix, ext = 'html') =>
+  `${suffix}-${Date.now()}.${ext}`;
 
 //--------
 
@@ -114,7 +109,6 @@ function displayCLIErrors(errors, warnings) {
   }
 }
 
-
 const FULL_SOURCE = 'tests/methods/source.md';
 
 //-----------
@@ -125,13 +119,10 @@ export {
   readSourceFile,
   isFolderExists,
   generateTemplateName,
-  
   checkWarnings,
   checkErrors,
   displayCLIErrors,
-
   FULL_SOURCE,
-
   ERROR_NO_TITLE,
   ERROR_NO_BODY_CONTENT,
   ERROR_NO_PREVIEW_TEXT,

@@ -9,9 +9,9 @@ function replaceMarkdown(regexp, callback) {
       break;
 
     case 'undefined':
-      console.log("ERRROROROR HERE!!!!");
-            console.log(regexp)
-            console.log(callback)
+      console.log('ERRROROROR HERE!!!!');
+      console.log(regexp);
+      console.log(callback);
 
       break;
 
@@ -38,13 +38,9 @@ function replaceMarkdownPreviewText(regexp) {
       console.log(this.previewText)
  */
 
-      
   this.errors.previewText = true;
 
-  this.content = this.content.replace(
-    regexp,
-    () => this.previewText,
-  );
+  this.content = this.content.replace(regexp, () => this.previewText);
 }
 
 // TODO update this method. I'm sure it can be improved.

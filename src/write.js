@@ -4,7 +4,7 @@ const writingFile = (content, name) => {
   if (!content) {
     throw new Error('no content was passed into writingFile method');
   }
-  
+
   const fileName = generateTemplateName(name);
 
   try {

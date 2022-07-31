@@ -2,7 +2,7 @@ import {
   writeHTML,
   readSourceFile,
   isFolderExists,
-  generateTemplateName
+  generateTemplateName,
 } from './utils';
 
 import {
@@ -10,9 +10,8 @@ import {
   checkErrors,
   checkWarnings,
   checkHtml,
-
   printMessage,
-  stateInit
+  stateInit,
 } from './command-line-methods';
 
 import { writingFile } from './write';
@@ -22,14 +21,12 @@ export {
   readSourceFile,
   isFolderExists,
   generateTemplateName,
-
   displayCLIErrors,
   checkErrors,
   checkWarnings,
   checkHtml,
-
   printMessage,
   stateInit,
   //-----
-  writingFile
+  writingFile,
 };

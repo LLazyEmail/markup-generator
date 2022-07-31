@@ -17,11 +17,13 @@ import { readSourceFile, displayCLIErrors, FULL_SOURCE } from '../../src/utils'
 
 
 describe('testing utils.js', () => {
+  //-----
   test('readSourceFile reads file', () => {
     const wrapper = readSourceFile(FULL_SOURCE);
     expect(wrapper).toBe(fs.readFileSync(FULL_SOURCE, { encoding: 'utf-8' }));
   });
 
+//-----
   test('isFolderExists really checks folders', () => {
     // not calling isFolderExists but his body is testing
     const path = 'source/source-full.md';
@@ -34,6 +36,7 @@ describe('testing utils.js', () => {
     expect(check).toBe(true);
   });
 
+//-----
   test('displayCLIErrors receives --> errors <-- and outputs them', () => {
     let outputData = '';
 
@@ -46,6 +49,7 @@ describe('testing utils.js', () => {
     expect(outputData).toBe(msg1 + msg2);
   });
 
+//-----
   test('displayCLIErrors receives --> warnings <-- and outputs them', () => {
     let outputData = '';
 
