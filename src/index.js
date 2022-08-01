@@ -14,7 +14,7 @@ import {
   stateInit,
 } from './command-line-methods';
 
-import { writingFile } from './write';
+import writingFile from './write';
 
 export {
   writeHTML,

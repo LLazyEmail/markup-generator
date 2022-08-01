@@ -10,9 +10,10 @@ const writingFile = (content, name) => {
   try {
     writeHTML(fileName, content);
   } catch (err) {
-    //console.log(err);
+    console.log(err);
+    
     //console.log(content);
   }
 };
 
-export { writingFile };
+export default writingFile;
