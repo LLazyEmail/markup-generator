@@ -59,7 +59,7 @@
     json5 "^2.2.1"
     semver "^6.3.0"
 
-"@babel/eslint-parser@^7.18.9":
+"@babel/eslint-parser@7.18.9":
   version "7.18.9"
   resolved "https://registry.npmjs.org/@babel/eslint-parser/-/eslint-parser-7.18.9.tgz"
   integrity sha512-KzSGpMBggz4fKbRbWLNyPVTuQr6cmCcBhOyXTw/fieOVaw5oYAwcAj4a7UKcDYCPxQq+CG1NCDZH9e2JTXquiQ==
