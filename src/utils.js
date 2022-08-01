@@ -19,6 +19,16 @@ const ERROR_NO_CONTENT = 'content variable is empty';
 
 // ---
 
+const catchErrorTraceOutput = (error) => {
+  // we need to test how it actually work
+  const callerLine = error.stack.split('\n')[4];
+  const index = callerLine.indexOf('at ');
+  // eslint-disable-next-line no-unused-vars
+  const clean = callerLine.slice(index + 2, callerLine.length);
+
+  throw error;
+};
+
 function writeHTML(fileName, content, dir = 'generated', message) {
   const _path = `${dir}/${fileName}`; // @todo it's not an ideal thing
 
@@ -38,19 +48,6 @@ function writeHTML(fileName, content, dir = 'generated', message) {
     });
 }
 
-// __write - an old version of a method that we have
-function __write(fileName, content, dir = 'generated', message) {
-  const _path = `${dir}/${fileName}`; // @todo it's not an ideal thing
-
-  writeFileSync(_path, content, (err) => {
-    if (err) {
-      throw new Error(CONST_FILE_NOT_WRITTEN);
-    }
-  });
-
-  // i dont like this line @TODO change it
-  message && console.log(`file has been written successfully${fileName}`);
-}
 
 function readSourceFile(fileName) {
   return readFileSync(fileName, { encoding: 'utf-8' });
@@ -115,7 +112,7 @@ const FULL_SOURCE = 'tests/methods/source.md';
 
 export {
   writeHTML,
-  __write,
+  catchErrorTraceOutput,
   readSourceFile,
   isFolderExists,
   generateTemplateName,
