@@ -16,3 +16,5 @@ describe('test fullComponent', () => {
         
     });
 });
+
+// TODO find a way to generate an error and check tracing
