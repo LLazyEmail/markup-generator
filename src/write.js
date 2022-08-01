@@ -1,6 +1,6 @@
-import { generateTemplateName, writeHTML } from './utils';
+import { generateTemplateName, writeHTML,  } from './utils';
 
-const writingFile = (content, name) => {
+const writingFile = (content, name = 'prefix') => {
   if (!content) {
     throw new Error('no content was passed into writingFile method');
   }
@@ -9,10 +9,9 @@ const writingFile = (content, name) => {
 
   try {
     writeHTML(fileName, content);
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
 
-    //console.log(content);
+    catchErrorTraceOutput(error);    
   }
 };
 

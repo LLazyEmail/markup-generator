@@ -3,6 +3,7 @@ import {
   readSourceFile,
   isFolderExists,
   generateTemplateName,
+  catchErrorTraceOutput
 } from './utils';
 
 import {
@@ -29,4 +30,5 @@ export {
   stateInit,
   //-----
   writingFile,
+  catchErrorTraceOutput
 };
