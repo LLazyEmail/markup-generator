@@ -1,4 +1,4 @@
-import { generateTemplateName } from './utils';
+import { generateTemplateName, writeHTML } from './utils';
 
 const writingFile = (content, name) => {
   if (!content) {
@@ -11,7 +11,7 @@ const writingFile = (content, name) => {
     writeHTML(fileName, content);
   } catch (err) {
     console.log(err);
-    
+
     //console.log(content);
   }
 };

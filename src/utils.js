@@ -48,7 +48,6 @@ function writeHTML(fileName, content, dir = 'generated', message) {
     });
 }
 
-
 function readSourceFile(fileName) {
   return readFileSync(fileName, { encoding: 'utf-8' });
 }
