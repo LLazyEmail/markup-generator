@@ -40,10 +40,10 @@ function writeHTML(fileName, content, dir = 'generated', message) {
   write(_path, content)
     .then(() => {
       // i dont like this line @TODO change it
-      message && console.log(`file has been written successfully${fileName}`);
+      message && console.log(`file has been written successfully ${fileName}`);
     })
-    .catch((err) => {
-      // console.log(err)
+    .catch((error) => {      
+      catchErrorTraceOutput(error); 
       throw new Error(CONST_FILE_NOT_WRITTEN);
     });
 }
