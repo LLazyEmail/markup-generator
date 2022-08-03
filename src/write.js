@@ -1,4 +1,4 @@
-import { generateTemplateName, writeHTML,  } from './utils';
+import { generateTemplateName, writeHTML, catchErrorTraceOutput } from './utils';
 
 const writingFile = (content, name = 'prefix') => {
   if (!content) {
