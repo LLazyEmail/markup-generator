@@ -13,6 +13,8 @@ const ERROR_NO_PREVIEW_TEXT =
 
 const ERROR_NO_CONTENT = 'content variable is empty';
 
+const ERROR_TYPE_NOT_STRING = 'content variable is not a string';
+
 // const WARNING_EMAIL_LENGTH = `Email output is ${Math.round(bytes / 1024)}KB. ` +
 // 'It is recommended to keep the delivered HTML to smaller ' +
 // 'than 100KB, to avoid getting emails cut off or rejected due to spam.';
@@ -34,6 +36,10 @@ function writeHTML(fileName, content, dir = 'generated', message) {
 
   if (!content) {
     throw new Error(ERROR_NO_CONTENT);
+  }
+  
+  if (typeof content !== 'string'){
+    throw new Error(ERROR_TYPE_NOT_STRING);
   }
 
   // promise
