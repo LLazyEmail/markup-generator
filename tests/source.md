@@ -87,3 +87,6 @@ _Join us to welcome today newsletter’s sponsor - [BridgeCrew](https://bit.ly/3
 
 
 ![https://gitlab.com/hackernoon/creative/-/raw/master/newsletters/memes/2020/november/18.11/image5.gif][https://media.giphy.com/media/3orieTeAMaKc4yhwmk/giphy.gif][alt text]
+
+
+## [Linkedin page of LLazyEmail](https://www.linkedin.com/company/llazyemail/)
