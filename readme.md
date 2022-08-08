@@ -14,3 +14,6 @@ https://github.com/atherdon/markdown-regex/blob/main/.eslintrc.json
 - [ ] Creating a browser bundle that depends on "path". You might need to include https://github.com/snowpackjs/rollup-plugin-polyfill-node
 https://github.com/atherdon/markdown-regex/blob/main/rollup.config.js#L2
 https://github.com/atherdon/markdown-regex/blob/main/rollup.config.js#L115
+
+
+## [Linkedin page of LLazyEmail](https://www.linkedin.com/company/llazyemail/)
