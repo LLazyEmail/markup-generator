@@ -9,6 +9,9 @@ import globals from "rollup-plugin-node-globals";
 import includePaths from "rollup-plugin-includepaths";
 import nodePolyfills from 'rollup-plugin-node-polyfills';
 
+
+// import { readFileSync } from 'node:fs';
+
 // import eslint from "rollup-plugin-eslint";
 
 // not all files you want to resolve are .js files
@@ -18,12 +21,12 @@ const extensions = [
   //".json"
 ];
 
-const name = "newsletterCallbacks";
+const name = "newsletterCallbacks_markup_generator";
 
 // packages that should be treated as external dependencies, not bundled
 // e.g. ['axios']
 const external = [
-  "fs", "os"
+  "fs", "os", "readFileSync", "node:fs"
 ];
 
 const includePathOptions = {
