@@ -1,11 +1,15 @@
 import {
-  writeHTML,
-  readFileSync,
-  readSourceFile,
-  isFolderExists,
-  generateTemplateName,
+  
+  
   catchErrorTraceOutput,
 } from './utils';
+
+
+import {
+  // readFileSync,
+  readSourceFile,
+  isFolderExists,
+} from './fileSystem'
 
 import {
   displayCLIErrors,
@@ -16,11 +20,11 @@ import {
   stateInit,
 } from './command-line-methods';
 
-import writingFile from './write';
+import { writeHTML, writingFile, generateTemplateName } from './write';
 
 export {
   writeHTML,
-  readFileSync,
+  // readFileSync,
   readSourceFile,
   isFolderExists,
   generateTemplateName,
