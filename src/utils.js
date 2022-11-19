@@ -31,14 +31,17 @@ const catchErrorTraceOutput = (error) => {
   throw error;
 };
 
+
+
+
 function writeHTML(fileName, content, dir = 'generated', message) {
   const _path = `${dir}/${fileName}`; // @todo it's not an ideal thing
 
   if (!content) {
     throw new Error(ERROR_NO_CONTENT);
   }
-  
-  if (typeof content !== 'string'){
+
+  if (typeof content !== 'string') {
     throw new Error(ERROR_TYPE_NOT_STRING);
   }
 
@@ -48,11 +51,14 @@ function writeHTML(fileName, content, dir = 'generated', message) {
       // i dont like this line @TODO change it
       message && console.log(`file has been written successfully ${fileName}`);
     })
-    .catch((error) => {      
-      catchErrorTraceOutput(error); 
+    .catch((error) => {
+      catchErrorTraceOutput(error);
       throw new Error(CONST_FILE_NOT_WRITTEN);
     });
 }
+
+
+
 
 function readSourceFile(fileName) {
   return readFileSync(fileName, { encoding: 'utf-8' });

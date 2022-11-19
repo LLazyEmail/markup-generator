@@ -1,4 +1,8 @@
-import { generateTemplateName, writeHTML, catchErrorTraceOutput } from './utils';
+import {
+  generateTemplateName,
+  writeHTML,
+  catchErrorTraceOutput,
+} from './utils';
 
 const writingFile = (content, name = 'prefix') => {
   if (!content) {
@@ -10,8 +14,7 @@ const writingFile = (content, name = 'prefix') => {
   try {
     writeHTML(fileName, content);
   } catch (error) {
-
-    catchErrorTraceOutput(error);    
+    catchErrorTraceOutput(error);
   }
 };
 

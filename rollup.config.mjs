@@ -12,7 +12,7 @@ import nodePolyfills from 'rollup-plugin-node-polyfills';
 
 // import { readFileSync } from 'node:fs';
 
-// import eslint from "rollup-plugin-eslint";
+import eslint from "@rollup/plugin-eslint";
 
 // not all files you want to resolve are .js files
 // Default: [ '.mjs', '.js', '.json', '.node' ]
@@ -50,18 +50,19 @@ const plugins = () => [
 
   // Allows verification of entry point and all imported files with ESLint.
   // @TODO fix and enable eslint for rollup
-  // eslint({
-  //   /* your options */
-  //   fix:true,
-  //   throwOnWarning:true,
-  //   throwOnError:true
+  eslint({
+    /* your options */
+    fix:true,
+    throwOnWarning:true,
+    throwOnError:true
 
-  // }),
+  }),
 
   // Allow bundling cjs modules. Rollup doesn't understand cjs
   commonjs({
     ignore: ["conditional-runtime-dependency"]
   }),
+  nodePolyfills(),
 
   // use Babel to compile TypeScript/JavaScript files to ES5
   babel({
@@ -86,16 +87,7 @@ const plugins = () => [
 
   // Allow Rollup to import data from JSON file
   // json()
-  // json({
-  //   include: "src/data/**",
-  //
-  //   // for tree-shaking, properties will be declared as
-  //   // variables, using either `var` or `const`
-  //   preferConst: true,
-  //
-  //   // generate a named export for every property of the JSON object
-  //   namedExports: true // Default: true
-  // }),
+
   // Displays rollup errors as system notifications
   includePaths(includePathOptions),
   // notify(),
@@ -104,17 +96,7 @@ const plugins = () => [
       fs: 'fs'
   }),
   builtins(),
-  
-  nodePolyfills()
-
-  // remove flow annotations from output
-  // flow(),
-
-  // copy Flow definitions from source to destination directory
-  // copy({
-  //   files: ['src/*.flow'],
-  //   dest: 'dist',
-  // }),
+    
 ];
 
 // example for adding plugin for env only
