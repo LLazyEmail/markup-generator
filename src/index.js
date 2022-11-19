@@ -1,5 +1,6 @@
 import {
   writeHTML,
+  readFileSync,
   readSourceFile,
   isFolderExists,
   generateTemplateName,
@@ -19,6 +20,7 @@ import writingFile from './write';
 
 export {
   writeHTML,
+  readFileSync,
   readSourceFile,
   isFolderExists,
   generateTemplateName,

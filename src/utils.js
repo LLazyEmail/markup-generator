@@ -118,6 +118,7 @@ const FULL_SOURCE = 'tests/methods/source.md';
 export {
   writeHTML,
   catchErrorTraceOutput,
+  readFileSync,
   readSourceFile,
   isFolderExists,
   generateTemplateName,
