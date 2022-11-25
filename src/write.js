@@ -4,7 +4,8 @@ import {
   
   catchErrorTraceOutput,
 } from './utils';
-import { ERROR_NO_CONTENT, ERROR_TYPE_NOT_STRING, CONST_FILE_NOT_WRITTEN } from './utils';
+import { ERROR_NO_CONTENT, ERROR_TYPE_NOT_STRING } from './utils';
+import {CONST_FILE_NOT_WRITTEN} from './constants';
 
 // can be renamed into a generateFileName
 // https://befused.com/javascript/get-filename-url/
