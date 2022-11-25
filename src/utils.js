@@ -3,7 +3,9 @@
 
 // ---
 const CONST_FILE_CREATED = '';
-const CONST_FILE_NOT_WRITTEN = 'file not written';
+
+// @TODO enable it later
+// const CONST_FILE_NOT_WRITTEN = 'file not written';
 
 const ERROR_NO_TITLE = '`title` is a required option for `renderTemplate`';
 const ERROR_NO_BODY_CONTENT =
@@ -11,9 +13,11 @@ const ERROR_NO_BODY_CONTENT =
 const ERROR_NO_PREVIEW_TEXT =
   '`previewText` is a required option for `renderTemplate`';
 
-const ERROR_NO_CONTENT = 'content variable is empty';
+// @TODO enable it later
+// const ERROR_NO_CONTENT = 'content variable is empty';
 
-const ERROR_TYPE_NOT_STRING = 'content variable is not a string';
+// @TODO enable it later
+// const ERROR_TYPE_NOT_STRING = 'content variable is not a string';
 
 // const WARNING_EMAIL_LENGTH = `Email output is ${Math.round(bytes / 1024)}KB. ` +
 // 'It is recommended to keep the delivered HTML to smaller ' +
