@@ -40,7 +40,7 @@ describe('testing utils.js', () => {
   test('displayCLIErrors receives --> errors <-- and outputs them', () => {
     let outputData = '';
 
-    storeLog = (inputs) => (outputData += inputs);
+    const storeLog = (inputs) => (outputData += inputs);
     console.log = jest.fn(storeLog);
     displayCLIErrors({ previewText: false }, {});
 
@@ -53,7 +53,7 @@ describe('testing utils.js', () => {
   test('displayCLIErrors receives --> warnings <-- and outputs them', () => {
     let outputData = '';
 
-    storeLog = (inputs) => (outputData += inputs);
+    const storeLog = (inputs) => (outputData += inputs);
     console.log = jest.fn(storeLog);
     displayCLIErrors({}, { images: 5 });
 
