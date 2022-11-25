@@ -1,5 +1,5 @@
 // import { readFileSync, existsSync, mkdirSync } from 'fs';
-
+import { printMessage } from './command-line-methods';
 
 // ---
 const CONST_FILE_CREATED = '';
