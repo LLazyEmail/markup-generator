@@ -1,9 +1,11 @@
 import write from 'write';
+
 import {
   generateTemplateName,
   
   catchErrorTraceOutput,
 } from '../../../../old/src/utils';
+
 import { ERROR_NO_CONTENT, ERROR_TYPE_NOT_STRING } from '../../../../old/src/utils';
 import {CONST_FILE_NOT_WRITTEN} from '../../../../old/src/constants';
 
@@ -14,7 +16,7 @@ const generateTemplateName = (suffix, ext = 'html') =>
 
 //--------
 
-const writeHTML = (fileName, content, dir = 'generated', message) => {
+const writeHTML = (fileName:string, content:string, dir = 'generated', message:string) => {
   const _path = `${dir}/${fileName}`; // @todo it's not an ideal thing
 
   if (!content) {
@@ -37,7 +39,7 @@ const writeHTML = (fileName, content, dir = 'generated', message) => {
     });
 }
 
-const writingFile = (content, name = 'prefix') => {
+const writingFile = (content:string, name = 'prefix') => {
   if (!content) {
     throw new Error('no content was passed into writingFile method');
   }
