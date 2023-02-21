@@ -1,0 +1,19 @@
+{
+  "name": "fs-write-module",
+  "version": "2.0.1",
+  "type": "commonjs",
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "write": "^2.0.0"
+  },
+  "author": "Arthur Tkachenko",
+  "license": "MIT",
+  "private": false,
+  "release": {
+    "publishDir": "dist"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "description": "generator for files. working with 2 options at this moment"
+}
