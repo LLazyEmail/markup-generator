@@ -4,10 +4,10 @@ import {
   generateTemplateName,
   
   catchErrorTraceOutput,
-} from '../../../../old/src/utils';
+} from './utils';
 
-import { ERROR_NO_CONTENT, ERROR_TYPE_NOT_STRING } from '../../../../old/src/utils';
-import {CONST_FILE_NOT_WRITTEN} from '../../../../old/src/constants';
+
+import { CONST_FILE_NOT_WRITTEN, ERROR_NO_CONTENT, ERROR_TYPE_NOT_STRING } from './constants';
 
 // can be renamed into a generateFileName
 // https://befused.com/javascript/get-filename-url/
@@ -54,12 +54,18 @@ const writingFile = (content:string, name = 'prefix') => {
 };
 
 
+const writeFileParticle = (string:string, suffix:string) => {
 
+  writingFile(string, suffix);
+  // TODO add a function that will display an output in console.  
+  return true;
+}
 
 
 
 export {
   writingFile, 
   writeHTML,
-  generateTemplateName
+  generateTemplateName,
+  writeFileParticle
 }
