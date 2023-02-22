@@ -2,7 +2,6 @@ import write from 'write';
 
 import {
   generateTemplateName,
-  
   catchErrorTraceOutput,
 } from './utils';
 
@@ -11,12 +10,12 @@ import { CONST_FILE_NOT_WRITTEN, ERROR_NO_CONTENT, ERROR_TYPE_NOT_STRING } from 
 
 // can be renamed into a generateFileName
 // https://befused.com/javascript/get-filename-url/
-const generateTemplateName = (suffix, ext = 'html') =>
+const generateTemplateName = (suffix:string, ext = 'html') =>
   `${suffix}-${Date.now()}.${ext}`;
 
 //--------
 
-const writeHTML = (fileName:string, content:string, dir = 'generated', message:string) => {
+const writeHTML = (fileName:string, content:string, dir:='generated', message:="") => {
   const _path = `${dir}/${fileName}`; // @todo it's not an ideal thing
 
   if (!content) {
@@ -33,13 +32,13 @@ const writeHTML = (fileName:string, content:string, dir = 'generated', message:s
       // i dont like this line @TODO change it
       message && console.log(`file has been written successfully ${fileName}`);
     })
-    .catch((error) => {
+    .catch((error:any) => {
       catchErrorTraceOutput(error);
       throw new Error(CONST_FILE_NOT_WRITTEN);
     });
 }
 
-const writingFile = (content:string, name = 'prefix') => {
+const writingFile = (content:string, name:='prefix') => {
   if (!content) {
     throw new Error('no content was passed into writingFile method');
   }
