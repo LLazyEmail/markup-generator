@@ -38,7 +38,7 @@ const writeHTML = (fileName:string, data:string, dir:string, message:string) => 
       console.log(`file has been written successfully ${fileName}`);
     })
     .catch((error:any) => {
-      catchErrorTraceOutput(error);
+      // catchErrorTraceOutput(error);
       throw new Error(CONST_FILE_NOT_WRITTEN);
     });
 
@@ -57,7 +57,8 @@ const writingFile = (content:string, name:string) => {
   try {
     writeHTML(fileName, content, '', '');
   } catch (error) {
-    catchErrorTraceOutput(error);
+    // catchErrorTraceOutput(error);
+    throw error;
   }
 };
 
