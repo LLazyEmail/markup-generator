@@ -1,6 +1,6 @@
 {
   "name": "markup-generator",
-  "version": "2.2.1",
+  "version": "2.3.1",
   "type": "commonjs",
   "dependencies": {
     "fs": "^0.0.1-security",

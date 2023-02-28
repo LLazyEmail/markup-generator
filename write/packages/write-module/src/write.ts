@@ -9,8 +9,11 @@ import {
 
 // can be renamed into a generateFileName
 // https://befused.com/javascript/get-filename-url/
-const generateTemplateName = (suffix:string, ext = 'html') =>
-  `${suffix}-${Date.now()}.${ext}`;
+const generateTemplateName = (suffix:string, ext:string) => {
+  if (ext === '') ext = 'html';
+  return `${suffix}-${Date.now()}.${ext}`;
+}
+  
 
 //--------
 
@@ -52,7 +55,7 @@ const writingFile = (content:string, name:string) => {
     throw new Error('no content was passed into writingFile method');
   }
 
-  const fileName = generateTemplateName(name);
+  const fileName = generateTemplateName(name, '');
 
   try {
     writeHTML(fileName, content, '', '');
