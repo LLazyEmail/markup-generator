@@ -1,10 +1,10 @@
 {
-  "name": "fs-write-module",
+  "name": "markup-generator",
   "version": "2.0.1",
   "type": "commonjs",
   "dependencies": {
     "fs": "^0.0.1-security",
-    "write": "^2.0.0"
+    "path": "^0.12.7"
   },
   "author": "Arthur Tkachenko",
   "license": "MIT",
@@ -15,5 +15,8 @@
   "publishConfig": {
     "access": "public"
   },
-  "description": "generator for files. working with 2 options at this moment"
+  "description": "generator for files. working with 2 options at this moment",
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.1"
+  }
 }

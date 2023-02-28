@@ -4,12 +4,19 @@ import {
   } from './fileSystem'
   
   
-//   import { writeHTML, writingFile, generateTemplateName } from './write';
+import { 
+  writeHTML, writingFile, 
+  generateTemplateName, writeFileParticle 
+} from './write';
 
 // export * from './lib/write-module';
 
 export {
     readSourceFile,
     isFolderExists,
+    writeHTML, 
+    writingFile, 
+    generateTemplateName, 
+    writeFileParticle
 }
 

@@ -15,3 +15,5 @@ const catchErrorTraceOutput = (error:any) => {
 
 // @TODO enable it later
 // const ERROR_TYPE_NOT_STRING = 'content variable is not a string';  
+
+export default catchErrorTraceOutput
