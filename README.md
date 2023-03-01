@@ -14,6 +14,7 @@ Main reason - we want to generate an HTML email newsletter automatically, so gen
 
 Submodule for https://github.com/atherdon/markdown-to-email
 
+https://bobbyhadz.com/blog/typescript-write-to-a-file
 
 ```
 import { writeHTML, generateTemplateName } from 'markup-generator'
