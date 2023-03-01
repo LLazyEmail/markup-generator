@@ -1,6 +1,6 @@
 {
   "name": "markup-generator",
-  "version": "2.3.1",
+  "version": "2.4.1",
   "type": "commonjs",
   "dependencies": {
     "fs": "^0.0.1-security",
@@ -18,5 +18,8 @@
   "description": "generator for files. working with 2 options at this moment",
   "devDependencies": {
     "@types/fs-extra": "^11.0.1"
+  },
+  "scripts": {
+    "test": "jest ./tests --passWithNoTests"
   }
 }

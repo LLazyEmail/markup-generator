@@ -1,6 +1,7 @@
-import { writeFile } from 'fs-extra';
+import { writeFile } from 'fs/promises';
 import { resolve as pathResolve } from 'path';
-import catchErrorTraceOutput from './utils';
+import { isFolderExists } from './fileSystem';
+// import catchErrorTraceOutput from './utils';
 
 
 import { 
@@ -29,21 +30,34 @@ const writeHTML = (fileName:string, data:string, dir:string, message:string) => 
 
   if (dir === ''){ dir = 'generated'; }
 
+  var directory_path = pathResolve(dir);
+  isFolderExists(directory_path);
 
   // TODO it's not an ideal thing
   var path = pathResolve(`${dir}/${fileName}`); 
 
+
+  // console.log(pathResolve(dir));
+
+  // isFolderExists(pathResolve(dir));
+  // console.log(path);
+
+
+  const result = writeFile(path, data);
+
+  // console.log(result);
+
   // promise
-  writeFile(path, data, 'utf8')
-    .then(results => {
-      if(message) console.log(message);
-      console.log(results);
-      console.log(`file has been written successfully ${fileName}`);
-    })
-    .catch((error:any) => {
-      // catchErrorTraceOutput(error);
-      throw new Error(CONST_FILE_NOT_WRITTEN);
-    });
+  // writeFile(path, data)
+  //   .then(results => {
+  //     if(message) console.log(message);
+  //     console.log(results);
+  //     console.log(`file has been written successfully ${fileName}`);
+  //   })
+  //   .catch((error:any) => {
+  //     // catchErrorTraceOutput(error);
+  //     throw new Error(CONST_FILE_NOT_WRITTEN);
+  //   });
 
 }
 

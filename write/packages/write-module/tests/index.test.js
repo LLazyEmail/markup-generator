@@ -1,7 +1,6 @@
 import { resolve } from 'path';
 import { writingFile, readSourceFile } from '../src/index';
 
-
 const root = resolve(__dirname, "");
 const markdown = readSourceFile(`${root}/source.md`);
 
