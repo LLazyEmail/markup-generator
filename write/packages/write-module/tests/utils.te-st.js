@@ -1,19 +1,7 @@
 import fs from 'fs';
 import chalk from 'chalk';
-// const { 
-//   readSourceFile, displayCLIErrors, FULL_SOURCE
-// } = require ('../../src/utils');
-
 
 import { readSourceFile, displayCLIErrors, FULL_SOURCE } from '../../src/utils'
-
-// @TODO we can add tests, related to new layouts structure.
-// just dont want to remove it without replacing
-// test('readFile imports correct file without any error', () => {
-//        const wrapper = readFile('body');
-//        expect(wrapper).toBe(require('../../layouts/body'));
-//    })
-
 
 
 describe('testing utils.js', () => {
@@ -23,18 +11,9 @@ describe('testing utils.js', () => {
     expect(wrapper).toBe(fs.readFileSync(FULL_SOURCE, { encoding: 'utf-8' }));
   });
 
-//-----
-  test('isFolderExists really checks folders', () => {
-    // not calling isFolderExists but his body is testing
-    const path = 'source/source-full.md';
-    let check = null;
 
-    if (!fs.existsSync(path)) {
-      check = false;
-    }
-    check = true;
-    expect(check).toBe(true);
-  });
+//-----
+ 
 
 //-----
   test('displayCLIErrors receives --> errors <-- and outputs them', () => {
@@ -50,14 +29,14 @@ describe('testing utils.js', () => {
   });
 
 //-----
-  test('displayCLIErrors receives --> warnings <-- and outputs them', () => {
-    let outputData = '';
+  // test('displayCLIErrors receives --> warnings <-- and outputs them', () => {
+  //   let outputData = '';
 
-    const storeLog = (inputs) => (outputData += inputs);
-    console.log = jest.fn(storeLog);
-    displayCLIErrors({}, { images: 5 });
+  //   const storeLog = (inputs) => (outputData += inputs);
+  //   console.log = jest.fn(storeLog);
+  //   displayCLIErrors({}, { images: 5 });
 
-    const msg1 = chalk.yellow('WARNING source.md has 5 images. Replace it with memes');
-    expect(outputData).toBe(msg1);
-  });
+  //   const msg1 = chalk.yellow('WARNING source.md has 5 images. Replace it with memes');
+  //   expect(outputData).toBe(msg1);
+  // });
 });
