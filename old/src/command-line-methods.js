@@ -17,28 +17,7 @@ const stateInit = (source) => {
   const markdown = readSourceFile(source);
   // TODO should we move out state from this file?
 
-  const stateObject = {
-    content: markdown,
-    previewText: '',
-    warnings: {
-      images: 0,
-    },
-    errors: {
-      previewText: false,
-      sponsorshipTop: false,
-      sponsorshipBottom: false,
-    },
-
-    innerCheckErrors() {
-      checkErrors(this.errors);
-    },
-    innerWarnings() {
-      checkWarnings(this.warnings);
-    },
-  };
-
-  return stateObject;
-};
+  
 
 function checkWarnings(warnings) {
   forEach(warnings, (index, element) => {
@@ -69,14 +48,6 @@ function checkErrors(errors) {
   return false;
 }
 
-// move inside...
-function displayCLIErrors(errors, warnings) {
-  if (checkErrors(errors)) {
-    // there should be something in here
-  } else {
-    checkWarnings(warnings);
-  }
-}
 
 // @todo should we move away checks?
 
