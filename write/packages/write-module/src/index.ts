@@ -1,6 +1,7 @@
 import {
     readSourceFile,
     isFolderExists,
+    readFrontMatter,
   } from './fileSystem'
   
   

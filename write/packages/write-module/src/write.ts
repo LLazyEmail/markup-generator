@@ -30,11 +30,11 @@ const writeHTML = (fileName:string, data:string, dir:string, message:string) => 
 
   if (dir === ''){ dir = 'generated'; }
 
-  var directory_path = pathResolve(dir);
+  const directory_path = pathResolve(dir);
   isFolderExists(directory_path);
 
   // TODO it's not an ideal thing
-  var path = pathResolve(`${dir}/${fileName}`); 
+  const path = pathResolve(`${dir}/${fileName}`); 
 
 
   // console.log(pathResolve(dir));
