@@ -14,6 +14,7 @@ import {
 
 export {
     readSourceFile,
+    readFrontMatter,
     isFolderExists,
     writeHTML, 
     writingFile, 
