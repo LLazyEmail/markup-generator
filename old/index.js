@@ -20,14 +20,14 @@ import {
   stateInit,
 } from './command-line-methods';
 
-import { writeHTML, writingFile, generateTemplateName } from './write';
+import { writeHTML, writingFile, generateFileName } from './write';
 
 export {
   writeHTML,
   // readFileSync,
   readSourceFile,
   isFolderExists,
-  generateTemplateName,
+  generateFileName,
   displayCLIErrors,
   checkErrors,
   checkWarnings,

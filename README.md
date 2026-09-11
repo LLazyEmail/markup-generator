@@ -9,7 +9,7 @@ Primarily used inside email-newsletter generation pipelines.
 import { writeHTML, generateTemplateName } from 'markup-generator';
 
 const content = '<html></html>'; // long html template stored in this variable
-const fileName = generateTemplateName('prefix-for-your-generated-file');
+const fileName = generateFileName('prefix-for-your-generated-file');
 
 await writeHTML(fileName, content);
 ```

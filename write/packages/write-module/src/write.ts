@@ -12,15 +12,10 @@ import {
  * @param ext - File extension (default: 'html')
  * @returns A unique filename like `suffix-1726051234567.html`
  */
-const generateTemplateName = (suffix: string, ext: string = 'html'): string => {
+const generateFileName = (suffix: string, ext: string = 'html'): string => {
   if (ext === '') ext = 'html';
   return `${suffix}-${Date.now()}.${ext}`;
 };
-  
-
-//--------
-
-//const writeHTML = (fileName: string, data: string, dir: string = 'generated', message: string = '') => {
 
 /**
  * Writes HTML content to a file.
@@ -70,7 +65,7 @@ const writingFile = async (content: string, name: string = 'prefix'): Promise<vo
     throw new Error('no content was passed into writingFile method');
   }
 
-  const fileName = generateTemplateName(name);
+  const fileName = generateFileName(name, '');
 
   await writeHTML(fileName, content);
 };
@@ -84,5 +79,5 @@ export {
   writingFile,
   writeHTML,
   writeFileParticle,
-  generateTemplateName
-};
+  generateFileName
+}
