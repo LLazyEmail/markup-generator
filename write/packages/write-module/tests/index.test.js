@@ -1,19 +1,2 @@
-import { resolve } from 'path';
-import { writingFile, readSourceFile } from '../src/index';
-
-const root = resolve(__dirname, "");
-const markdown = readSourceFile(`${root}/source.md`);
-
-
-describe('test fullComponent', () => {
-
-    test('rendering writingFile', () => {
-    //   console.log(MainString);
-
-    writingFile(markdown, 'this-is-my-name');
-    // expect(string1).toBeDefined();
-        
-    });
-});
-
-// TODO find a way to generate an error and check tracing
+// Moved to index.test.ts
+// This file can be deleted after the TypeScript migration is complete.

@@ -16,6 +16,11 @@ const generateTemplateName = (suffix: string, ext: string = 'html'): string => {
   if (ext === '') ext = 'html';
   return `${suffix}-${Date.now()}.${ext}`;
 };
+  
+
+//--------
+
+//const writeHTML = (fileName: string, data: string, dir: string = 'generated', message: string = '') => {
 
 /**
  * Writes HTML content to a file.
