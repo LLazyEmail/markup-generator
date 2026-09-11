@@ -17,7 +17,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "description": "generator for files. working with 2 options at this moment",
   "devDependencies": {
     "@types/node": "^20.0.0"
   },
