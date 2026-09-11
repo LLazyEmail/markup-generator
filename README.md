@@ -1,5 +1,3 @@
-
-
 ##  markup-generator module
 
 `yarn add markup-generator`
@@ -16,11 +14,11 @@ Submodule for https://github.com/atherdon/markdown-to-email
 
 https://bobbyhadz.com/blog/typescript-write-to-a-file
 
-```
-import { writeHTML, generateTemplateName } from 'markup-generator'
+```ts
+import { writeHTML, generateFileName } from 'markup-generator'
 
 const content = '<html></html>'; // long html template stored in this variable
-const fileName = generateTemplateName('prefix-for-your-generated-file');
+const fileName = generateFileName('prefix-for-your-generated-file');
 
 writeHTML(fileName, content);
 ```

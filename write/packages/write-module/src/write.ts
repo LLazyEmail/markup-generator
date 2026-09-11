@@ -14,7 +14,7 @@ import {
  * @param ext - File extension (default: 'html')
  * @returns A unique filename like `suffix-1726051234567.html`
  */
-const generateTemplateName = (suffix: string, ext: string = 'html'): string => {
+const generateFileName = (suffix: string, ext: string = 'html'): string => {
   if (ext === '') ext = 'html';
   return `${suffix}-${Date.now()}.${ext}`;
 };
@@ -73,7 +73,7 @@ const writingFile = (content: string, name: string = 'prefix') => {
     throw new Error('no content was passed into writingFile method');
   }
 
-  const fileName = generateTemplateName(name, '');
+  const fileName = generateFileName(name, '');
 
   try {
     writeHTML(fileName, content, '', '');
@@ -97,5 +97,5 @@ export {
   writingFile, 
   writeHTML,
   writeFileParticle,
-  generateTemplateName
+  generateFileName
 }

@@ -7,7 +7,7 @@ import {
   
 import { 
   writeHTML, writingFile, 
-  generateTemplateName, writeFileParticle 
+  generateFileName, writeFileParticle 
 } from './write';
 
 // export * from './lib/write-module';
@@ -18,7 +18,6 @@ export {
     isFolderExists,
     writeHTML, 
     writingFile, 
-    generateTemplateName, 
+    generateFileName, 
     writeFileParticle
 }
-
