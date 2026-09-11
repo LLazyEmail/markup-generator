@@ -2,10 +2,20 @@
   "name": "markup-generator",
   "version": "2.7.1",
   "type": "commonjs",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "description": "Simple TypeScript helper to generate unique filenames and write HTML (or any text) content to disk. Designed for email newsletter generation pipelines.",
+  "keywords": [
+    "email",
+    "html",
+    "generator",
+    "newsletter",
+    "write-file",
+    "typescript",
+    "nodejs"
+  ],
   "dependencies": {
-    "fs": "^0.0.1-security",
-    "gray-matter": "^4.0.3",
-    "path": "^0.12.7"
+    "gray-matter": "^4.0.3"
   },
   "author": "Arthur Tkachenko",
   "license": "MIT",
@@ -16,9 +26,8 @@
   "publishConfig": {
     "access": "public"
   },
-  "description": "generator for files. working with 2 options at this moment",
   "devDependencies": {
-    "@types/fs-extra": "^11.0.1"
+    "@types/node": "^20.0.0"
   },
   "scripts": {
     "test": "jest ./tests --passWithNoTests"
