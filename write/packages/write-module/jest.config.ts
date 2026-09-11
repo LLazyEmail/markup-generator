@@ -2,14 +2,19 @@
 export default {
   displayName: 'write-module',
   preset: '../../jest.preset.js',
-  globals: {
-    'ts-jest': {
-      tsconfig: '<rootDir>/tsconfig.spec.json',
-    },
-  },
+  testEnvironment: 'node',
   transform: {
-    '^.+\\.[tj]s$': 'ts-jest',
+    '^.+\\.tsx?$': [
+      'ts-jest',
+      {
+        tsconfig: '<rootDir>/tsconfig.spec.json',
+      },
+    ],
   },
-  moduleFileExtensions: ['ts', 'js', 'html'],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'html'],
+  testMatch: [
+    '<rootDir>/src/**/*.(spec|test).ts',
+    '<rootDir>/tests/**/*.(spec|test).ts',
+  ],
   coverageDirectory: '../../coverage/packages/write-module',
 };
