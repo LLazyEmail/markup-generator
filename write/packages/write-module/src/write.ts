@@ -1,8 +1,6 @@
 import { writeFile } from 'fs/promises';
 import { resolve as pathResolve } from 'path';
 import { isFolderExists } from './fileSystem';
-// import catchErrorTraceOutput from './utils';
-
 
 import { 
   CONST_FILE_NOT_WRITTEN, ERROR_NO_CONTENT, ERROR_TYPE_NOT_STRING 
@@ -18,12 +16,21 @@ const generateFileName = (suffix: string, ext: string = 'html'): string => {
   if (ext === '') ext = 'html';
   return `${suffix}-${Date.now()}.${ext}`;
 };
-  
 
-//--------
-
-const writeHTML = (fileName: string, data: string, dir: string = 'generated', message: string = '') => {
-
+/**
+ * Writes HTML content to a file.
+ * @param fileName - Name of the file to write
+ * @param data - HTML string content
+ * @param dir - Target directory (default: 'generated')
+ * @param message - Optional message (currently unused)
+ * @returns Promise that resolves when the file is written
+ */
+const writeHTML = async (
+  fileName: string,
+  data: string,
+  dir: string = 'generated',
+  message: string = ''
+): Promise<void> => {
   if (!data) {
     throw new Error(ERROR_NO_CONTENT);
   }
@@ -32,41 +39,26 @@ const writeHTML = (fileName: string, data: string, dir: string = 'generated', me
     throw new Error(ERROR_TYPE_NOT_STRING);
   }
 
-  if (dir === '') { dir = 'generated'; }
+  if (dir === '') {
+    dir = 'generated';
+  }
 
-  const directory_path = pathResolve(dir);
-  isFolderExists(directory_path);
+  const directoryPath = pathResolve(dir);
+  isFolderExists(directoryPath);
 
-  // TODO it's not an ideal thing
-  const path = pathResolve(`${dir}/${fileName}`); 
+  const fullPath = pathResolve(`${dir}/${fileName}`);
 
+  try {
+    await writeFile(fullPath, data, 'utf-8');
+    if (message) {
+      console.log(message);
+    }
+  } catch (error) {
+    throw new Error(CONST_FILE_NOT_WRITTEN);
+  }
+};
 
-  // console.log(pathResolve(dir));
-
-  // isFolderExists(pathResolve(dir));
-  // console.log(path);
-
-
-  const result = writeFile(path, data);
-
-  // console.log(result);
-
-  // promise
-  // writeFile(path, data)
-  //   .then(results => {
-  //     if(message) console.log(message);
-  //     console.log(results);
-  //     console.log(`file has been written successfully ${fileName}`);
-  //   })
-  //   .catch((error:any) => {
-  //     // catchErrorTraceOutput(error);
-  //     throw new Error(CONST_FILE_NOT_WRITTEN);
-  //   });
-
-}
-
-const writingFile = (content: string, name: string = 'prefix') => {
-
+const writingFile = async (content: string, name: string = 'prefix'): Promise<void> => {
   if (name === '') name = 'prefix';
 
   if (!content) {
@@ -75,26 +67,16 @@ const writingFile = (content: string, name: string = 'prefix') => {
 
   const fileName = generateFileName(name, '');
 
-  try {
-    writeHTML(fileName, content, '', '');
-  } catch (error) {
-    // catchErrorTraceOutput(error);
-    throw error;
-  }
+  await writeHTML(fileName, content);
 };
 
-
-const writeFileParticle = (string: string, suffix: string) => {
-
-  writingFile(string, suffix);
-  // TODO add a function that will display an output in console.  
+const writeFileParticle = async (string: string, suffix: string): Promise<boolean> => {
+  await writingFile(string, suffix);
   return true;
-}
-
-
+};
 
 export {
-  writingFile, 
+  writingFile,
   writeHTML,
   writeFileParticle,
   generateFileName

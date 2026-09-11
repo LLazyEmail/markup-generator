@@ -1,41 +1,37 @@
-##  markup-generator module
+## markup-generator module
 
-`yarn add markup-generator`
+`yarn add markup-generator`  or  `npm install markup-generator`
 
-It's just an HTML file generator
-
-Main reason - we want to generate an HTML email newsletter automatically, so generator must have methods that can help you to save a file.
-
-
-`yarn nx test write-module`
-
-
-Submodule for https://github.com/atherdon/markdown-to-email
-
-https://bobbyhadz.com/blog/typescript-write-to-a-file
+Simple TypeScript helper for generating unique filenames and writing HTML (or any text) content to disk.
+Primarily used inside email-newsletter generation pipelines.
 
 ```ts
-import { writeHTML, generateFileName } from 'markup-generator'
+import { writeHTML, generateTemplateName } from 'markup-generator';
 
 const content = '<html></html>'; // long html template stored in this variable
 const fileName = generateFileName('prefix-for-your-generated-file');
 
-writeHTML(fileName, content);
+await writeHTML(fileName, content);
 ```
 
+### Development
 
-### TODO
-- [ ] move tests here
+The package lives under `write/packages/write-module` (Nx workspace).
 
-- [ ] Creating a browser bundle that depends on "path". You might need to include https://github.com/snowpackjs/rollup-plugin-polyfill-node
-https://github.com/atherdon/markdown-regex/blob/main/rollup.config.js#L2
-https://github.com/atherdon/markdown-regex/blob/main/rollup.config.js#L115
+```bash
+cd write
+npm install
+npx nx test write-module
+npx nx build write-module
+```
 
+### TODO / Roadmap
 
+- [x] Convert tests to TypeScript + ts-jest
+- [ ] Dual CJS + ESM build (and optional browser entry for pure helpers)
+- [ ] Publish polished version to npm
 
-
-
-#### Arthur Tkachenko articles
+### Arthur Tkachenko articles
 
 * [https://hackernoon.com/5-reasons-why-newsletters-should-be-part-of-your-business-strategy](https://hackernoon.com/5-reasons-why-newsletters-should-be-part-of-your-business-strategy)
 * [https://hackernoon.com/organizing-an-advanced-structure-for-html-email-template](https://hackernoon.com/organizing-an-advanced-structure-for-html-email-template)
@@ -48,6 +44,5 @@ https://github.com/atherdon/markdown-regex/blob/main/rollup.config.js#L115
 * [https://hackernoon.com/together4victory-list-of-email-marketing-tools](https://hackernoon.com/together4victory-list-of-email-marketing-tools)
 * [https://hackernoon.com/cool-newsletters-for-developers-part-1](https://hackernoon.com/cool-newsletters-for-developers-part-1)
 * [https://hackernoon.com/cool-resources-for-sending-emails](https://hackernoon.com/cool-resources-for-sending-emails)
-
 
 ## [Linkedin page of LLazyEmail](https://www.linkedin.com/company/llazyemail/)
