@@ -8,17 +8,21 @@ import {
   CONST_FILE_NOT_WRITTEN, ERROR_NO_CONTENT, ERROR_TYPE_NOT_STRING 
 } from './constants';
 
-// can be renamed into a generateFileName
-// https://befused.com/javascript/get-filename-url/
-const generateTemplateName = (suffix:string, ext:string) => {
+/**
+ * Generates a unique filename based on a suffix and optional extension.
+ * @param suffix - Prefix/suffix for the generated filename
+ * @param ext - File extension (default: 'html')
+ * @returns A unique filename like `suffix-1726051234567.html`
+ */
+const generateTemplateName = (suffix: string, ext: string = 'html'): string => {
   if (ext === '') ext = 'html';
   return `${suffix}-${Date.now()}.${ext}`;
-}
+};
   
 
 //--------
 
-const writeHTML = (fileName:string, data:string, dir:string, message:string) => {
+const writeHTML = (fileName: string, data: string, dir: string = 'generated', message: string = '') => {
 
   if (!data) {
     throw new Error(ERROR_NO_CONTENT);
@@ -28,7 +32,7 @@ const writeHTML = (fileName:string, data:string, dir:string, message:string) => 
     throw new Error(ERROR_TYPE_NOT_STRING);
   }
 
-  if (dir === ''){ dir = 'generated'; }
+  if (dir === '') { dir = 'generated'; }
 
   const directory_path = pathResolve(dir);
   isFolderExists(directory_path);
@@ -61,7 +65,7 @@ const writeHTML = (fileName:string, data:string, dir:string, message:string) => 
 
 }
 
-const writingFile = (content:string, name:string) => {
+const writingFile = (content: string, name: string = 'prefix') => {
 
   if (name === '') name = 'prefix';
 
@@ -80,7 +84,7 @@ const writingFile = (content:string, name:string) => {
 };
 
 
-const writeFileParticle = (string:string, suffix:string) => {
+const writeFileParticle = (string: string, suffix: string) => {
 
   writingFile(string, suffix);
   // TODO add a function that will display an output in console.  
