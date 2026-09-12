@@ -1,30 +1,24 @@
+import { randomUUID } from 'crypto';
+import { existsSync } from 'fs';
 import { writeFile } from 'fs/promises';
 import { resolve as pathResolve } from 'path';
 import { isFolderExists } from './fileSystem';
-
-import { 
-  CONST_FILE_NOT_WRITTEN, ERROR_NO_CONTENT, ERROR_TYPE_NOT_STRING 
+import {
+  CONST_FILE_NOT_WRITTEN,
+  ERROR_NO_CONTENT,
+  ERROR_TYPE_NOT_STRING,
 } from './constants';
+import type { WriteGeneratedFileOptions } from './types';
 
 /**
  * Generates a unique filename based on a suffix and optional extension.
- * @param suffix - Prefix/suffix for the generated filename
- * @param ext - File extension (default: 'html')
- * @returns A unique filename like `suffix-1726051234567.html`
+ * Uses crypto.randomUUID() so parallel calls do not collide.
  */
 const generateFileName = (suffix: string, ext: string = 'html'): string => {
   if (ext === '') ext = 'html';
-  return `${suffix}-${Date.now()}.${ext}`;
+  return `${suffix}-${randomUUID()}.${ext}`;
 };
 
-/**
- * Writes HTML content to a file.
- * @param fileName - Name of the file to write
- * @param data - HTML string content
- * @param dir - Target directory (default: 'generated')
- * @param message - Optional message (currently unused)
- * @returns Promise that resolves when the file is written
- */
 const writeHTML = async (
   fileName: string,
   data: string,
@@ -43,9 +37,7 @@ const writeHTML = async (
     dir = 'generated';
   }
 
-  const directoryPath = pathResolve(dir);
-  isFolderExists(directoryPath);
-
+  isFolderExists(pathResolve(dir));
   const fullPath = pathResolve(`${dir}/${fileName}`);
 
   try {
@@ -65,19 +57,37 @@ const writingFile = async (content: string, name: string = 'prefix'): Promise<vo
     throw new Error('no content was passed into writingFile method');
   }
 
-  const fileName = generateFileName(name, '');
-
+  const fileName = generateFileName(name);
   await writeHTML(fileName, content);
 };
 
-const writeFileParticle = async (string: string, suffix: string): Promise<boolean> => {
-  await writingFile(string, suffix);
-  return true;
+/**
+ * Preferred public writer for new consumers.
+ * Returns the absolute path that was written.
+ */
+const writeGeneratedFile = async (
+  options: WriteGeneratedFileOptions
+): Promise<string> => {
+  const dir = options.dir && options.dir !== '' ? options.dir : 'generated';
+  const fileName =
+    options.fileName && options.fileName !== ''
+      ? options.fileName
+      : generateFileName(options.prefix || 'file', options.ext || 'html');
+
+  const fullPath = pathResolve(dir, fileName);
+
+  if (options.overwrite === 'error' && existsSync(fullPath)) {
+    throw new Error(`file already exists: ${fullPath}`);
+  }
+
+  await writeHTML(fileName, options.content, dir);
+  return fullPath;
 };
 
 export {
   writingFile,
   writeHTML,
-  writeFileParticle,
-  generateFileName
-}
+  generateFileName,
+  writeGeneratedFile,
+};
+export type { WriteGeneratedFileOptions };

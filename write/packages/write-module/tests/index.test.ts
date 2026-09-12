@@ -8,6 +8,9 @@ import {
 } from '../src/index';
 import { ERROR_NO_CONTENT, ERROR_TYPE_NOT_STRING } from '../src/constants';
 
+const UUID_RE =
+  '[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}';
+
 const root = resolve(__dirname, '');
 const markdown = readSourceFile(`${root}/source.md`);
 const generatedDir = resolve(process.cwd(), 'generated');
@@ -21,12 +24,18 @@ afterEach(() => {
 describe('generateFileName', () => {
   test('creates a unique html filename by default', () => {
     const name = generateFileName('newsletter');
-    expect(name).toMatch(/^newsletter-\d+\.html$/);
+    expect(name).toMatch(new RegExp(`^newsletter-${UUID_RE}\\.html$`));
   });
 
   test('uses a custom extension', () => {
     const name = generateFileName('newsletter', 'md');
-    expect(name).toMatch(/^newsletter-\d+\.md$/);
+    expect(name).toMatch(new RegExp(`^newsletter-${UUID_RE}\\.md$`));
+  });
+
+  test('does not collide when called twice', () => {
+    const first = generateFileName('newsletter');
+    const second = generateFileName('newsletter');
+    expect(first).not.toBe(second);
   });
 });
 
