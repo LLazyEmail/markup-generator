@@ -17,10 +17,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - `generateTemplateName` renamed to `generateFileName`
 - `writeHTML` / `writingFile` are properly async
-- Package builder replaced Nx with `tsup`
-- GitHub Actions install/test/build the package directly
+- Package now lives at the repository root
+- GitHub Actions install/test/build from the repo root
 
 ### Removed
+- Nx workspace under `write/`
 - Incorrect `fs` / `path` npm dependencies
 - Rollup as the intended bundler
 
