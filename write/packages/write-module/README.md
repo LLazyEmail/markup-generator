@@ -1,11 +1,18 @@
-# write-module
+# markup-generator
 
-This library was generated with [Nx](https://nx.dev).
+TypeScript helper for unique filenames and writing HTML/text files.
 
-## Building
+```ts
+import { generateFileName, writeHTML } from 'markup-generator';
 
-Run `nx build write-module` to build the library.
+const fileName = generateFileName('newsletter');
+await writeHTML(fileName, '<html></html>');
+```
 
-## Running unit tests
+Browser-safe helper (no `fs`):
 
-Run `nx test write-module` to execute the unit tests via [Jest](https://jestjs.io).
+```ts
+import { generateFileName } from 'markup-generator/browser';
+```
+
+Requires Node.js 18+.
