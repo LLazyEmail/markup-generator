@@ -1,9 +1,8 @@
 # markup-generator
 
 Simple TypeScript helper for generating unique filenames and writing HTML (or any text) to disk.
-Built for email-newsletter generation pipelines.
 
-Requires **Node.js >= 18**. File-system helpers need Node (`fs` / `path`). The browser entry only exports `generateFileName`.
+Requires **Node.js >= 18**.
 
 ## Install
 
@@ -11,46 +10,41 @@ Requires **Node.js >= 18**. File-system helpers need Node (`fs` / `path`). The b
 npm install markup-generator
 ```
 
-## Usage (ESM)
+## Library
 
 ```ts
-import { writeHTML, generateFileName } from 'markup-generator';
+import { writeGeneratedFile, generateFileName } from 'markup-generator';
 
 const fileName = generateFileName('newsletter');
-await writeHTML(fileName, '<html></html>');
-```
-
-## Usage (CommonJS)
-
-```js
-const { writeHTML, generateFileName } = require('markup-generator');
-```
-
-## Preferred writer
-
-```ts
-import { writeGeneratedFile } from 'markup-generator';
-
 const path = await writeGeneratedFile({
   content: '<html></html>',
-  prefix: 'newsletter',
+  fileName,
   dir: 'generated',
 });
 ```
 
-## Browser-safe helper
+Paths are resolved from `process.cwd()`. Missing directories are created. Encoding is UTF-8. Default overwrite policy is replace.
 
-```ts
-import { generateFileName } from 'markup-generator/browser';
+## CLI
+
+```bash
+npx markup-generator name --prefix newsletter --ext html
+npx markup-generator write --file ./in.html --prefix newsletter --dir generated
 ```
 
-## Development
+## Example
 
 ```bash
 npm install
-npm test
-npm run build
+npm run example
 ```
+
+## Errors
+
+Thrown errors are `MarkupGeneratorError` with `code`:
+`EMPTY_CONTENT`, `NOT_A_STRING`, `FILE_EXISTS`, `WRITE_FAILED`.
+
+See [MIGRATION.md](./MIGRATION.md) for 3.0.0 notes.
 
 ## License
 
