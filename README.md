@@ -1,48 +1,78 @@
-## markup-generator module
+# markup-generator
 
-`yarn add markup-generator`  or  `npm install markup-generator`
+Simple TypeScript helper for generating unique filenames and writing HTML (or any text) to disk.
+Built for email-newsletter generation pipelines.
 
-Simple TypeScript helper for generating unique filenames and writing HTML (or any text) content to disk.
-Primarily used inside email-newsletter generation pipelines.
+**Node.js >= 18.** File-system helpers require Node (`fs` / `path`). The browser entry only exports `generateFileName`.
+
+## Install
+
+```bash
+npm install markup-generator
+# or
+yarn add markup-generator
+```
+
+## Usage (ESM)
 
 ```ts
-import { writeHTML, generateTemplateName } from 'markup-generator';
+import { writeHTML, generateFileName } from 'markup-generator';
 
-const content = '<html></html>'; // long html template stored in this variable
+const content = '<html></html>';
 const fileName = generateFileName('prefix-for-your-generated-file');
 
 await writeHTML(fileName, content);
 ```
 
-### Development
+## Usage (CommonJS)
 
-The package lives under `write/packages/write-module` (Nx workspace).
-
-```bash
-cd write
-npm install
-npx nx test write-module
-npx nx build write-module
+```js
+const { writeHTML, generateFileName } = require('markup-generator');
 ```
 
-### TODO / Roadmap
+## Browser-safe helper
 
-- [x] Convert tests to TypeScript + ts-jest
-- [ ] Dual CJS + ESM build (and optional browser entry for pure helpers)
-- [ ] Publish polished version to npm
+```ts
+import { generateFileName } from 'markup-generator/browser';
+```
 
-### Arthur Tkachenko articles
+## Public API
 
-* [https://hackernoon.com/5-reasons-why-newsletters-should-be-part-of-your-business-strategy](https://hackernoon.com/5-reasons-why-newsletters-should-be-part-of-your-business-strategy)
-* [https://hackernoon.com/organizing-an-advanced-structure-for-html-email-template](https://hackernoon.com/organizing-an-advanced-structure-for-html-email-template)
-* [https://hackernoon.com/how-i-started-to-build-react-components-for-email-templates](https://hackernoon.com/how-i-started-to-build-react-components-for-email-templates)
-* [https://hackernoon.com/introducing-a-simple-npm-module-with-email-templates](https://hackernoon.com/introducing-a-simple-npm-module-with-email-templates)
-* [https://hackernoon.com/glossary-for-non-technies](https://hackernoon.com/glossary-for-non-technies)
-* [https://hackernoon.com/email-marketing-and-how-to-curate-an-effective-business-newsletter](https://hackernoon.com/email-marketing-and-how-to-curate-an-effective-business-newsletter)
-* [https://hackernoon.com/exploring-substack-for-building-your-newsletter](https://hackernoon.com/exploring-substack-for-building-your-newsletter)
-* [https://hackernoon.com/building-a-design-system-for-email-templates-react](https://hackernoon.com/building-a-design-system-for-email-templates-react)
-* [https://hackernoon.com/together4victory-list-of-email-marketing-tools](https://hackernoon.com/together4victory-list-of-email-marketing-tools)
-* [https://hackernoon.com/cool-newsletters-for-developers-part-1](https://hackernoon.com/cool-newsletters-for-developers-part-1)
-* [https://hackernoon.com/cool-resources-for-sending-emails](https://hackernoon.com/cool-resources-for-sending-emails)
+| Export | Description |
+| --- | --- |
+| `generateFileName(suffix, ext?)` | Unique filename, default extension `html` |
+| `writeHTML(fileName, data, dir?)` | Async write of a string to disk |
+| `writingFile(content, name?)` | Generate a name and write in one step |
+| `readSourceFile(path)` | Read a UTF-8 file |
+| `readFrontMatter(path)` | Parse markdown front matter with `gray-matter` |
+| `isFolderExists(dir)` | Create the directory if it is missing |
+
+## Development
+
+The publishable package lives in `write/packages/write-module`.
+
+```bash
+cd write/packages/write-module
+npm install
+npm test
+npm run build
+```
+
+Build output:
+
+- `dist/index.cjs` — CommonJS
+- `dist/index.js` — ESM
+- `dist/index.d.ts` — types
+- `dist/browser.*` — browser-safe entry
+
+## Breaking changes in 3.0.0
+
+- `generateTemplateName` was renamed to `generateFileName`
+- `writeHTML` / `writingFile` are async and must be awaited
+- Build moved from Nx/Rollup to `tsup`
+
+## License
+
+MIT
 
 ## [Linkedin page of LLazyEmail](https://www.linkedin.com/company/llazyemail/)
