@@ -7,22 +7,16 @@ import {
 import {
   writeHTML,
   writingFile,
-  generateTemplateName,
+  generateFileName,
   writeFileParticle,
 } from './write';
 
 export {
-  // File system helpers
   readSourceFile,
   readFrontMatter,
   isFolderExists,
-
-  // Writing helpers
   writeHTML,
   writingFile,
-  generateTemplateName,
+  generateFileName,
   writeFileParticle,
 };
-
-// Re-export types for consumers (will be useful once we publish .d.ts)
-export type { };
