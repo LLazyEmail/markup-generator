@@ -2,23 +2,29 @@ import { randomUUID } from 'crypto';
 import { existsSync } from 'fs';
 import { writeFile } from 'fs/promises';
 import { resolve as pathResolve } from 'path';
-import { isFolderExists } from './fileSystem';
-import {
-  CONST_FILE_NOT_WRITTEN,
-  ERROR_NO_CONTENT,
-  ERROR_TYPE_NOT_STRING,
-} from './constants';
+import { ensureDir } from './fileSystem';
+import { MarkupGeneratorError } from './errors';
 import type { WriteGeneratedFileOptions } from './types';
 
 /**
- * Generates a unique filename based on a suffix and optional extension.
- * Uses crypto.randomUUID() so parallel calls do not collide.
+ * Unique filename: `{suffix}-{uuid}.{ext}`.
+ * Safe to call in parallel. Does not touch the filesystem.
  */
 const generateFileName = (suffix: string, ext: string = 'html'): string => {
   if (ext === '') ext = 'html';
   return `${suffix}-${randomUUID()}.${ext}`;
 };
 
+/**
+ * Writes UTF-8 text to `{cwd}/{dir}/{fileName}`.
+ *
+ * Contract:
+ * - `dir` is resolved from `process.cwd()`
+ * - missing directories are created
+ * - existing files are overwritten unless a caller uses writeGeneratedFile({ overwrite: 'error' })
+ * - empty content throws EMPTY_CONTENT
+ * - non-string content throws NOT_A_STRING
+ */
 const writeHTML = async (
   fileName: string,
   data: string,
@@ -26,18 +32,21 @@ const writeHTML = async (
   message: string = ''
 ): Promise<void> => {
   if (!data) {
-    throw new Error(ERROR_NO_CONTENT);
+    throw new MarkupGeneratorError('EMPTY_CONTENT', 'content variable is empty');
   }
 
   if (typeof data !== 'string') {
-    throw new Error(ERROR_TYPE_NOT_STRING);
+    throw new MarkupGeneratorError(
+      'NOT_A_STRING',
+      'content variable is not a string'
+    );
   }
 
   if (dir === '') {
     dir = 'generated';
   }
 
-  isFolderExists(pathResolve(dir));
+  ensureDir(pathResolve(dir));
   const fullPath = pathResolve(`${dir}/${fileName}`);
 
   try {
@@ -45,8 +54,8 @@ const writeHTML = async (
     if (message) {
       console.log(message);
     }
-  } catch (error) {
-    throw new Error(CONST_FILE_NOT_WRITTEN);
+  } catch {
+    throw new MarkupGeneratorError('WRITE_FAILED', 'file not written');
   }
 };
 
@@ -54,13 +63,19 @@ const writingFile = async (content: string, name: string = 'prefix'): Promise<vo
   if (name === '') name = 'prefix';
 
   if (!content) {
-    throw new Error('no content was passed into writingFile method');
+    throw new MarkupGeneratorError(
+      'EMPTY_CONTENT',
+      'no content was passed into writingFile method'
+    );
   }
 
-  const fileName = generateFileName(name);
-  await writeHTML(fileName, content);
+  await writeHTML(generateFileName(name), content);
 };
 
+/**
+ * Preferred writer. Returns the absolute path that was written.
+ * Default overwrite policy is replace. Use overwrite: 'error' to refuse.
+ */
 const writeGeneratedFile = async (
   options: WriteGeneratedFileOptions
 ): Promise<string> => {
@@ -73,7 +88,10 @@ const writeGeneratedFile = async (
   const fullPath = pathResolve(dir, fileName);
 
   if (options.overwrite === 'error' && existsSync(fullPath)) {
-    throw new Error(`file already exists: ${fullPath}`);
+    throw new MarkupGeneratorError(
+      'FILE_EXISTS',
+      `file already exists: ${fullPath}`
+    );
   }
 
   await writeHTML(fileName, options.content, dir);

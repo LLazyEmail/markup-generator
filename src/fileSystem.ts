@@ -18,14 +18,19 @@ function readFrontMatter(filename: string): {
   };
 }
 
-function isFolderExists(dir: string): void {
+/** Creates the directory if it does not exist. */
+function ensureDir(dir: string): void {
   if (!existsSync(dir)) {
     mkdirSync(dir, { recursive: true });
   }
 }
 
+/** @deprecated Use ensureDir. */
+const isFolderExists = ensureDir;
+
 export {
   readSourceFile,
-  isFolderExists,
   readFrontMatter,
+  ensureDir,
+  isFolderExists,
 };
