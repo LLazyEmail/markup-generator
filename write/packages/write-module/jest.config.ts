@@ -1,20 +1,24 @@
-/* eslint-disable */
-export default {
-  displayName: 'write-module',
-  preset: '../../jest.preset.js',
+import type { Config } from 'jest';
+
+const config: Config = {
+  displayName: 'markup-generator',
   testEnvironment: 'node',
   transform: {
     '^.+\\.tsx?$': [
       'ts-jest',
       {
-        tsconfig: '<rootDir>/tsconfig.spec.json',
+        tsconfig: {
+          target: 'ES2020',
+          module: 'commonjs',
+          esModuleInterop: true,
+          strict: true,
+          types: ['jest', 'node'],
+        },
       },
     ],
   },
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'html'],
-  testMatch: [
-    '<rootDir>/src/**/*.(spec|test).ts',
-    '<rootDir>/tests/**/*.(spec|test).ts',
-  ],
-  coverageDirectory: '../../coverage/packages/write-module',
+  moduleFileExtensions: ['ts', 'js'],
+  testMatch: ['<rootDir>/src/**/*.(spec|test).ts', '<rootDir>/tests/**/*.(spec|test).ts'],
 };
+
+export default config;
