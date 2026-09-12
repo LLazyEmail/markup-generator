@@ -8,8 +8,10 @@ import {
   writeHTML,
   writingFile,
   generateFileName,
-  writeFileParticle,
+  writeGeneratedFile,
 } from './write';
+
+export type { WriteGeneratedFileOptions } from './types';
 
 export {
   readSourceFile,
@@ -18,5 +20,5 @@ export {
   writeHTML,
   writingFile,
   generateFileName,
-  writeFileParticle,
+  writeGeneratedFile,
 };

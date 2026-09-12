@@ -1,13 +1,14 @@
 import { randomUUID } from 'crypto';
+import { existsSync } from 'fs';
 import { writeFile } from 'fs/promises';
 import { resolve as pathResolve } from 'path';
 import { isFolderExists } from './fileSystem';
-
 import {
   CONST_FILE_NOT_WRITTEN,
   ERROR_NO_CONTENT,
   ERROR_TYPE_NOT_STRING,
 } from './constants';
+import type { WriteGeneratedFileOptions } from './types';
 
 /**
  * Generates a unique filename based on a suffix and optional extension.
@@ -36,9 +37,7 @@ const writeHTML = async (
     dir = 'generated';
   }
 
-  const directoryPath = pathResolve(dir);
-  isFolderExists(directoryPath);
-
+  isFolderExists(pathResolve(dir));
   const fullPath = pathResolve(`${dir}/${fileName}`);
 
   try {
@@ -59,18 +58,36 @@ const writingFile = async (content: string, name: string = 'prefix'): Promise<vo
   }
 
   const fileName = generateFileName(name);
-
   await writeHTML(fileName, content);
 };
 
-const writeFileParticle = async (string: string, suffix: string): Promise<boolean> => {
-  await writingFile(string, suffix);
-  return true;
+/**
+ * Preferred public writer for new consumers.
+ * Returns the absolute path that was written.
+ */
+const writeGeneratedFile = async (
+  options: WriteGeneratedFileOptions
+): Promise<string> => {
+  const dir = options.dir && options.dir !== '' ? options.dir : 'generated';
+  const fileName =
+    options.fileName && options.fileName !== ''
+      ? options.fileName
+      : generateFileName(options.prefix || 'file', options.ext || 'html');
+
+  const fullPath = pathResolve(dir, fileName);
+
+  if (options.overwrite === 'error' && existsSync(fullPath)) {
+    throw new Error(`file already exists: ${fullPath}`);
+  }
+
+  await writeHTML(fileName, options.content, dir);
+  return fullPath;
 };
 
 export {
   writingFile,
   writeHTML,
-  writeFileParticle,
   generateFileName,
+  writeGeneratedFile,
 };
+export type { WriteGeneratedFileOptions };
