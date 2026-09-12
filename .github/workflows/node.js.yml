@@ -36,3 +36,12 @@ jobs:
 
     - name: Build
       run: npm run build
+
+    - name: Smoke import CJS
+      run: node -e "require('./dist/index.cjs')"
+
+    - name: Smoke import ESM
+      run: node --input-type=module -e "import('./dist/index.js')"
+
+    - name: Pack dry-run
+      run: npm pack --dry-run
