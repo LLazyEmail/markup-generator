@@ -1,2 +1,1 @@
-// Moved to index.test.ts
-// This file can be deleted after the TypeScript migration is complete.
+// Removed. Tests now live in index.test.ts.
