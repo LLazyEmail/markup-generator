@@ -14,10 +14,6 @@ jobs:
       matrix:
         node-version: [18.x, 20.x, 22.x]
 
-    defaults:
-      run:
-        working-directory: write/packages/write-module
-
     steps:
     - uses: actions/checkout@v7
 
@@ -26,7 +22,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-        cache-dependency-path: write/packages/write-module/package.json
 
     - name: Install dependencies
       run: npm install
