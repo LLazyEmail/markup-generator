@@ -1,10 +1,12 @@
-import { generateFileName, writeHTML } from 'markup-generator';
+import { writeGeneratedFile } from '../src/index';
 
 async function main(): Promise<void> {
-  const content = '<html><body><h1>Weekly newsletter</h1></body></html>';
-  const fileName = generateFileName('newsletter');
-  await writeHTML(fileName, content, 'generated');
-  console.log(`wrote generated/${fileName}`);
+  const path = await writeGeneratedFile({
+    content: '<html><body><h1>Weekly newsletter</h1></body></html>',
+    prefix: 'newsletter',
+    dir: 'generated',
+  });
+  console.log(`wrote ${path}`);
 }
 
 main().catch((error) => {
