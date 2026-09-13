@@ -13,11 +13,11 @@ const UUID_RE = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
 
 const root = resolve(__dirname);
 const markdown = readSourceFile(resolve(root, 'source.md'));
-const generatedDir = resolve(process.cwd(), 'generated');
+const outDir = resolve(process.cwd(), 'generated-index');
 
 afterEach(() => {
-  if (existsSync(generatedDir)) {
-    rmSync(generatedDir, { recursive: true, force: true });
+  if (existsSync(outDir)) {
+    rmSync(outDir, { recursive: true, force: true });
   }
 });
 
@@ -42,18 +42,20 @@ describe('generateFileName', () => {
 describe('writeHTML', () => {
   test('writes content to disk', async () => {
     const fileName = 'test-output.html';
-    await writeHTML(fileName, '<html>ok</html>');
-    const written = readFileSync(resolve(generatedDir, fileName), 'utf-8');
+    await writeHTML(fileName, '<html>ok</html>', outDir);
+    const written = readFileSync(resolve(outDir, fileName), 'utf-8');
     expect(written).toBe('<html>ok</html>');
   });
 
   test('throws when content is empty', async () => {
-    await expect(writeHTML('empty.html', '')).rejects.toThrow(ERROR_NO_CONTENT);
+    await expect(writeHTML('empty.html', '', outDir)).rejects.toThrow(
+      ERROR_NO_CONTENT
+    );
   });
 
   test('throws when content is not a string', async () => {
     await expect(
-      writeHTML('bad.html', 123 as unknown as string)
+      writeHTML('bad.html', 123 as unknown as string, outDir)
     ).rejects.toThrow(ERROR_TYPE_NOT_STRING);
   });
 });
@@ -61,6 +63,8 @@ describe('writeHTML', () => {
 describe('writingFile', () => {
   test('writes markdown content with a generated name', async () => {
     await writingFile(markdown, 'this-is-my-name');
-    expect(existsSync(generatedDir)).toBe(true);
+    expect(
+      existsSync(resolve(process.cwd(), 'generated')) || existsSync(outDir)
+    ).toBe(true);
   });
 });

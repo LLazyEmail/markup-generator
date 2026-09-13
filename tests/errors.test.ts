@@ -7,31 +7,36 @@ import {
   MarkupGeneratorError,
 } from '../src/index';
 
-const generatedDir = resolve(process.cwd(), 'generated');
+const outDir = resolve(process.cwd(), 'generated-errors');
 
 afterEach(() => {
-  if (existsSync(generatedDir)) {
-    rmSync(generatedDir, { recursive: true, force: true });
+  if (existsSync(outDir)) {
+    rmSync(outDir, { recursive: true, force: true });
   }
 });
 
 describe('typed errors', () => {
   test('empty content uses EMPTY_CONTENT', async () => {
-    await expect(writeHTML('x.html', '')).rejects.toBeInstanceOf(
+    await expect(writeHTML('x.html', '', outDir)).rejects.toBeInstanceOf(
       MarkupGeneratorError
     );
-    await expect(writeHTML('x.html', '')).rejects.toMatchObject({
+    await expect(writeHTML('x.html', '', outDir)).rejects.toMatchObject({
       code: 'EMPTY_CONTENT',
     });
   });
 
   test('overwrite error uses FILE_EXISTS', async () => {
-    await writeGeneratedFile({ content: 'first', fileName: 'exists.html' });
+    await writeGeneratedFile({
+      content: 'first',
+      fileName: 'exists.html',
+      dir: outDir,
+    });
 
     await expect(
       writeGeneratedFile({
         content: 'second',
         fileName: 'exists.html',
+        dir: outDir,
         overwrite: 'error',
       })
     ).rejects.toBeInstanceOf(MarkupGeneratorError);
@@ -40,6 +45,7 @@ describe('typed errors', () => {
       writeGeneratedFile({
         content: 'second',
         fileName: 'exists.html',
+        dir: outDir,
         overwrite: 'error',
       })
     ).rejects.toMatchObject({

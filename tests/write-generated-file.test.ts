@@ -3,11 +3,11 @@ import { existsSync, readFileSync, rmSync } from 'fs';
 import { resolve } from 'path';
 import { writeGeneratedFile } from '../src/index';
 
-const generatedDir = resolve(process.cwd(), 'generated');
+const outDir = resolve(process.cwd(), 'generated-write-options');
 
 afterEach(() => {
-  if (existsSync(generatedDir)) {
-    rmSync(generatedDir, { recursive: true, force: true });
+  if (existsSync(outDir)) {
+    rmSync(outDir, { recursive: true, force: true });
   }
 });
 
@@ -16,10 +16,11 @@ describe('writeGeneratedFile', () => {
     const outputPath = await writeGeneratedFile({
       content: '<html>ok</html>',
       fileName: 'from-options.html',
-      dir: 'generated',
+      dir: outDir,
     });
 
-    expect(outputPath).toBe(resolve(generatedDir, 'from-options.html'));
+    expect(outputPath).toBe(resolve(outDir, 'from-options.html'));
+    expect(existsSync(outputPath)).toBe(true);
     expect(readFileSync(outputPath, 'utf-8')).toBe('<html>ok</html>');
   });
 
@@ -27,12 +28,14 @@ describe('writeGeneratedFile', () => {
     await writeGeneratedFile({
       content: 'first',
       fileName: 'exists.html',
+      dir: outDir,
     });
 
     await expect(
       writeGeneratedFile({
         content: 'second',
         fileName: 'exists.html',
+        dir: outDir,
         overwrite: 'error',
       })
     ).rejects.toThrow(/file already exists/);
