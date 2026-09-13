@@ -35,6 +35,7 @@
   "scripts": {
     "build": "tsup",
     "test": "jest --passWithNoTests",
+    "typecheck": "tsc --noEmit",
     "example": "tsx examples/write-newsletter.ts",
     "prepublishOnly": "npm test && npm run build"
   },
