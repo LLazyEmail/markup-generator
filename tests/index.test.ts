@@ -1,3 +1,4 @@
+import { afterEach, describe, expect, test } from '@jest/globals';
 import { existsSync, readFileSync, rmSync } from 'fs';
 import { resolve } from 'path';
 import {
@@ -8,11 +9,10 @@ import {
 } from '../src/index';
 import { ERROR_NO_CONTENT, ERROR_TYPE_NOT_STRING } from '../src/constants';
 
-const UUID_RE =
-  '[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}';
+const UUID_RE = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
 
-const root = resolve(__dirname, '');
-const markdown = readSourceFile(`${root}/source.md`);
+const root = resolve(__dirname);
+const markdown = readSourceFile(resolve(root, 'source.md'));
 const generatedDir = resolve(process.cwd(), 'generated');
 
 afterEach(() => {

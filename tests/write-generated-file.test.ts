@@ -1,3 +1,4 @@
+import { afterEach, describe, expect, test } from '@jest/globals';
 import { existsSync, readFileSync, rmSync } from 'fs';
 import { resolve } from 'path';
 import { writeGeneratedFile } from '../src/index';
@@ -12,14 +13,14 @@ afterEach(() => {
 
 describe('writeGeneratedFile', () => {
   test('writes content and returns an absolute path', async () => {
-    const path = await writeGeneratedFile({
+    const outputPath = await writeGeneratedFile({
       content: '<html>ok</html>',
       fileName: 'from-options.html',
       dir: 'generated',
     });
 
-    expect(path).toBe(resolve(generatedDir, 'from-options.html'));
-    expect(readFileSync(path, 'utf-8')).toBe('<html>ok</html>');
+    expect(outputPath).toBe(resolve(generatedDir, 'from-options.html'));
+    expect(readFileSync(outputPath, 'utf-8')).toBe('<html>ok</html>');
   });
 
   test('throws when overwrite is error and the file exists', async () => {
