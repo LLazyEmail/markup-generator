@@ -1,19 +1,10 @@
-import { randomUUID } from 'crypto';
 import { existsSync } from 'fs';
 import { writeFile } from 'fs/promises';
 import { resolve as pathResolve } from 'path';
 import { ensureDir } from './fileSystem';
 import { MarkupGeneratorError } from './errors';
+import { generateFileName } from './generateFileName';
 import type { WriteGeneratedFileOptions } from './types';
-
-/**
- * Unique filename: `{suffix}-{uuid}.{ext}`.
- * Safe to call in parallel. Does not touch the filesystem.
- */
-const generateFileName = (suffix: string, ext: string = 'html'): string => {
-  if (ext === '') ext = 'html';
-  return `${suffix}-${randomUUID()}.${ext}`;
-};
 
 /**
  * Writes UTF-8 text to `{cwd}/{dir}/{fileName}`.
@@ -72,10 +63,6 @@ const writingFile = async (content: string, name: string = 'prefix'): Promise<vo
   await writeHTML(generateFileName(name), content);
 };
 
-/**
- * Preferred writer. Returns the absolute path that was written.
- * Default overwrite policy is replace. Use overwrite: 'error' to refuse.
- */
 const writeGeneratedFile = async (
   options: WriteGeneratedFileOptions
 ): Promise<string> => {

@@ -1,4 +1,4 @@
 /**
- * Browser-safe entry. Only pure helpers that do not touch fs/path.
+ * Browser-safe entry. Only the pure filename helper.
  */
-export { generateFileName } from './write';
+export { generateFileName } from './generateFileName';
