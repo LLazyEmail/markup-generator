@@ -1,4 +1,4 @@
-# markup-generator
+# markup-generator AKA WRITE!
 
 Simple TypeScript helper for generating unique filenames and writing HTML (or any text) to disk.
 
