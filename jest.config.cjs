@@ -2,6 +2,7 @@
 module.exports = {
   displayName: 'markup-generator',
   testEnvironment: 'node',
+  maxWorkers: 1,
   transform: {
     '^.+\\.tsx?$': [
       'ts-jest',
