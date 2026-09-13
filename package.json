@@ -6,7 +6,7 @@
   "license": "MIT",
   "private": false,
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "bin": {
     "markup-generator": "./dist/cli.cjs"
