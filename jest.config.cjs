@@ -1,6 +1,5 @@
-import type { Config } from 'jest';
-
-const config: Config = {
+/** @type {import('jest').Config} */
+module.exports = {
   displayName: 'markup-generator',
   testEnvironment: 'node',
   transform: {
@@ -18,7 +17,8 @@ const config: Config = {
     ],
   },
   moduleFileExtensions: ['ts', 'js'],
-  testMatch: ['<rootDir>/src/**/*.(spec|test).ts', '<rootDir>/tests/**/*.(spec|test).ts'],
+  testMatch: [
+    '<rootDir>/src/**/*.(spec|test).ts',
+    '<rootDir>/tests/**/*.(spec|test).ts',
+  ],
 };
-
-export default config;
