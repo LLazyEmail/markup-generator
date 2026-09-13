@@ -11,7 +11,7 @@ export default defineConfig([
     clean: true,
     splitting: false,
     sourcemap: true,
-    target: 'node18',
+    target: 'node20',
     outDir: 'dist',
     platform: 'neutral',
     external: ['gray-matter'],
@@ -24,7 +24,7 @@ export default defineConfig([
     dts: false,
     splitting: false,
     sourcemap: false,
-    target: 'node18',
+    target: 'node20',
     outDir: 'dist',
     platform: 'node',
     banner: {

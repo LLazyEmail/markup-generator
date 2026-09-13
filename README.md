@@ -2,7 +2,7 @@
 
 Simple TypeScript helper for generating unique filenames and writing HTML (or any text) to disk.
 
-Requires **Node.js >= 18**.
+Requires **Node.js >= 20**.
 
 ## Install
 
