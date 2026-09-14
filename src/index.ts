@@ -12,7 +12,10 @@ import {
   writeGeneratedFile,
 } from './write';
 
+import { writeGeneratedEmail } from './writeGeneratedEmail';
+
 export type { WriteGeneratedFileOptions } from './types';
+export type { WriteGeneratedEmailOptions } from './writeGeneratedEmail';
 export { MarkupGeneratorError } from './errors';
 export type { MarkupGeneratorErrorCode } from './errors';
 
@@ -25,4 +28,5 @@ export {
   writingFile,
   generateFileName,
   writeGeneratedFile,
+  writeGeneratedEmail,
 };
