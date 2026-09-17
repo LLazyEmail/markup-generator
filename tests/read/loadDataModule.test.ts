@@ -60,8 +60,6 @@ describe('loadDataModule', () => {
     expect(result.title).toBe('Named export');
   });
 
-  
-
   it('throws MarkupGeneratorError with code EINVAL for an empty path', async () => {
     await expect(loadDataModule('')).rejects.toMatchObject({
       code: 'EINVAL',
