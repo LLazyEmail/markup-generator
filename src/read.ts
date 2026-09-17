@@ -8,6 +8,16 @@ import { MarkupGeneratorError } from './errors';
  * Shared by every read/write helper so path handling stays consistent.
  */
 export const resolveFromCwd = (filePath: string): string => resolve(process.cwd(), filePath);
+/**
+ * TypeScript rewrites `import()` into `require()` under a CommonJS module
+ * target, which can't load real ES modules. Wrapping it in `new Function`
+ * hides it from that rewrite, so this stays a genuine native dynamic import
+ * at runtime. Module-scoped so it's compiled once, not per call.
+ */
+const importEsm = new Function('specifier', 'return import(specifier)') as (
+  specifier: string
+) => Promise<{ default?: unknown }>;
+
 
 /**
  * Reads a plain content file (HTML, text, markdown, etc.) as a UTF-8 string.
@@ -71,7 +81,7 @@ export const loadDataModule = async (filePath: string): Promise<unknown> => {
   }
 
   try {
-    const mod = (await import(pathToFileURL(absolutePath).href)) as { default?: unknown };
+    const mod = await importEsm(pathToFileURL(absolutePath).href);
     return mod.default ?? mod;
   } catch (error) {
     const nodeError = error as NodeJS.ErrnoException;
