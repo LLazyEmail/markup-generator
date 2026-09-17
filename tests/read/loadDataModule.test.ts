@@ -51,14 +51,16 @@ describe('loadDataModule', () => {
 
   it('falls back to the module namespace when there is no default export', async () => {
     writeFileSync(
-      join(dir, 'data.mjs'),
-      "export const title = 'Named export';",
+      join(dir, 'data.cjs'),
++     "module.exports = { title: 'Named export' };", // no `.default` key
       'utf8'
     );
 
-    const result = await loadDataModule('data.mjs') as { title: string };
+    const result = (await loadDataModule('data.cjs')) as { title: string };
     expect(result.title).toBe('Named export');
   });
+
+  
 
   it('throws MarkupGeneratorError with code EINVAL for an empty path', async () => {
     await expect(loadDataModule('')).rejects.toMatchObject({
