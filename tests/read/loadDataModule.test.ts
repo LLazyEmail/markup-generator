@@ -52,7 +52,7 @@ describe('loadDataModule', () => {
   it('falls back to the module namespace when there is no default export', async () => {
     writeFileSync(
       join(dir, 'data.cjs'),
-+     "module.exports = { title: 'Named export' };", // no `.default` key
+      "module.exports = { title: 'Named export' };", // no `.default` key
       'utf8'
     );
 
