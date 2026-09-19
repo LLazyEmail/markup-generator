@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, test } from '@jest/globals';
+import { afterEach, describe, expect, test } from 'vitest';
 import { existsSync, rmSync } from 'fs';
 import { resolve } from 'path';
 import { readJson, writeJson, MarkupGeneratorError } from '../src/index';

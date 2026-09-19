@@ -1,6 +1,7 @@
-import { afterEach, describe, expect, test } from '@jest/globals';
+import { afterEach, describe, expect, test } from 'vitest';
 import { existsSync, readFileSync, rmSync } from 'fs';
-import { resolve } from 'path';
+import { dirname, resolve } from 'path';
+import { fileURLToPath } from 'url';
 import {
   generateFileName,
   readSourceFile,
@@ -11,7 +12,7 @@ import { ERROR_NO_CONTENT, ERROR_TYPE_NOT_STRING } from '../src/constants';
 
 const UUID_RE = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
 
-const root = resolve(__dirname);
+const root = dirname(fileURLToPath(import.meta.url));
 const markdown = readSourceFile(resolve(root, 'source.md'));
 const outDir = resolve(process.cwd(), 'generated-index');
 
