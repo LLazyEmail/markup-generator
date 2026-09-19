@@ -3,6 +3,7 @@ import { extname, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { readJson } from './json-io';
 import { writeGeneratedFile } from './write';
+import { importEsm } from './read';
 
 export type CliArgs = Record<string, string | true>;
 
@@ -65,7 +66,7 @@ export async function loadData(dataPath: string): Promise<TemplateData> {
     return readJson<TemplateData>(dataPath);
   }
 
-  const mod = (await import(pathToFileURL(dataPath).href)) as {
+  const mod = (await importEsm(pathToFileURL(dataPath).href)) as {
     default?: TemplateData;
   } & TemplateData;
   return (mod.default ?? mod) as TemplateData;
@@ -94,10 +95,6 @@ export function buildFallbackContent(data: TemplateData): string {
 `.trim();
 }
 
-/**
- * I/O + CLI half of hn_email_template/scripts/generate-template.js.
- * The caller supplies renderTemplate from the template package.
- */
 export async function generateTemplate(
   options: GenerateTemplateOptions
 ): Promise<string> {
@@ -129,7 +126,7 @@ export async function generateTemplate(
 
   return writeGeneratedFile({
     content: html,
-    fileName: outPath.includes('/') ? outPath.split(/[\\/]/).pop() as string : outPath,
+    fileName: outPath.includes('/') ? (outPath.split(/[\\/]/).pop() as string) : outPath,
     dir: outPath.includes('/') ? resolve(cwd, outPath, '..') : resolve(cwd, 'generated'),
   });
 }
