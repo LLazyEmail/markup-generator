@@ -25,9 +25,41 @@ const path = await writeGeneratedFile({
 
 Paths are resolved from `process.cwd()`. Missing directories are created. Encoding is UTF-8. Default overwrite policy is replace.
 
-## Write a generated email (stable name)
+## JSON helpers
 
-Use this when the output path must stay stable (`hackernoon-email.html`), not UUID-suffixed:
+```ts
+import { readJson, writeJson } from 'markup-generator';
+
+writeJson('./generated/issue.json', { title: 'Weekly', preview: 'Hello' });
+const data = readJson<{ title: string }>('./generated/issue.json');
+```
+
+Missing or invalid JSON throws `MarkupGeneratorError` with `JSON_READ` or `JSON_PARSE`.
+
+## Generate a template (I/O half)
+
+Moved from `hn_email_template/scripts/generate-template.js`. This package loads data, optional HTML content, builds fallback markup, and writes the file. **You still pass `renderTemplate` from the template repo.**
+
+```ts
+import { generateTemplate } from 'markup-generator';
+import { renderTemplate } from './Work/dist/index.cjs.js';
+
+await generateTemplate({
+  render: renderTemplate,
+  argv: process.argv,
+  defaultTemplateId: 'hn',
+  defaultDataPath: 'content/content2.js',
+});
+```
+
+CLI flags understood by `parseArgv` / `generateTemplate`:
+
+- `--template` (default `hn`)
+- `--data` path to `.json` / `.js` / `.mjs` / `.cjs`
+- `--out` output HTML path
+- `--content` optional HTML fragment
+
+## Write a generated email (stable name)
 
 ```ts
 import { writeGeneratedEmail } from 'markup-generator';
@@ -39,8 +71,6 @@ await writeGeneratedEmail({
 });
 ```
 
-It writes to `generated/` by default, logs success, and on `MarkupGeneratorError` logs the code and sets `process.exitCode = 1` instead of throwing.
-
 ## CLI
 
 ```bash
@@ -48,33 +78,12 @@ npx markup-generator name --prefix newsletter --ext html
 npx markup-generator write --file ./in.html --prefix newsletter --dir generated
 ```
 
-## Example
-
-```bash
-npm install
-npm run example
-```
-
 ## Errors
 
-Thrown errors are `MarkupGeneratorError` with `code`:
-`EMPTY_CONTENT`, `NOT_A_STRING`, `FILE_EXISTS`, `WRITE_FAILED`.
+`MarkupGeneratorError` codes:
+`EMPTY_CONTENT`, `NOT_A_STRING`, `FILE_EXISTS`, `WRITE_FAILED`, `JSON_READ`, `JSON_PARSE`.
 
 See [MIGRATION.md](./MIGRATION.md) for 3.0.0 notes.
-
-## What changed in 3.0.0
-
-- TypeScript source at the repo root (Nx `write/` workspace removed)
-- Dual CJS + ESM + types via `tsup` (`platform: 'node'`)
-- Browser entry only exports `generateFileName`
-- `generateTemplateName` → `generateFileName` (UUID, not `Date.now()`)
-- `writeHTML` / `writingFile` are async
-- `writeGeneratedFile({ content, fileName, dir, overwrite })` is the preferred writer
-- `writeGeneratedEmail({ content, fileName, label })` writes a stable email filename
-- Typed `MarkupGeneratorError` codes
-- CLI: `markup-generator name|write`
-- CI: one Node 24 job; publish workflow with provenance
-- Tests use `ts-jest` + `jest.config.cjs`
 
 ## License
 
