@@ -1,5 +1,5 @@
-import { afterEach, describe, expect, test } from '@jest/globals';
-import { existsSync, readFileSync, rmSync, writeFileSync, mkdirSync } from 'fs';
+import { afterEach, describe, expect, test } from 'vitest';
+import { existsSync, readFileSync, rmSync, mkdirSync } from 'fs';
 import { resolve } from 'path';
 import {
   buildFallbackContent,
