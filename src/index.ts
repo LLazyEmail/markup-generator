@@ -21,6 +21,7 @@ import {
   buildFallbackContent,
   generateTemplate,
 } from './generate-template';
+import { resolveFromCwd } from './read';
 
 export type { WriteGeneratedFileOptions } from './types';
 export type { WriteGeneratedEmailOptions } from './writeGeneratedEmail';
@@ -50,4 +51,5 @@ export {
   loadContent,
   buildFallbackContent,
   generateTemplate,
+  resolveFromCwd,
 };

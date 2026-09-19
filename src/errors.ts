@@ -4,7 +4,8 @@ export type MarkupGeneratorErrorCode =
   | 'FILE_EXISTS'
   | 'WRITE_FAILED'
   | 'JSON_READ'
-  | 'JSON_PARSE';
+  | 'JSON_PARSE'
+  | 'EIMPORT';
 
 export class MarkupGeneratorError extends Error {
   readonly code: MarkupGeneratorErrorCode;
