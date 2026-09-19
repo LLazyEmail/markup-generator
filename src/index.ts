@@ -13,11 +13,24 @@ import {
 } from './write';
 
 import { writeGeneratedEmail } from './writeGeneratedEmail';
+import { readJson, writeJson } from './json-io';
+import {
+  parseArgv,
+  loadData,
+  loadContent,
+  buildFallbackContent,
+  generateTemplate,
+} from './generate-template';
+import { resolveFromCwd } from './read';
 
 export type { WriteGeneratedFileOptions } from './types';
 export type { WriteGeneratedEmailOptions } from './writeGeneratedEmail';
-
-export { readContentFile, loadDataModule, resolveFromCwd } from './read';
+export type {
+  CliArgs,
+  TemplateData,
+  RenderTemplate,
+  GenerateTemplateOptions,
+} from './generate-template';
 export { MarkupGeneratorError } from './errors';
 export type { MarkupGeneratorErrorCode } from './errors';
 
@@ -31,4 +44,12 @@ export {
   generateFileName,
   writeGeneratedFile,
   writeGeneratedEmail,
+  readJson,
+  writeJson,
+  parseArgv,
+  loadData,
+  loadContent,
+  buildFallbackContent,
+  generateTemplate,
+  resolveFromCwd,
 };
