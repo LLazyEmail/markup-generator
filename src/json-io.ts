@@ -1,21 +1,26 @@
-// maybe later it can be merged with file system file
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname } from 'node:path';
-import { mkdirSync } from 'node:fs';
+import { MarkupGeneratorError } from './errors';
 
-/** Read + parse a JSON file. Throws a descriptive error on failure. */
+/** Read + parse a JSON file. */
 export function readJson<T = unknown>(filePath: string): T {
   let text: string;
   try {
     text = readFileSync(filePath, 'utf-8');
   } catch (err) {
-    throw new Error(`Failed to read JSON file "${filePath}": ${(err as Error).message}`);
+    throw new MarkupGeneratorError(
+      'JSON_READ',
+      `Failed to read JSON file "${filePath}": ${(err as Error).message}`
+    );
   }
 
   try {
     return JSON.parse(text) as T;
   } catch (err) {
-    throw new Error(`Failed to parse JSON file "${filePath}": ${(err as Error).message}`);
+    throw new MarkupGeneratorError(
+      'JSON_PARSE',
+      `Failed to parse JSON file "${filePath}": ${(err as Error).message}`
+    );
   }
 }
 
