@@ -1,9 +1,11 @@
-# markup-generator AKA WRITE!
 
-Simple TypeScript helper for generating unique filenames and writing HTML (or any text) to disk.
 # markup-generator
 
-A small, dependency-light module for writing generated content to files — handles directory creation, UTF-8 defaults, stable/unique filenames, and typed errors, so consuming projects don't have to hand-roll `mkdirSync`/`writeFileSync` logic.
+A small, dependency-light module for writing generated content to files — handles directory creation, UTF-8 defaults, stable/unique filenames, and typed errors, so consuming projects don't have to hand-roll `mkdirSync`/`writeFileSync` logic. 
+
+Written on TypeScript, can generate a uniquie files.
+
+Arthur calling it **WRITE** because one of the main goals for this project was to write a file on a disk
 
 ## Installation
 
