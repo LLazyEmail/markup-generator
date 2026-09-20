@@ -176,8 +176,3 @@ See `MIGRATION.md` for breaking-change notes between major versions.
 ## License
 
 See `LICENSE`.
-See [MIGRATION.md](./MIGRATION.md) for 3.0.0 notes.
-
-## License
-
-MIT
