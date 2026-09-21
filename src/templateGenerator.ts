@@ -84,7 +84,9 @@ export class TemplateGenerator {
   }
 
   async render(templateId: string, options: RenderOptions = {}): Promise<string> {
-    const payload = options.payload ?? await this.loadPayload(templateId, options.dataPath);
+    const payload = options.payload !== undefined 
+      ? options.payload 
+      : await this.loadPayload(templateId, options.dataPath);
     
     // This is a placeholder - you'll need to implement the actual rendering logic
     // based on your project's template system
