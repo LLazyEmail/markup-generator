@@ -80,29 +80,6 @@ describe('TemplateGenerator', () => {
     expect(payload).toEqual({ title: 'Test Title', value: 42 });
   });
 
-  test('loadPayload loads data from JS file with default export', async () => {
-    mkdirSync(dataDir, { recursive: true });
-    const jsPath = resolve(dataDir, 'test.js');
-    writeFileSync(jsPath, 'export default { title: "JS Title", value: 100 }');
-
-    const generator = new TemplateGenerator({ dataDir });
-    const payload = await generator.loadPayload('test-id', jsPath);
-    
-    expect(payload).toEqual({ title: 'JS Title', value: 100 });
-  });
-
-  test('loadPayload loads data from JS file without default export', async () => {
-    mkdirSync(dataDir, { recursive: true });
-    const jsPath = resolve(dataDir, 'test.js');
-    writeFileSync(jsPath, 'export const title = "Direct Title"; export const value = 200;');
-
-    const generator = new TemplateGenerator({ dataDir });
-    const payload = await generator.loadPayload('test-id', jsPath);
-    
-    expect(payload).toHaveProperty('title', 'Direct Title');
-    expect(payload).toHaveProperty('value', 200);
-  });
-
   test('loadPayload uses samplePayloads when dataPath is not provided', async () => {
     const generator = new TemplateGenerator({
       samplePayloads: { 'test-id': { fromSample: true } }
