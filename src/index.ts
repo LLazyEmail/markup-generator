@@ -22,6 +22,7 @@ import {
   generateTemplate,
 } from './generate-template';
 import { resolveFromCwd } from './read';
+import { TemplateGenerator, createGenerator } from './templateGenerator';
 
 export type { WriteGeneratedFileOptions } from './types';
 export type { WriteGeneratedEmailOptions } from './writeGeneratedEmail';
@@ -31,6 +32,12 @@ export type {
   RenderTemplate,
   GenerateTemplateOptions,
 } from './generate-template';
+export type {
+  TemplateCatalogEntry,
+  GeneratorConfig,
+  RenderOptions,
+  WriteOptions,
+} from './templateGenerator';
 export { MarkupGeneratorError } from './errors';
 export type { MarkupGeneratorErrorCode } from './errors';
 
@@ -52,4 +59,6 @@ export {
   buildFallbackContent,
   generateTemplate,
   resolveFromCwd,
+  TemplateGenerator,
+  createGenerator,
 };
