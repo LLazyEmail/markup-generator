@@ -5,7 +5,8 @@ export type MarkupGeneratorErrorCode =
   | 'WRITE_FAILED'
   | 'JSON_READ'
   | 'JSON_PARSE'
-  | 'EIMPORT';
+  | 'EIMPORT'
+  | 'EREAD';
 
 export class MarkupGeneratorError extends Error {
   readonly code: MarkupGeneratorErrorCode;

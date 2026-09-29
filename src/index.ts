@@ -22,6 +22,7 @@ import {
   generateTemplate,
 } from './generate-template';
 import { resolveFromCwd } from './read';
+import { pathExists, listTemplateFiles } from './fs-list';
 import { TemplateGenerator, createGenerator } from './templateGenerator';
 
 export type { WriteGeneratedFileOptions } from './types';
@@ -32,6 +33,7 @@ export type {
   RenderTemplate,
   GenerateTemplateOptions,
 } from './generate-template';
+export type { ListTemplateFilesOptions } from './fs-list';
 export type {
   TemplateCatalogEntry,
   GeneratorConfig,
@@ -59,6 +61,8 @@ export {
   buildFallbackContent,
   generateTemplate,
   resolveFromCwd,
+  pathExists,
+  listTemplateFiles,
   TemplateGenerator,
   createGenerator,
 };
