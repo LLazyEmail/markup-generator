@@ -6,16 +6,6 @@ import { MarkupGeneratorError } from './errors';
 import { generateFileName } from './generateFileName';
 import type { WriteGeneratedFileOptions } from './types';
 
-/**
- * Writes UTF-8 text to `{cwd}/{dir}/{fileName}`.
- *
- * Contract:
- * - `dir` is resolved from `process.cwd()`
- * - missing directories are created
- * - existing files are overwritten unless a caller uses writeGeneratedFile({ overwrite: 'error' })
- * - empty content throws EMPTY_CONTENT
- * - non-string content throws NOT_A_STRING
- */
 const writeHTML = async (
   fileName: string,
   data: string,
@@ -23,14 +13,11 @@ const writeHTML = async (
   message: string = ''
 ): Promise<void> => {
   if (!data) {
-    throw new MarkupGeneratorError('EMPTY_CONTENT', 'content variable is empty');
+    throw new MarkupGeneratorError('EMPTY_CONTENT');
   }
 
   if (typeof data !== 'string') {
-    throw new MarkupGeneratorError(
-      'NOT_A_STRING',
-      'content variable is not a string'
-    );
+    throw new MarkupGeneratorError('NOT_A_STRING');
   }
 
   if (dir === '') {
@@ -46,7 +33,7 @@ const writeHTML = async (
       console.log(message);
     }
   } catch {
-    throw new MarkupGeneratorError('WRITE_FAILED', 'file not written');
+    throw new MarkupGeneratorError('WRITE_FAILED');
   }
 };
 

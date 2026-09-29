@@ -7,8 +7,8 @@ import {
   readSourceFile,
   writeHTML,
   writingFile,
+  DEFAULT_MESSAGES,
 } from '../src/index';
-import { ERROR_NO_CONTENT, ERROR_TYPE_NOT_STRING } from '../src/constants';
 
 const UUID_RE = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
 
@@ -50,14 +50,14 @@ describe('writeHTML', () => {
 
   test('throws when content is empty', async () => {
     await expect(writeHTML('empty.html', '', outDir)).rejects.toThrow(
-      ERROR_NO_CONTENT
+      DEFAULT_MESSAGES.EMPTY_CONTENT
     );
   });
 
   test('throws when content is not a string', async () => {
     await expect(
       writeHTML('bad.html', 123 as unknown as string, outDir)
-    ).rejects.toThrow(ERROR_TYPE_NOT_STRING);
+    ).rejects.toThrow(DEFAULT_MESSAGES.NOT_A_STRING);
   });
 });
 
