@@ -15,6 +15,7 @@ import type { WriteGeneratedFileOptions } from './types';
  * - existing files are overwritten unless a caller uses writeGeneratedFile({ overwrite: 'error' })
  * - empty content throws EMPTY_CONTENT
  * - non-string content throws NOT_A_STRING
+ * - write failures throw WRITE_FAILED (default message from DEFAULT_MESSAGES)
  */
 const writeHTML = async (
   fileName: string,
@@ -23,14 +24,11 @@ const writeHTML = async (
   message: string = ''
 ): Promise<void> => {
   if (!data) {
-    throw new MarkupGeneratorError('EMPTY_CONTENT', 'content variable is empty');
+    throw new MarkupGeneratorError('EMPTY_CONTENT');
   }
 
   if (typeof data !== 'string') {
-    throw new MarkupGeneratorError(
-      'NOT_A_STRING',
-      'content variable is not a string'
-    );
+    throw new MarkupGeneratorError('NOT_A_STRING');
   }
 
   if (dir === '') {
@@ -46,7 +44,7 @@ const writeHTML = async (
       console.log(message);
     }
   } catch {
-    throw new MarkupGeneratorError('WRITE_FAILED', 'file not written');
+    throw new MarkupGeneratorError('WRITE_FAILED');
   }
 };
 
@@ -63,6 +61,10 @@ const writingFile = async (content: string, name: string = 'prefix'): Promise<vo
   await writeHTML(generateFileName(name), content);
 };
 
+/**
+ * Preferred writer. Returns the absolute path that was written.
+ * Default overwrite policy is replace. Use overwrite: 'error' to throw FILE_EXISTS.
+ */
 const writeGeneratedFile = async (
   options: WriteGeneratedFileOptions
 ): Promise<string> => {

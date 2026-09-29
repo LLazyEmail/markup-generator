@@ -40,7 +40,7 @@ export type {
   RenderOptions,
   WriteOptions,
 } from './templateGenerator';
-export { MarkupGeneratorError } from './errors';
+export { MarkupGeneratorError, DEFAULT_MESSAGES } from './errors';
 export type { MarkupGeneratorErrorCode } from './errors';
 
 export {
