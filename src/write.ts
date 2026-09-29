@@ -6,6 +6,17 @@ import { MarkupGeneratorError } from './errors';
 import { generateFileName } from './generateFileName';
 import type { WriteGeneratedFileOptions } from './types';
 
+/**
+ * Writes UTF-8 text to `{cwd}/{dir}/{fileName}`.
+ *
+ * Contract:
+ * - `dir` is resolved from `process.cwd()`
+ * - missing directories are created
+ * - existing files are overwritten unless a caller uses writeGeneratedFile({ overwrite: 'error' })
+ * - empty content throws EMPTY_CONTENT
+ * - non-string content throws NOT_A_STRING
+ * - write failures throw WRITE_FAILED (default message from DEFAULT_MESSAGES)
+ */
 const writeHTML = async (
   fileName: string,
   data: string,
@@ -50,6 +61,10 @@ const writingFile = async (content: string, name: string = 'prefix'): Promise<vo
   await writeHTML(generateFileName(name), content);
 };
 
+/**
+ * Preferred writer. Returns the absolute path that was written.
+ * Default overwrite policy is replace. Use overwrite: 'error' to throw FILE_EXISTS.
+ */
 const writeGeneratedFile = async (
   options: WriteGeneratedFileOptions
 ): Promise<string> => {
