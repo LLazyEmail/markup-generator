@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "fe011367a056f395",
+        "id": "fcd1675f99aed745",
         "type": "tabs",
         "children": [
           {
-            "id": "8722c3025eea35bc",
+            "id": "84e0109ce11b3fcc",
             "type": "leaf",
             "state": {
               "type": "empty",
@@ -95,6 +95,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "old/source.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -113,6 +114,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "old/source.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
@@ -155,6 +157,7 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "old/source.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -181,6 +184,12 @@
       "bases:Create new base": false
     }
   },
-  "active": "8722c3025eea35bc",
-  "lastOpenFiles": []
+  "active": "826cfeba52b81287",
+  "lastOpenFiles": [
+    "old/03-source-frontmatter 1.md",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "MIGRATION.md",
+    "README.md"
+  ]
 }
