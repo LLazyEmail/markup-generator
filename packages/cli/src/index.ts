@@ -1,6 +1,6 @@
 /**
- * @llazyemail/cli — Phase 0 scaffold stub.
- * Real implementation will land in a later v4 phase; do not rely on this API.
+ * @llazyemail/cli — CLI / argv helpers extracted in Phase 3.
  */
-export const PHASE0_STUB = true as const;
-export const PACKAGE_NAME = '@llazyemail/cli' as const;
+export { parseArgv } from './parseArgv';
+export type { CliArgs } from './parseArgv';
+export { runCli } from './bin';
