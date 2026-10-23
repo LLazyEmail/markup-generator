@@ -1,7 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { readJson } from './json-io';
-import { importEsm } from './read';
+import { readJson, importEsm } from '@llazyemail/read';
 import { pathToFileURL } from 'node:url';
 
 const DEFAULT_SKIP = new Set(['index.js', 'index2.js', 'registry.ts', 'registry.js']);
