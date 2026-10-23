@@ -16,12 +16,14 @@ import type { WriteGeneratedFileOptions } from './types';
  * - empty content throws EMPTY_CONTENT
  * - non-string content throws NOT_A_STRING
  * - write failures throw WRITE_FAILED (default message from DEFAULT_MESSAGES)
+ * - optional 4th arg `_message` is retained for API compatibility but is not logged
+ *   (callers such as writeGeneratedEmail / CLI own success output; avoids console in shared surface)
  */
 const writeHTML = async (
   fileName: string,
   data: string,
-  dir: string = 'generated',
-  message: string = ''
+  dir = 'generated',
+  _message = ''
 ): Promise<void> => {
   if (!data) {
     throw new MarkupGeneratorError('EMPTY_CONTENT');
@@ -40,15 +42,12 @@ const writeHTML = async (
 
   try {
     await writeFile(fullPath, data, 'utf-8');
-    if (message) {
-      console.log(message);
-    }
   } catch {
     throw new MarkupGeneratorError('WRITE_FAILED');
   }
 };
 
-const writingFile = async (content: string, name: string = 'prefix'): Promise<void> => {
+const writingFile = async (content: string, name = 'prefix'): Promise<void> => {
   if (name === '') name = 'prefix';
 
   if (!content) {

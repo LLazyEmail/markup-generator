@@ -27,11 +27,16 @@ export async function writeGeneratedEmail(
     });
     console.log(`✅  ${options.label} → ${outPath}`);
     return outPath;
-  } catch (err) {
+  } catch (err: unknown) {
     if (err instanceof MarkupGeneratorError) {
       console.error(
         `❌ Failed to write ${options.fileName} [${err.code}]: ${err.message}`
       );
+      process.exitCode = 1;
+      return undefined;
+    }
+    if (err instanceof Error) {
+      console.error(`❌ Failed to write ${options.fileName}: ${err.message}`);
       process.exitCode = 1;
       return undefined;
     }
