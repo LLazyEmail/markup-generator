@@ -1,6 +1,5 @@
 /**
- * @llazyemail/email — Phase 0 scaffold stub.
- * Real implementation will land in a later v4 phase; do not rely on this API.
+ * @llazyemail/email — email-oriented wrappers extracted in Phase 3.
  */
-export const PHASE0_STUB = true as const;
-export const PACKAGE_NAME = '@llazyemail/email' as const;
+export { writeGeneratedEmail } from './writeGeneratedEmail';
+export type { WriteGeneratedEmailOptions } from './writeGeneratedEmail';
