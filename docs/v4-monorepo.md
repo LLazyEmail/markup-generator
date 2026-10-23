@@ -1,6 +1,6 @@
-# v4 monorepo (Phase 0 + Phase 1)
+# v4 monorepo (Phase 0 + Phase 1 + Phase 2)
 
-Related: [#272 Re-organization Version #4](https://github.com/LLazyEmail/markup-generator/issues/272).
+Related: [#272 Re-organization Version #4](https://github.com/LLazyEmail/markup-generator/issues/272), [#278 gray-matter / Dependabot](https://github.com/LLazyEmail/markup-generator/issues/278).
 
 ## Phase 0 — scaffold
 
@@ -15,11 +15,18 @@ Real implementations (not stubs):
 | `@llazyemail/fs` | `ensureDir`, `isFolderExists`, `resolveFromCwd`, `pathExists`, `listTemplateFiles` (no gray-matter / `readFrontMatter`) |
 | `@llazyemail/write` | `writeGeneratedFile`, `writeHTML`, `writingFile`, `generateFileName`, `MarkupGeneratorError`, `DEFAULT_MESSAGES`, write types |
 
-Root `markup-generator` depends on both via `workspace:*` and **re-exports** the same public symbols so existing consumers keep working. `readFrontMatter` / `gray-matter`, email, template, and CLI stay at root (later phases). Other packages remain stubs.
+## Phase 2 — extract `@llazyemail/read`
+
+| Package | Contents |
+|---------|----------|
+| `@llazyemail/read` | `readSourceFile`, `readFrontMatter`, `readJson`, `writeJson`, `loadData`, `loadContent`, `importEsm`, `TemplateData` |
+
+**`gray-matter` is a dependency of `@llazyemail/read` only.** Root `markup-generator` must not list `gray-matter` in `package.json` (addresses the dependency surface called out in #278). Root still **re-exports** the same public symbols via `workspace:*` so existing consumers of `markup-generator` keep working.
 
 ```bash
 pnpm install
 pnpm exec turbo run build test
+pnpm exec tsc --noEmit
 ```
 
 ## Package map
@@ -29,16 +36,16 @@ pnpm exec turbo run build test
 | `markup-generator` (root) | Public publishable barrel | **Active** |
 | `@llazyemail/fs` | FS primitives | **Phase 1** — real code + tests |
 | `@llazyemail/write` | Write helpers | **Phase 1** — real code + tests |
-| `@llazyemail/read` | Read helpers | Stub |
+| `@llazyemail/read` | Read helpers (+ gray-matter) | **Phase 2** — real code + tests |
 | `@llazyemail/email` | Email-oriented wrappers | Stub |
 | `@llazyemail/cli` | CLI / orchestration | Stub |
 | `@llazyemail/template` | Template generation | Stub |
 | `@llazyemail/core` | Shared core / barrel pieces | Stub |
 
-Publish plan (later): keep root `markup-generator` on npm, then publish scoped `@llazyemail/*`. `gray-matter` stays at the root until Phase 2.
+Publish plan (later): keep root `markup-generator` on npm, then publish scoped `@llazyemail/*`. Root `tsup` inlines `@llazyemail/*` (and bundles `gray-matter` through `@llazyemail/read`) so the published tarball stays self-contained.
 
 ## Explicitly not done yet
 
-- No moving read/gray-matter, email, template, or cli into packages
+- No moving email, template, or cli into packages
 - No deleting `old/` or Nx remnant (Phase 5)
 - Scoped packages stay `private: true` until a publish phase

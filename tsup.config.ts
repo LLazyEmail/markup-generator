@@ -13,7 +13,9 @@ export default defineConfig([
     target: 'node20',
     outDir: 'dist',
     platform: 'node',
-    external: ['gray-matter'],
+    // Workspace packages are private; inline them. Bundle gray-matter too so root
+    // package.json need not list it (owned by @llazyemail/read).
+    noExternal: [/^@llazyemail\//],
   },
   {
     entry: {

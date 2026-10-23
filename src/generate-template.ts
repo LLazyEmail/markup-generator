@@ -1,17 +1,11 @@
-import { readFileSync } from 'node:fs';
-import { extname, resolve } from 'node:path';
-import { pathToFileURL } from 'node:url';
-import { readJson } from './json-io';
+import { resolve } from 'node:path';
 import { writeGeneratedFile } from './write';
-import { importEsm } from './read';
+import { loadData, loadContent } from '@llazyemail/read';
+import type { TemplateData } from '@llazyemail/read';
 
 export type CliArgs = Record<string, string | true>;
 
-export type TemplateData = {
-  title?: string;
-  preview?: string;
-  [key: string]: unknown;
-};
+export type { TemplateData } from '@llazyemail/read';
 
 export type RenderTemplate = (
   templateId: string,
@@ -60,22 +54,7 @@ function ensureString(value: unknown, flagName: string): string {
   return value.trim();
 }
 
-export async function loadData(dataPath: string): Promise<TemplateData> {
-  const ext = extname(dataPath).toLowerCase();
-  if (ext === '.json') {
-    return readJson<TemplateData>(dataPath);
-  }
-
-  const mod = (await importEsm(pathToFileURL(dataPath).href)) as {
-    default?: TemplateData;
-  } & TemplateData;
-  return (mod.default ?? mod) as TemplateData;
-}
-
-export function loadContent(contentPath?: string, cwd = process.cwd()): string | null {
-  if (!contentPath) return null;
-  return readFileSync(asAbsolute(cwd, contentPath), 'utf8');
-}
+export { loadData, loadContent } from '@llazyemail/read';
 
 export function buildFallbackContent(data: TemplateData): string {
   const title = data?.title || '[Generated Template]';

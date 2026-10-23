@@ -18,6 +18,9 @@
       ],
       "@llazyemail/write": [
         "packages/write/src/index.ts"
+      ],
+      "@llazyemail/read": [
+        "packages/read/src/index.ts"
       ]
     }
   },

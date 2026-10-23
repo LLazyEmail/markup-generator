@@ -1,7 +1,7 @@
 {
   "name": "@llazyemail/read",
   "version": "0.0.0",
-  "description": "Read helpers (stub — Phase 0)",
+  "description": "Read helpers for markup-generator (readSourceFile, readFrontMatter, readJson/writeJson, loadData, loadContent)",
   "private": true,
   "type": "module",
   "main": "./dist/index.js",
@@ -17,12 +17,18 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "node --input-type=module -e \"import('./dist/index.js').then((m) => { if (m.PHASE0_STUB !== true) process.exit(1); console.log('@llazyemail/read stub ok'); })\"",
+    "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "lint": "node -e \"console.log('lint stub: @llazyemail/read (no rules yet)')\""
+    "lint": "node -e \"console.log('lint: @llazyemail/read (no rules yet)')\""
+  },
+  "dependencies": {
+    "@llazyemail/write": "workspace:*",
+    "gray-matter": "^4.0.3"
   },
   "devDependencies": {
-    "typescript": "^5.6.0"
+    "@types/node": "^24.0.0",
+    "typescript": "^5.6.0",
+    "vitest": "^5.0.0"
   },
   "engines": {
     "node": ">=20"

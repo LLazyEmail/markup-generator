@@ -45,8 +45,8 @@
     "turbo:lint": "turbo run lint"
   },
   "dependencies": {
-    "gray-matter": "^4.0.3",
     "@llazyemail/fs": "workspace:*",
+    "@llazyemail/read": "workspace:*",
     "@llazyemail/write": "workspace:*"
   },
   "devDependencies": {

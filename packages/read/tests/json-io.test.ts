@@ -1,9 +1,13 @@
 import { afterEach, describe, expect, test } from 'vitest';
-import { existsSync, rmSync } from 'fs';
-import { resolve } from 'path';
-import { readJson, writeJson, MarkupGeneratorError } from '../src/index';
+import { existsSync, rmSync } from 'node:fs';
+import { resolve } from 'node:path';
+import {
+  readJson,
+  writeJson,
+} from '../src/index';
+import { MarkupGeneratorError } from '@llazyemail/write';
 
-const outDir = resolve(process.cwd(), 'generated-json');
+const outDir = resolve(process.cwd(), 'generated-json-read-pkg');
 const filePath = resolve(outDir, 'sample.json');
 
 afterEach(() => {
