@@ -1,6 +1,26 @@
 /**
- * @llazyemail/template — Phase 0 scaffold stub.
- * Real implementation will land in a later v4 phase; do not rely on this API.
+ * @llazyemail/template — template generation extracted in Phase 3.
+ * Write paths go through `@llazyemail/write` (not raw fs.writeFileSync).
  */
-export const PHASE0_STUB = true as const;
-export const PACKAGE_NAME = '@llazyemail/template' as const;
+export {
+  buildFallbackContent,
+  generateTemplate,
+  loadData,
+  loadContent,
+} from './generate-template';
+export type {
+  TemplateData,
+  RenderTemplate,
+  GenerateTemplateOptions,
+} from './generate-template';
+export {
+  TemplateGenerator,
+  createGenerator,
+  DEFAULT_OUT_DIR,
+} from './templateGenerator';
+export type {
+  TemplateCatalogEntry,
+  GeneratorConfig,
+  RenderOptions,
+  WriteOptions,
+} from './templateGenerator';
