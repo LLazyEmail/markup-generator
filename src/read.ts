@@ -1,8 +1,4 @@
-import { resolve } from 'path';
-
-/** Resolve a path from process.cwd() unless it is already absolute. */
-export const resolveFromCwd = (filePath: string): string =>
-  resolve(process.cwd(), filePath);
+export { resolveFromCwd } from '@llazyemail/fs';
 
 /**
  * TypeScript can rewrite `import()` to `require()` in CJS builds.

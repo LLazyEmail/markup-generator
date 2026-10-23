@@ -1,5 +1,7 @@
-import { readFileSync, existsSync, mkdirSync } from 'fs';
+import { readFileSync } from 'fs';
 import matter from 'gray-matter';
+
+export { ensureDir, isFolderExists } from '@llazyemail/fs';
 
 function readSourceFile(fileName: string): string {
   return readFileSync(fileName, { encoding: 'utf-8' });
@@ -18,19 +20,7 @@ function readFrontMatter(filename: string): {
   };
 }
 
-/** Creates the directory if it does not exist. */
-function ensureDir(dir: string): void {
-  if (!existsSync(dir)) {
-    mkdirSync(dir, { recursive: true });
-  }
-}
-
-/** @deprecated Use ensureDir. */
-const isFolderExists = ensureDir;
-
 export {
   readSourceFile,
   readFrontMatter,
-  ensureDir,
-  isFolderExists,
 };

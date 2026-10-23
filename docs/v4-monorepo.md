@@ -1,38 +1,44 @@
-# v4 monorepo scaffold (Phase 0)
+# v4 monorepo (Phase 0 + Phase 1)
 
 Related: [#272 Re-organization Version #4](https://github.com/LLazyEmail/markup-generator/issues/272).
 
-## What Phase 0 does
+## Phase 0 — scaffold
 
-This phase only **scaffolds** a pnpm workspaces + Turborepo layout. The real library still lives at the **repo root** (`src/`, `tests/`, package name `markup-generator`). No source has been extracted into packages yet.
+pnpm workspaces + Turborepo layout. Stub packages under `packages/*` (`private: true`). Real library still at repo root until each phase extracts it.
 
-## Package map (planned)
+## Phase 1 — extract `@llazyemail/fs` and `@llazyemail/write`
 
-| Package | Role (future) | Status now |
-|---------|---------------|------------|
-| `markup-generator` (root) | Public publishable barrel + current library | **Active** — build/tests here |
-| `@llazyemail/fs` | FS primitives | Stub (`private: true`) |
-| `@llazyemail/write` | Write helpers | Stub |
-| `@llazyemail/read` | Read helpers | Stub |
-| `@llazyemail/email` | Email-oriented wrappers | Stub |
-| `@llazyemail/cli` | CLI / orchestration | Stub |
-| `@llazyemail/template` | Template generation | Stub |
-| `@llazyemail/core` | Shared core / barrel pieces | Stub |
+Real implementations (not stubs):
 
-Publish plan (later phases): keep root `markup-generator` on npm, then publish scoped `@llazyemail/*` packages. `gray-matter` stays at the root until Phase 2.
+| Package | Contents |
+|---------|----------|
+| `@llazyemail/fs` | `ensureDir`, `isFolderExists`, `resolveFromCwd`, `pathExists`, `listTemplateFiles` (no gray-matter / `readFrontMatter`) |
+| `@llazyemail/write` | `writeGeneratedFile`, `writeHTML`, `writingFile`, `generateFileName`, `MarkupGeneratorError`, `DEFAULT_MESSAGES`, write types |
 
-## Tooling
-
-- **pnpm** workspaces (`pnpm-workspace.yaml`)
-- **Turborepo** with `build` / `test` / `typecheck` / `lint` tasks; `build` and `test` use `dependsOn: ["^build"]` / `dependsOn: ["build"]` as appropriate
+Root `markup-generator` depends on both via `workspace:*` and **re-exports** the same public symbols so existing consumers keep working. `readFrontMatter` / `gray-matter`, email, template, and CLI stay at root (later phases). Other packages remain stubs.
 
 ```bash
 pnpm install
 pnpm exec turbo run build test
 ```
 
-## Explicitly not in Phase 0
+## Package map
 
-- No moving `src/` into `packages/*`
-- No deleting `old/` or any Nx remnant (Phase 5)
-- Stubs are not published (`private: true`)
+| Package | Role | Status |
+|---------|------|--------|
+| `markup-generator` (root) | Public publishable barrel | **Active** |
+| `@llazyemail/fs` | FS primitives | **Phase 1** — real code + tests |
+| `@llazyemail/write` | Write helpers | **Phase 1** — real code + tests |
+| `@llazyemail/read` | Read helpers | Stub |
+| `@llazyemail/email` | Email-oriented wrappers | Stub |
+| `@llazyemail/cli` | CLI / orchestration | Stub |
+| `@llazyemail/template` | Template generation | Stub |
+| `@llazyemail/core` | Shared core / barrel pieces | Stub |
+
+Publish plan (later): keep root `markup-generator` on npm, then publish scoped `@llazyemail/*`. `gray-matter` stays at the root until Phase 2.
+
+## Explicitly not done yet
+
+- No moving read/gray-matter, email, template, or cli into packages
+- No deleting `old/` or Nx remnant (Phase 5)
+- Scoped packages stay `private: true` until a publish phase
