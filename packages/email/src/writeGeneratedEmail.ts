@@ -8,6 +8,16 @@ export interface WriteGeneratedEmailOptions {
   label: string;
   /** Target directory. Default: generated */
   dir?: string;
+  /**
+   * Optional logger for success/failure messages. Defaults to silent so this
+   * package stays silent in browser contexts (Node CLIs may inject a logger).
+   */
+  logger?: WriteGeneratedEmailLogger;
+}
+
+export interface WriteGeneratedEmailLogger {
+  info?: (message: string) => void;
+  error?: (message: string) => void;
 }
 
 /**
@@ -18,24 +28,25 @@ export interface WriteGeneratedEmailOptions {
 export async function writeGeneratedEmail(
   options: WriteGeneratedEmailOptions
 ): Promise<string | undefined> {
+  const logger = options.logger ?? {};
   try {
     const outPath = await writeGeneratedFile({
       content: options.content,
       fileName: options.fileName,
       dir: options.dir && options.dir !== '' ? options.dir : 'generated',
     });
-    console.log(`✅  ${options.label} → ${outPath}`);
+    logger.info?.(`✅  ${options.label} → ${outPath}`);
     return outPath;
   } catch (err: unknown) {
     if (err instanceof MarkupGeneratorError) {
-      console.error(
+      logger.error?.(
         `❌ Failed to write ${options.fileName} [${err.code}]: ${err.message}`
       );
       process.exitCode = 1;
       return undefined;
     }
     if (err instanceof Error) {
-      console.error(`❌ Failed to write ${options.fileName}: ${err.message}`);
+      logger.error?.(`❌ Failed to write ${options.fileName}: ${err.message}`);
       process.exitCode = 1;
       return undefined;
     }
