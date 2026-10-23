@@ -1,7 +1,7 @@
 {
   "name": "@llazyemail/fs",
   "version": "0.0.0",
-  "description": "FS primitives (stub — Phase 0)",
+  "description": "FS primitives for markup-generator (ensureDir, resolveFromCwd, pathExists, listTemplateFiles)",
   "private": true,
   "type": "module",
   "main": "./dist/index.js",
@@ -17,12 +17,14 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "node --input-type=module -e \"import('./dist/index.js').then((m) => { if (m.PHASE0_STUB !== true) process.exit(1); console.log('@llazyemail/fs stub ok'); })\"",
+    "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "lint": "node -e \"console.log('lint stub: @llazyemail/fs (no rules yet)')\""
+    "lint": "node -e \"console.log('lint: @llazyemail/fs (no rules yet)')\""
   },
   "devDependencies": {
-    "typescript": "^5.6.0"
+    "@types/node": "^24.0.0",
+    "typescript": "^5.6.0",
+    "vitest": "^5.0.0"
   },
   "engines": {
     "node": ">=20"

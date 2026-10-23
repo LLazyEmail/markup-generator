@@ -1,6 +1,8 @@
 /**
- * @llazyemail/fs — Phase 0 scaffold stub.
- * Real implementation will land in a later v4 phase; do not rely on this API.
+ * @llazyemail/fs — FS primitives extracted in Phase 1.
+ * Pure path/dir helpers only (no gray-matter / front-matter).
  */
-export const PHASE0_STUB = true as const;
-export const PACKAGE_NAME = '@llazyemail/fs' as const;
+export { ensureDir, isFolderExists } from './ensureDir';
+export { resolveFromCwd } from './resolveFromCwd';
+export { pathExists, listTemplateFiles } from './fs-list';
+export type { ListTemplateFilesOptions } from './fs-list';
