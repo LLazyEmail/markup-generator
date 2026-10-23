@@ -72,7 +72,7 @@
     "type": "git",
     "url": "git+https://github.com/LLazyEmail/markup-generator.git"
   },
-  "packageManager": "pnpm@10.34.6",
+  "packageManager": "pnpm@10.34.8",
   "pnpm": {
     "onlyBuiltDependencies": [
       "esbuild"
