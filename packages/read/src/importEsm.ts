@@ -1,8 +1,6 @@
 /**
- * TypeScript can rewrite `import()` to `require()` in CJS builds.
- * This keeps a real dynamic import at runtime.
+ * Native dynamic import helper. This package is ESM (`"type": "module"`,
+ * `module: ESNext`), so TypeScript preserves `import()` as-is at runtime.
  */
-export const importEsm = new Function(
-  'specifier',
-  'return import(specifier)'
-) as (specifier: string) => Promise<{ default?: unknown }>;
+export const importEsm = (specifier: string): Promise<{ default?: unknown }> =>
+  import(specifier) as Promise<{ default?: unknown }>;
