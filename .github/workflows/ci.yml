@@ -1,5 +1,4 @@
-# One lightweight CI job.
-# Copied from LLazyEmail/markdown-regex.
+# One lightweight CI job — pnpm + Turborepo (v4 Phase 0 monorepo scaffold).
 
 name: CI
 
@@ -20,22 +19,26 @@ jobs:
   check:
     name: Lint, typecheck, build, test
     runs-on: ubuntu-latest
-    timeout-minutes: 6
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 1
 
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - uses: actions/setup-node@v7
         with:
           node-version: 24
+          cache: pnpm
 
       - name: Install
-        run: npm install --no-audit --no-fund
+        run: pnpm install --frozen-lockfile
 
-      - name: ESLint, typecheck, build, test
+      - name: ESLint (soft), typecheck, turbo build + test
         run: |
-          npx eslint src || true
-          npm run typecheck
-          npm run build
-          npm test
+          pnpm run lint
+          pnpm run typecheck
+          pnpm exec turbo run build test
