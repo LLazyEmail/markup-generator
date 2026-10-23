@@ -1,0 +1,30 @@
+{
+  "name": "@llazyemail/template",
+  "version": "0.0.0",
+  "description": "Template generation (stub — Phase 0)",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "node --input-type=module -e \"import('./dist/index.js').then((m) => { if (m.PHASE0_STUB !== true) process.exit(1); console.log('@llazyemail/template stub ok'); })\"",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "node -e \"console.log('lint stub: @llazyemail/template (no rules yet)')\""
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
