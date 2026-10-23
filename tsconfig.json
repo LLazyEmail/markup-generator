@@ -21,6 +21,15 @@
       ],
       "@llazyemail/read": [
         "packages/read/src/index.ts"
+      ],
+      "@llazyemail/email": [
+        "packages/email/src/index.ts"
+      ],
+      "@llazyemail/cli": [
+        "packages/cli/src/index.ts"
+      ],
+      "@llazyemail/template": [
+        "packages/template/src/index.ts"
       ]
     }
   },
