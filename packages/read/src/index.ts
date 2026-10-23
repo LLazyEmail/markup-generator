@@ -1,6 +1,10 @@
 /**
- * @llazyemail/read — Phase 0 scaffold stub.
- * Real implementation will land in a later v4 phase; do not rely on this API.
+ * @llazyemail/read — read helpers extracted in Phase 2.
+ * Owns gray-matter; root markup-generator must not depend on it directly.
  */
-export const PHASE0_STUB = true as const;
-export const PACKAGE_NAME = '@llazyemail/read' as const;
+export { readSourceFile } from './readSourceFile';
+export { readFrontMatter } from './readFrontMatter';
+export { readJson, writeJson } from './json-io';
+export { loadData, loadContent } from './load';
+export { importEsm } from './importEsm';
+export type { TemplateData } from './types';
