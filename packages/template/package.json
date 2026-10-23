@@ -1,7 +1,7 @@
 {
   "name": "@llazyemail/template",
   "version": "0.0.0",
-  "description": "Template generation (stub — Phase 0)",
+  "description": "Template generation for markup-generator (generateTemplate, TemplateGenerator, createGenerator)",
   "private": true,
   "type": "module",
   "main": "./dist/index.js",
@@ -17,12 +17,19 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "node --input-type=module -e \"import('./dist/index.js').then((m) => { if (m.PHASE0_STUB !== true) process.exit(1); console.log('@llazyemail/template stub ok'); })\"",
+    "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "lint": "node -e \"console.log('lint stub: @llazyemail/template (no rules yet)')\""
+    "lint": "node -e \"console.log('lint: @llazyemail/template (no rules yet)')\""
+  },
+  "dependencies": {
+    "@llazyemail/cli": "workspace:*",
+    "@llazyemail/read": "workspace:*",
+    "@llazyemail/write": "workspace:*"
   },
   "devDependencies": {
-    "typescript": "^5.6.0"
+    "@types/node": "^24.0.0",
+    "typescript": "^5.6.0",
+    "vitest": "^5.0.0"
   },
   "engines": {
     "node": ">=20"

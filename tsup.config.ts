@@ -1,5 +1,7 @@
 import { defineConfig } from 'tsup';
 
+const inlineWorkspace = [/^@llazyemail\//] as const;
+
 export default defineConfig([
   {
     entry: {
@@ -15,7 +17,7 @@ export default defineConfig([
     platform: 'node',
     // Workspace packages are private; inline them. Bundle gray-matter too so root
     // package.json need not list it (owned by @llazyemail/read).
-    noExternal: [/^@llazyemail\//],
+    noExternal: [...inlineWorkspace],
   },
   {
     entry: {
@@ -43,5 +45,6 @@ export default defineConfig([
     banner: {
       js: '#!/usr/bin/env node',
     },
+    noExternal: [...inlineWorkspace],
   },
 ]);
