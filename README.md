@@ -15,6 +15,11 @@ npm install markup-generator
 
 Requires **Node 20+**. Ships as a dual CJS/ESM build with bundled TypeScript types.
 
+## Monorepo (v4 Phase 0)
+
+This repo is scaffolding toward a pnpm + Turborepo monorepo. The published library still builds from the **root** `src/`. Stub packages live under `packages/@llazyemail/*` (private; no source extracted yet). See [docs/v4-monorepo.md](docs/v4-monorepo.md).
+
+
 ## Why
 
 Several sibling projects independently reinvented the same file-writing boilerplate — manual directory creation, raw `fs` calls, and ad-hoc error handling. This module centralizes that logic so every consumer gets the same guarantees: missing directories are created automatically, content is validated before writing, and failures come back as a single typed error instead of inconsistent thrown exceptions.

@@ -1,6 +1,7 @@
 dist
 node_modules
 yarn.lock
+package-lock.json
 coverage
 *.lcov
 generated
@@ -8,3 +9,4 @@ generated
 .nx
 .DS_Store
 *.log
+.turbo
