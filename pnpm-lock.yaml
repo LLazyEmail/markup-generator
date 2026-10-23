@@ -8,12 +8,21 @@ importers:
 
   .:
     dependencies:
+      '@llazyemail/cli':
+        specifier: workspace:*
+        version: link:packages/cli
+      '@llazyemail/email':
+        specifier: workspace:*
+        version: link:packages/email
       '@llazyemail/fs':
         specifier: workspace:*
         version: link:packages/fs
       '@llazyemail/read':
         specifier: workspace:*
         version: link:packages/read
+      '@llazyemail/template':
+        specifier: workspace:*
+        version: link:packages/template
       '@llazyemail/write':
         specifier: workspace:*
         version: link:packages/write
@@ -38,10 +47,20 @@ importers:
         version: 5.0.5(@types/node@24.19.2)(vite@8.3.5(@types/node@24.19.2)(esbuild@0.28.2)(tsx@4.23.15))
 
   packages/cli:
+    dependencies:
+      '@llazyemail/write':
+        specifier: workspace:*
+        version: link:../write
     devDependencies:
+      '@types/node':
+        specifier: ^24.0.0
+        version: 24.19.2
       typescript:
         specifier: ^5.6.0
         version: 5.9.3
+      vitest:
+        specifier: ^5.0.0
+        version: 5.0.5(@types/node@24.19.2)(vite@8.3.5(@types/node@24.19.2)(esbuild@0.28.2)(tsx@4.23.15))
 
   packages/core:
     devDependencies:
@@ -50,10 +69,20 @@ importers:
         version: 5.9.3
 
   packages/email:
+    dependencies:
+      '@llazyemail/write':
+        specifier: workspace:*
+        version: link:../write
     devDependencies:
+      '@types/node':
+        specifier: ^24.0.0
+        version: 24.19.2
       typescript:
         specifier: ^5.6.0
         version: 5.9.3
+      vitest:
+        specifier: ^5.0.0
+        version: 5.0.5(@types/node@24.19.2)(vite@8.3.5(@types/node@24.19.2)(esbuild@0.28.2)(tsx@4.23.15))
 
   packages/fs:
     devDependencies:
@@ -87,10 +116,26 @@ importers:
         version: 5.0.5(@types/node@24.19.2)(vite@8.3.5(@types/node@24.19.2)(esbuild@0.28.2)(tsx@4.23.15))
 
   packages/template:
+    dependencies:
+      '@llazyemail/cli':
+        specifier: workspace:*
+        version: link:../cli
+      '@llazyemail/read':
+        specifier: workspace:*
+        version: link:../read
+      '@llazyemail/write':
+        specifier: workspace:*
+        version: link:../write
     devDependencies:
+      '@types/node':
+        specifier: ^24.0.0
+        version: 24.19.2
       typescript:
         specifier: ^5.6.0
         version: 5.9.3
+      vitest:
+        specifier: ^5.0.0
+        version: 5.0.5(@types/node@24.19.2)(vite@8.3.5(@types/node@24.19.2)(esbuild@0.28.2)(tsx@4.23.15))
 
   packages/write:
     dependencies:
