@@ -38,7 +38,11 @@
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "example": "tsx examples/write-newsletter.ts",
-    "prepublishOnly": "npm test && npm run build"
+    "prepublishOnly": "pnpm test && pnpm run build",
+    "lint": "eslint src || true",
+    "turbo:build": "turbo run build",
+    "turbo:test": "turbo run test",
+    "turbo:lint": "turbo run lint"
   },
   "dependencies": {
     "gray-matter": "^4.0.3"
@@ -48,7 +52,8 @@
     "tsx": "^4.19.2",
     "tsup": "^9.0.0",
     "typescript": "^5.6.0",
-    "vitest": "^5.0.0"
+    "vitest": "^5.0.0",
+    "turbo": "^2.5.4"
   },
   "publishConfig": {
     "access": "public"
@@ -66,5 +71,11 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LLazyEmail/markup-generator.git"
+  },
+  "packageManager": "pnpm@10.34.6",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }
