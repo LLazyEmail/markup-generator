@@ -1,6 +1,10 @@
 import { defineConfig } from 'tsup';
 
-const inlineWorkspace = [/^@llazyemail\//] as const;
+// Root package.json has no "type": "module", so force the extensions that
+// package.json `main` / `module` / `exports` / `bin` point at.
+const outExtension = ({ format }: { format: string }) => ({
+  js: format === 'cjs' ? '.cjs' : '.js',
+});
 
 export default defineConfig([
   {
@@ -14,10 +18,10 @@ export default defineConfig([
     sourcemap: true,
     target: 'node20',
     outDir: 'dist',
+    outExtension,
     platform: 'node',
-    // Workspace packages are private; inline them. Bundle gray-matter too so root
-    // package.json need not list it (owned by @llazyemail/read).
-    noExternal: [...inlineWorkspace],
+    // v4: @llazyemail/* are published dependencies, so keep them external
+    // (gray-matter is resolved through @llazyemail/read at runtime).
   },
   {
     entry: {
@@ -29,6 +33,7 @@ export default defineConfig([
     sourcemap: true,
     target: 'es2020',
     outDir: 'dist',
+    outExtension,
     platform: 'browser',
   },
   {
@@ -41,10 +46,8 @@ export default defineConfig([
     sourcemap: false,
     target: 'node20',
     outDir: 'dist',
+    outExtension,
     platform: 'node',
-    banner: {
-      js: '#!/usr/bin/env node',
-    },
-    noExternal: [...inlineWorkspace],
+    // src/cli.ts already starts with a shebang; tsup preserves it.
   },
 ]);

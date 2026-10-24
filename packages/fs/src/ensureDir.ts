@@ -7,5 +7,8 @@ export function ensureDir(dir: string): void {
   }
 }
 
-/** @deprecated Use ensureDir. */
+/**
+ * @deprecated since 4.0.0 — use `ensureDir`. The name suggests a boolean check,
+ * but it creates the directory. Kept as an alias; will be removed in v5.
+ */
 export const isFolderExists = ensureDir;

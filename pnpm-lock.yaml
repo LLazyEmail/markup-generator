@@ -9,22 +9,22 @@ importers:
   .:
     dependencies:
       '@llazyemail/cli':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:packages/cli
       '@llazyemail/email':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:packages/email
       '@llazyemail/fs':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:packages/fs
       '@llazyemail/read':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:packages/read
       '@llazyemail/template':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:packages/template
       '@llazyemail/write':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:packages/write
     devDependencies:
       '@types/node':
@@ -49,12 +49,15 @@ importers:
   packages/cli:
     dependencies:
       '@llazyemail/write':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../write
     devDependencies:
       '@types/node':
         specifier: ^24.0.0
         version: 24.19.2
+      tsup:
+        specifier: ^9.0.0
+        version: 9.0.0(postcss@8.5.31)(tsx@4.23.15)(typescript@5.9.3)
       typescript:
         specifier: ^5.6.0
         version: 5.9.3
@@ -64,6 +67,9 @@ importers:
 
   packages/core:
     devDependencies:
+      tsup:
+        specifier: ^9.0.0
+        version: 9.0.0(postcss@8.5.31)(tsx@4.23.15)(typescript@5.9.3)
       typescript:
         specifier: ^5.6.0
         version: 5.9.3
@@ -71,12 +77,15 @@ importers:
   packages/email:
     dependencies:
       '@llazyemail/write':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../write
     devDependencies:
       '@types/node':
         specifier: ^24.0.0
         version: 24.19.2
+      tsup:
+        specifier: ^9.0.0
+        version: 9.0.0(postcss@8.5.31)(tsx@4.23.15)(typescript@5.9.3)
       typescript:
         specifier: ^5.6.0
         version: 5.9.3
@@ -89,6 +98,9 @@ importers:
       '@types/node':
         specifier: ^24.0.0
         version: 24.19.2
+      tsup:
+        specifier: ^9.0.0
+        version: 9.0.0(postcss@8.5.31)(tsx@4.23.15)(typescript@5.9.3)
       typescript:
         specifier: ^5.6.0
         version: 5.9.3
@@ -99,7 +111,7 @@ importers:
   packages/read:
     dependencies:
       '@llazyemail/write':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../write
       gray-matter:
         specifier: ^4.0.3
@@ -108,6 +120,9 @@ importers:
       '@types/node':
         specifier: ^24.0.0
         version: 24.19.2
+      tsup:
+        specifier: ^9.0.0
+        version: 9.0.0(postcss@8.5.31)(tsx@4.23.15)(typescript@5.9.3)
       typescript:
         specifier: ^5.6.0
         version: 5.9.3
@@ -118,18 +133,21 @@ importers:
   packages/template:
     dependencies:
       '@llazyemail/cli':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../cli
       '@llazyemail/read':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../read
       '@llazyemail/write':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../write
     devDependencies:
       '@types/node':
         specifier: ^24.0.0
         version: 24.19.2
+      tsup:
+        specifier: ^9.0.0
+        version: 9.0.0(postcss@8.5.31)(tsx@4.23.15)(typescript@5.9.3)
       typescript:
         specifier: ^5.6.0
         version: 5.9.3
@@ -140,12 +158,15 @@ importers:
   packages/write:
     dependencies:
       '@llazyemail/fs':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../fs
     devDependencies:
       '@types/node':
         specifier: ^24.0.0
         version: 24.19.2
+      tsup:
+        specifier: ^9.0.0
+        version: 9.0.0(postcss@8.5.31)(tsx@4.23.15)(typescript@5.9.3)
       typescript:
         specifier: ^5.6.0
         version: 5.9.3
