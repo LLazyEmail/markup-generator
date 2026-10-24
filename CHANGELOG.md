@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.0] - Unreleased
+
+### Changed
+- `markup-generator` is now the core barrel re-exporting `@llazyemail/{fs,write,read,email,template,cli}` (all published at 4.0.0)
+- `writeGeneratedEmail` is silent by default; pass `logger: console`
+- `gray-matter` is a dependency of `@llazyemail/read` only
+- Root build fixed to emit `.cjs`/`.js` matching `exports`/`bin`
+
+### Deprecated
+- `writeHTML` (use `writeGeneratedFile`), `isFolderExists` (use `ensureDir`)
+
+### Removed
+- `writingFile` (use `writeGeneratedFile({ content, prefix })`)
+
+See MIGRATION.md.
+
 ## [3.0.0] - Unreleased
 
 ### Added

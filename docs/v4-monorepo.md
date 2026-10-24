@@ -1,4 +1,4 @@
-# v4 monorepo (Phase 0 + Phase 1 + Phase 2 + Phase 3)
+# v4 monorepo (Phases 0–4)
 
 Related: [#272 Re-organization Version #4](https://github.com/LLazyEmail/markup-generator/issues/272), [#270 writeGeneratedEmail vs writeGeneratedFile](https://github.com/LLazyEmail/markup-generator/issues/270), [#278 gray-matter / Dependabot](https://github.com/LLazyEmail/markup-generator/issues/278).
 
@@ -13,7 +13,7 @@ Real implementations (not stubs):
 | Package | Contents |
 |---------|----------|
 | `@llazyemail/fs` | `ensureDir`, `isFolderExists`, `resolveFromCwd`, `pathExists`, `listTemplateFiles` (no gray-matter / `readFrontMatter`) |
-| `@llazyemail/write` | `writeGeneratedFile`, `writeHTML`, `writingFile`, `generateFileName`, `MarkupGeneratorError`, `DEFAULT_MESSAGES`, write types |
+| `@llazyemail/write` | `writeGeneratedFile`, `writeHTML` (deprecated in Phase 4), `writingFile` (removed in Phase 4), `generateFileName`, `MarkupGeneratorError`, `DEFAULT_MESSAGES`, write types |
 
 ## Phase 2 — extract `@llazyemail/read`
 
@@ -27,7 +27,7 @@ Real implementations (not stubs):
 
 | Package | Contents |
 |---------|----------|
-| `@llazyemail/email` | `writeGeneratedEmail` (stable filename + console / `exitCode`; builds on `@llazyemail/write`) |
+| `@llazyemail/email` | `writeGeneratedEmail` (stable filename + optional `logger` / `exitCode`; builds on `@llazyemail/write`) |
 | `@llazyemail/template` | `generateTemplate`, `buildFallbackContent`, `TemplateGenerator`, `createGenerator` — **write unified onto `@llazyemail/write`** (`TemplateGenerator.write` / `generateTemplate` call `writeGeneratedFile`, not raw `fs.writeFileSync`) |
 | `@llazyemail/cli` | `parseArgv` / `CliArgs`, `runCli` (root bin entrypoint logic) |
 
@@ -39,23 +39,33 @@ pnpm exec turbo run build test
 pnpm exec tsc --noEmit
 ```
 
+## Phase 4 — core barrel + publishable packages
+
+- Root `markup-generator@4.0.0` is the **core barrel**: `src/index.ts` re-exports `@llazyemail/{fs,write,read,email,cli}` (`export *`) and `@llazyemail/template` (explicit list, to avoid duplicate `loadData` / `loadContent` / `TemplateData`). The bin (`dist/cli.cjs`) and `./browser` subpath (`generateFileName` only) are kept.
+- Root `tsup` no longer inlines `@llazyemail/*`; they are real `dependencies` (`workspace:^` → `^4.0.0` on publish). Output extensions fixed to `.cjs` / `.js`.
+- Scoped packages: `private` removed, `version: 4.0.0`, `publishConfig.access: public`, built with `tsup --no-config` to ESM + CJS + `.d.ts` (the previous `tsc` output used extensionless ESM imports and was not runnable from Node).
+- `@llazyemail/core` stays a **private stub** (the root package is the core barrel).
+- Legacy APIs: `writeHTML` and `isFolderExists` deprecated (`@deprecated` JSDoc, removed in v5); `writingFile` removed.
+- Publishing: `.github/workflows/npm-publish.yml` runs `pnpm -r publish`, which publishes in topological order (fs → write → cli/email/read → template → markup-generator) and skips versions already on npm. Local check: `pnpm run publish:dry`.
+
+See [MIGRATION.md](../MIGRATION.md) for the v3 → v4 upgrade guide.
+
 ## Package map
 
 | Package | Role | Status |
 |---------|------|--------|
-| `markup-generator` (root) | Public publishable barrel | **Active** |
+| `markup-generator` (root) | Core barrel (re-exports all) + bin + `./browser` | **Phase 4** — 4.0.0 |
 | `@llazyemail/fs` | FS primitives | **Phase 1** — real code + tests |
 | `@llazyemail/write` | Write helpers | **Phase 1** — real code + tests |
 | `@llazyemail/read` | Read helpers (+ gray-matter) | **Phase 2** — real code + tests |
 | `@llazyemail/email` | Email-oriented wrappers | **Phase 3** — real code + tests |
 | `@llazyemail/cli` | CLI / argv / bin | **Phase 3** — real code + tests |
 | `@llazyemail/template` | Template generation | **Phase 3** — real code + tests |
-| `@llazyemail/core` | Shared core / barrel pieces | Stub |
+| `@llazyemail/core` | Reserved name | Private stub (not published) |
 
-Publish plan (later): keep root `markup-generator` on npm, then publish scoped `@llazyemail/*`. Root `tsup` inlines `@llazyemail/*` (and bundles `gray-matter` through `@llazyemail/read`) so the published tarball stays self-contained.
+All scoped packages except `@llazyemail/core` are publishable at 4.0.0 (Phase 4).
 
 ## Explicitly not done yet
 
-- No extracting `@llazyemail/core` barrel
 - No deleting `old/` or Nx remnant (Phase 5)
-- Scoped packages stay `private: true` until a publish phase
+- No actual npm publish yet (dry run only)

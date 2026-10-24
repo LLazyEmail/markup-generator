@@ -1,4 +1,4 @@
 /**
- * Browser-safe entry. Only the pure filename helper.
+ * Browser-safe entry (`markup-generator/browser`). Only the pure filename helper.
  */
-export { generateFileName } from './generateFileName';
+export { generateFileName } from '../packages/write/src/generateFileName';

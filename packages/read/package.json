@@ -1,36 +1,49 @@
 {
   "name": "@llazyemail/read",
-  "version": "0.0.0",
+  "version": "4.0.0",
   "description": "Read helpers for markup-generator (readSourceFile, readFrontMatter, readJson/writeJson, loadData, loadContent)",
-  "private": true,
   "type": "module",
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsup src/index.ts --no-config --format esm,cjs --dts --clean --target node20 --platform node",
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "node -e \"console.log('lint: @llazyemail/read (no rules yet)')\""
   },
   "dependencies": {
-    "@llazyemail/write": "workspace:*",
+    "@llazyemail/write": "workspace:^",
     "gray-matter": "^4.0.3"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",
     "typescript": "^5.6.0",
-    "vitest": "^5.0.0"
+    "vitest": "^5.0.0",
+    "tsup": "^9.0.0"
   },
   "engines": {
     "node": ">=20"
+  },
+  "module": "./dist/index.js",
+  "license": "MIT",
+  "author": "Arthur Tkachenko",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LLazyEmail/markup-generator.git",
+    "directory": "packages/read"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

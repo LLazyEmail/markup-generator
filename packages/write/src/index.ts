@@ -2,7 +2,6 @@
  * @llazyemail/write — write helpers extracted in Phase 1.
  */
 export {
-  writingFile,
   writeHTML,
   generateFileName,
   writeGeneratedFile,

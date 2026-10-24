@@ -7,6 +7,11 @@ import { generateFileName } from './generateFileName';
 import type { WriteGeneratedFileOptions } from './types';
 
 /**
+ * @deprecated since 4.0.0 — use `writeGeneratedFile({ fileName, content, dir })`,
+ * which validates the same way, supports `overwrite: 'error'` and returns the
+ * absolute path. `writeHTML` stays only as a compatibility shim and will be
+ * removed in v5.
+ *
  * Writes UTF-8 text to `{cwd}/{dir}/{fileName}`.
  *
  * Contract:
@@ -19,11 +24,17 @@ import type { WriteGeneratedFileOptions } from './types';
  * - optional 4th arg `_message` is retained for API compatibility but is not logged
  *   (callers such as writeGeneratedEmail / CLI own success output; avoids console in shared surface)
  */
-const writeHTML = async (
+const writeHTML = (
   fileName: string,
   data: string,
   dir = 'generated',
   _message = ''
+): Promise<void> => writeText(fileName, data, dir);
+
+const writeText = async (
+  fileName: string,
+  data: string,
+  dir = 'generated'
 ): Promise<void> => {
   if (!data) {
     throw new MarkupGeneratorError('EMPTY_CONTENT');
@@ -45,19 +56,6 @@ const writeHTML = async (
   } catch {
     throw new MarkupGeneratorError('WRITE_FAILED');
   }
-};
-
-const writingFile = async (content: string, name = 'prefix'): Promise<void> => {
-  if (name === '') name = 'prefix';
-
-  if (!content) {
-    throw new MarkupGeneratorError(
-      'EMPTY_CONTENT',
-      'no content was passed into writingFile method'
-    );
-  }
-
-  await writeHTML(generateFileName(name), content);
 };
 
 /**
@@ -82,12 +80,11 @@ const writeGeneratedFile = async (
     );
   }
 
-  await writeHTML(fileName, options.content, dir);
+  await writeText(fileName, options.content, dir);
   return fullPath;
 };
 
 export {
-  writingFile,
   writeHTML,
   generateFileName,
   writeGeneratedFile,
