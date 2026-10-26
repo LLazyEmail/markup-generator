@@ -6,3 +6,5 @@ export { ensureDir, isFolderExists } from './ensureDir';
 export { resolveFromCwd } from './resolveFromCwd';
 export { pathExists, listTemplateFiles } from './fs-list';
 export type { ListTemplateFilesOptions } from './fs-list';
+export { MarkupGeneratorError, DEFAULT_MESSAGES } from './errors';
+export type { MarkupGeneratorErrorCode, MarkupGeneratorErrorOptions } from './errors';
