@@ -135,6 +135,9 @@ importers:
       '@llazyemail/cli':
         specifier: workspace:^
         version: link:../cli
+      '@llazyemail/fs':
+        specifier: workspace:^
+        version: link:../fs
       '@llazyemail/read':
         specifier: workspace:^
         version: link:../read
