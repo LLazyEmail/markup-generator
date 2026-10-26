@@ -6,9 +6,9 @@ import {
   generateFileName,
   readSourceFile,
   writeHTML,
-  writingFile,
   DEFAULT_MESSAGES,
 } from '../src/index';
+import * as api from '../src/index';
 
 const UUID_RE = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
 
@@ -61,11 +61,23 @@ describe('writeHTML', () => {
   });
 });
 
-describe('writingFile', () => {
-  test('writes markdown content with a generated name', async () => {
-    await writingFile(markdown, 'this-is-my-name');
-    expect(
-      existsSync(resolve(process.cwd(), 'generated')) || existsSync(outDir)
-    ).toBe(true);
+describe('v4 legacy API surface', () => {
+  test('writingFile was removed in v4', () => {
+    expect('writingFile' in api).toBe(false);
+  });
+
+  test('deprecated aliases are still exported', () => {
+    expect(typeof api.writeHTML).toBe('function');
+    expect(api.isFolderExists).toBe(api.ensureDir);
+  });
+
+  test('re-exports every scoped package', () => {
+    for (const name of [
+      'ensureDir', 'writeGeneratedFile', 'readFrontMatter',
+      'writeGeneratedEmail', 'parseArgv', 'runCli', 'generateTemplate',
+      'TemplateGenerator', 'loadData',
+    ]) {
+      expect(name in api).toBe(true);
+    }
   });
 });

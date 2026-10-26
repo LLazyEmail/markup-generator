@@ -1,68 +1,34 @@
-import {
-  readSourceFile,
-  isFolderExists,
-  ensureDir,
-  readFrontMatter,
-} from './fileSystem';
-
-import {
-  writeHTML,
-  writingFile,
-  generateFileName,
-  writeGeneratedFile,
-} from './write';
-
-import { writeGeneratedEmail } from './writeGeneratedEmail';
-import { readJson, writeJson } from './json-io';
-import {
-  parseArgv,
-  loadData,
-  loadContent,
+/**
+ * markup-generator v4 — core barrel.
+ *
+ * Re-exports every scoped package so `import { … } from 'markup-generator'`
+ * keeps working. Import from the scoped package directly when you only need
+ * one slice (e.g. `@llazyemail/read` for gray-matter front-matter parsing).
+ *
+ * Legacy APIs:
+ * - `writeHTML`      — deprecated (use `writeGeneratedFile`), removed in v5
+ * - `isFolderExists` — deprecated (use `ensureDir`), removed in v5
+ * - `writingFile`    — removed in v4 (use `writeGeneratedFile({ content, prefix })`)
+ */
+export * from '@llazyemail/fs';
+export * from '@llazyemail/write';
+export * from '@llazyemail/read';
+export * from '@llazyemail/email';
+export * from '@llazyemail/cli';
+// `@llazyemail/template` re-exports loadData / loadContent / TemplateData from
+// `@llazyemail/read`; list its own symbols explicitly to avoid duplicate exports.
+export {
   buildFallbackContent,
   generateTemplate,
-} from './generate-template';
-import { resolveFromCwd } from './read';
-import { pathExists, listTemplateFiles } from './fs-list';
-import { TemplateGenerator, createGenerator } from './templateGenerator';
-
-export type { WriteGeneratedFileOptions } from './types';
-export type { WriteGeneratedEmailOptions } from './writeGeneratedEmail';
+  TemplateGenerator,
+  createGenerator,
+  DEFAULT_OUT_DIR,
+} from '@llazyemail/template';
 export type {
-  CliArgs,
-  TemplateData,
   RenderTemplate,
   GenerateTemplateOptions,
-} from './generate-template';
-export type { ListTemplateFilesOptions } from './fs-list';
-export type {
   TemplateCatalogEntry,
   GeneratorConfig,
   RenderOptions,
   WriteOptions,
-} from './templateGenerator';
-export { MarkupGeneratorError, DEFAULT_MESSAGES } from './errors';
-export type { MarkupGeneratorErrorCode } from './errors';
-
-export {
-  readSourceFile,
-  readFrontMatter,
-  ensureDir,
-  isFolderExists,
-  writeHTML,
-  writingFile,
-  generateFileName,
-  writeGeneratedFile,
-  writeGeneratedEmail,
-  readJson,
-  writeJson,
-  parseArgv,
-  loadData,
-  loadContent,
-  buildFallbackContent,
-  generateTemplate,
-  resolveFromCwd,
-  pathExists,
-  listTemplateFiles,
-  TemplateGenerator,
-  createGenerator,
-};
+} from '@llazyemail/template';

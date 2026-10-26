@@ -15,9 +15,20 @@ npm install markup-generator
 
 Requires **Node 20+**. Ships as a dual CJS/ESM build with bundled TypeScript types.
 
-## Monorepo (v4 Phase 0)
+## Packages (v4)
 
-This repo is scaffolding toward a pnpm + Turborepo monorepo. The published library still builds from the **root** `src/`. Stub packages live under `packages/@llazyemail/*` (private; no source extracted yet). See [docs/v4-monorepo.md](docs/v4-monorepo.md).
+`markup-generator` 4.x is a **core barrel**: it re-exports the scoped packages below, keeps the `markup-generator` CLI bin, and keeps the `markup-generator/browser` subpath (only `generateFileName`). Install a scoped package directly if you only need one slice.
+
+| Package | Contents |
+|---------|----------|
+| [`@llazyemail/fs`](packages/fs) | `ensureDir`, `resolveFromCwd`, `pathExists`, `listTemplateFiles` |
+| [`@llazyemail/write`](packages/write) | `writeGeneratedFile`, `generateFileName`, `MarkupGeneratorError`, `DEFAULT_MESSAGES` |
+| [`@llazyemail/read`](packages/read) | `readSourceFile`, `readFrontMatter` (gray-matter), `readJson`, `writeJson`, `loadData`, `loadContent` |
+| [`@llazyemail/email`](packages/email) | `writeGeneratedEmail` |
+| [`@llazyemail/template`](packages/template) | `generateTemplate`, `buildFallbackContent`, `TemplateGenerator`, `createGenerator` |
+| [`@llazyemail/cli`](packages/cli) | `parseArgv`, `runCli` |
+
+Upgrading from 3.x? See [MIGRATION.md](MIGRATION.md). Monorepo layout: [docs/v4-monorepo.md](docs/v4-monorepo.md).
 
 
 ## Why
@@ -44,7 +55,7 @@ Resolves with the absolute path written to. Throws `MarkupGeneratorError` on fai
 
 ### `writeGeneratedEmail({ content, fileName, label, dir })`
 
-A higher-level wrapper around `writeGeneratedFile`, purpose-built for email-generation scripts. Adds friendly console logging and graceful failure handling.
+A higher-level wrapper around `writeGeneratedFile`, purpose-built for email-generation scripts, with graceful failure handling. **Silent by default since 4.0.0** — pass `logger: console` to get the success / failure lines.
 
 ```js
 const { writeGeneratedEmail } = require('markup-generator');
@@ -53,11 +64,12 @@ await writeGeneratedEmail({
   content: renderedHtml,
   fileName: 'hackernoon-email.html',
   label: 'Hackernoon',
+  logger: console, // optional; omit for silent
 });
 ```
 
-- On success: writes the file and logs a confirmation.
-- On `MarkupGeneratorError`: logs `❌ Failed to write <file> [<code>]: <message>`, sets `process.exitCode = 1`, and resolves `undefined` — **does not throw**.
+- On success: writes the file and (with a logger) logs a confirmation.
+- On `MarkupGeneratorError`: logs (with a logger) `❌ Failed to write <file> [<code>]: <message>`, sets `process.exitCode = 1`, and resolves `undefined` — **does not throw**.
 - Any other error type still throws, so unexpected failures aren't silently swallowed.
 
 ### `generateFileName(prefix)`
@@ -75,7 +87,7 @@ generateFileName('hackernoon-email');
 
 ### `readJson(path)` / `writeJson(path, data)`
 
-Typed JSON read/write helpers (`src/json-io.ts`).
+Typed JSON read/write helpers (from `@llazyemail/read`).
 
 ```js
 const { readJson, writeJson } = require('markup-generator');
@@ -136,6 +148,12 @@ generateTemplate({
 
 > This bundles CLI parsing, data loading, and rendering-orchestration into one call. If your script's argument format or fallback-content logic diverges from the built-in defaults, use the lower-level `parseArgv`/`loadData`/`loadContent`/`writeGeneratedFile` pieces directly instead.
 
+### Deprecated / removed in 4.0.0
+
+- `writeHTML(fileName, data, dir)` — **deprecated**, use `writeGeneratedFile({ fileName, content, dir })`. Removed in v5.
+- `isFolderExists(dir)` — **deprecated** alias of `ensureDir(dir)`. Removed in v5.
+- `writingFile(content, prefix)` — **removed**, use `writeGeneratedFile({ content, prefix })`.
+
 ## Error handling
 
 Every failure from this module is a `MarkupGeneratorError` — a single error class with a `code` field, so callers can branch on failure type without parsing message strings.
@@ -166,10 +184,10 @@ try {
 ## Development
 
 ```bash
-npm install
-npm test        # Vitest
-npm run build   # tsup — outputs dual CJS/ESM + type declarations to dist/
-npm run lint
+pnpm install
+pnpm exec turbo run build test lint   # all workspace packages
+pnpm exec tsc --noEmit                # root typecheck
+pnpm run publish:dry                  # pnpm -r publish --dry-run (never publishes)
 ```
 
 Test runner: **Vitest** (migrated from Jest). Build tool: **tsup**.
