@@ -65,7 +65,11 @@ See [MIGRATION.md](../MIGRATION.md) for the v3 → v4 upgrade guide.
 
 All scoped packages except `@llazyemail/core` are publishable at 4.0.0 (Phase 4).
 
+## Phase 5 — housekeeping (done)
+
+- Nx remnant (`write/`) removed; Turborepo is the only task runner
+- `old/` removed; useful content preserved in [legacy-notes.md](./legacy-notes.md) and [future-ideas.md](./future-ideas.md)
+
 ## Explicitly not done yet
 
-- No deleting `old/` or Nx remnant (Phase 5)
 - No actual npm publish yet (dry run only)
