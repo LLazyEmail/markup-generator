@@ -65,13 +65,15 @@ and `<p>${data.preview || ''}</p>`. **Values are not HTML-escaped.**
 ```ts
 type TemplateCatalogEntry = { ids: string[]; [key: string]: unknown };
 type GeneratorConfig = {
-  catalog?: TemplateCatalogEntry[];          // default []
+  catalog?: TemplateCatalogEntry[];          // default []; see findCatalogEntry
   samplePayloads?: Record<string, unknown>;  // default {}
   root?: string;                             // default process.cwd(), resolved
   templatesDir?: string;                     // default 'src/templates' (relative to root)
   dataDir?: string;                          // default 'src/data' (relative to root)
-  outDir?: string;                           // default DEFAULT_OUT_DIR = 'generated' (NOT resolved against root)
+  outDir?: string;                           // default DEFAULT_OUT_DIR = 'generated' (resolved against root on write)
   skipFiles?: string[];                      // default index.js, index2.js, registry.ts, registry.js
+  extensions?: RegExp;                       // default DEFAULT_TEMPLATE_EXTENSIONS = /\.(ts|js|html)$/
+  renderTemplate?: RenderTemplate;           // optional custom renderer
 };
 type RenderOptions = { payload?: unknown; dataPath?: string };
 type WriteOptions  = { out?: string; payload?: unknown; dataPath?: string };
@@ -81,19 +83,17 @@ The constructor stores every config value as a `readonly` property.
 
 | Method | Behaviour |
 |--------|-----------|
-| `listTemplateFiles(): string[]` | Sorted `.ts`/`.js` files in `templatesDir`, excluding `skipFiles` and `LATER.` names. Returns `[]` if the directory is missing. This is a separate implementation from `@llazyemail/fs` `listTemplateFiles`. |
-| `loadPayload(templateId, dataPath?): Promise<unknown>` | If `dataPath` is set, it is resolved against `root` and loaded as `.json` (`readJson`) or as a module (`default ?? module`). Otherwise it returns `samplePayloads[templateId]`, which may be `undefined`. |
-| `render(templateId, options?): Promise<string>` | Uses `options.payload` if it is not `undefined`, and `loadPayload` otherwise. **This is currently a placeholder** that returns `JSON.stringify({ templateId, payload })`. Subclass it and override `render` to do real rendering. |
-| `write(templateId, options?): Promise<string>` | Renders, then writes to `options.out`, or `path.join(outDir, '<templateId>.html')` if `out` is not set. The output path is resolved against **`process.cwd()`, not `root`**. It returns the absolute path and overwrites existing files. |
+| `listTemplateFiles(): string[]` | Delegates to `@llazyemail/fs` `listTemplateFiles(templatesDir, { skipFiles, extensions })`: sorted, skip list and `LATER.` names excluded, `[]` if the directory is missing. |
+| `loadPayload(templateId, dataPath?): Promise<unknown>` | 1. `dataPath` resolved against `root`, loaded with `@llazyemail/read` `loadData` (`.json` or module). 2. `samplePayloads[templateId]`. 3. `<dataDir>/<templateId>.json\|.js\|.mjs\|.cjs` if present. 4. `undefined`. |
+| `render(templateId, options?): Promise<string>` | Payload = `options.payload` or `loadPayload`. Then: `renderTemplate(id, { string: fallbackFragment, data })` if configured; else `<templatesDir>/<templateId>.html` with `{{key}}` / `{{nested.key}}` (HTML-escaped) and `{{{key}}}` (raw) placeholders (`templateId` is also available); else `buildFallbackContent` (title/preview escaped) wrapped in a full HTML document (`wrapHtmlDocument`). |
+| `write(templateId, options?): Promise<string>` | Renders, then writes to `options.out`, or `path.join(outDir, '<templateId>.html')`. Relative paths are resolved against **`root`** (changed in this release; previously `process.cwd()`). Returns the absolute path and overwrites existing files. |
+| `findCatalogEntry(templateId)` | First `catalog` entry whose `ids` include `templateId`, or `undefined`. The generator does not otherwise interpret catalog entries. |
 
-`catalog` and `dataDir` are stored but not used by any method.
+Helpers `interpolate(template, data)` and `wrapHtmlDocument(body, title?)` are exported too.
 
 ```ts
-class MyGen extends TemplateGenerator {
-  async render(id: string, o = {}) { const p = await this.loadPayload(id, o.dataPath); return myRender(id, p); }
-}
-const gen = new MyGen({ root: __dirname, samplePayloads: { hn: { title: 'Hi' } } });
-await gen.write('hn'); // → <cwd>/generated/hn.html
+const gen = createGenerator({ root: __dirname, samplePayloads: { hn: { title: 'Hi' } } });
+await gen.write('hn'); // → <root>/generated/hn.html (fallback HTML, or src/templates/hn.html if present)
 ```
 
 ## Testing and building
