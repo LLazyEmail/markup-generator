@@ -117,6 +117,21 @@ describe('TemplateGenerator', () => {
     await expect(generator.loadPayload('missing')).resolves.toBeUndefined();
   });
 
+  test('loadPayload precedence: dataPath > samplePayloads > dataDir file', async () => {
+    mkdirSync(dataDir, { recursive: true });
+    writeFileSync(resolve(dataDir, 'news.json'), JSON.stringify({ title: 'From dataDir' }));
+    writeFileSync(resolve(dataDir, 'explicit.json'), JSON.stringify({ title: 'Explicit' }));
+    const generator = new TemplateGenerator({
+      root: testDir,
+      dataDir: 'data',
+      samplePayloads: { news: { title: 'Sample' } },
+    });
+    await expect(generator.loadPayload('news')).resolves.toEqual({ title: 'Sample' });
+    await expect(generator.loadPayload('news', 'data/explicit.json')).resolves.toEqual({
+      title: 'Explicit',
+    });
+  });
+
   test('render produces an HTML document (fallback content) instead of JSON', async () => {
     const generator = new TemplateGenerator({ root: testDir });
     const html = await generator.render('test-id', {

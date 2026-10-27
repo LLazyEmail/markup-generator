@@ -30,9 +30,9 @@ describe('read error codes', () => {
 
   test('loadData: module that throws -> EIMPORT with original error as cause', async () => {
     mkdirSync(outDir, { recursive: true });
-    const p = resolve(outDir, 'boom.mjs');
-    writeFileSync(p, "throw new Error('boom');\n");
-    const err = await loadData(p).catch((e: unknown) => e);
+    const brokenModulePath = resolve(outDir, 'boom.mjs');
+    writeFileSync(brokenModulePath, "throw new Error('boom');\n");
+    const err = await loadData(brokenModulePath).catch((e: unknown) => e);
     expect((err as MarkupGeneratorError).code).toBe('EIMPORT');
     expect(((err as MarkupGeneratorError).cause as Error).message).toBe('boom');
   });
@@ -45,9 +45,9 @@ describe('read error codes', () => {
 
   test('readJson: invalid JSON -> JSON_PARSE with SyntaxError cause', () => {
     mkdirSync(outDir, { recursive: true });
-    const p = resolve(outDir, 'bad.json');
-    writeFileSync(p, '{nope');
-    const { code, cause } = codeAndCause(() => readJson(p));
+    const invalidJsonPath = resolve(outDir, 'bad.json');
+    writeFileSync(invalidJsonPath, '{nope');
+    const { code, cause } = codeAndCause(() => readJson(invalidJsonPath));
     expect(code).toBe('JSON_PARSE');
     expect(cause).toBeInstanceOf(SyntaxError);
   });
