@@ -40,7 +40,7 @@
     "typecheck": "tsc --noEmit",
     "example": "tsx examples/write-newsletter.ts",
     "prepublishOnly": "pnpm exec turbo run build test",
-    "lint": "eslint src || true",
+    "lint": "eslint .",
     "turbo:build": "turbo run build",
     "turbo:test": "turbo run test",
     "turbo:lint": "turbo run lint",
@@ -55,12 +55,16 @@
     "@llazyemail/write": "workspace:^"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.5",
     "@types/node": "^24.0.0",
-    "tsx": "^4.19.2",
+    "eslint": "^9.39.5",
+    "globals": "^17.13.0",
     "tsup": "^9.0.0",
+    "tsx": "^4.19.2",
+    "turbo": "^2.5.4",
     "typescript": "^5.6.0",
-    "vitest": "^5.0.0",
-    "turbo": "^2.5.4"
+    "typescript-eslint": "^8.72.1",
+    "vitest": "^5.0.0"
   },
   "publishConfig": {
     "access": "public"

@@ -6,7 +6,6 @@ coverage
 *.lcov
 generated
 *.tsbuildinfo
-.nx
 .DS_Store
 *.log
 .turbo

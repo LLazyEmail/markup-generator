@@ -13,13 +13,20 @@ import * as api from '../src/index';
 const UUID_RE = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
 
 const root = dirname(fileURLToPath(import.meta.url));
-const markdown = readSourceFile(resolve(root, 'source.md'));
 const outDir = resolve(process.cwd(), 'generated-index');
 
 afterEach(() => {
   if (existsSync(outDir)) {
     rmSync(outDir, { recursive: true, force: true });
   }
+});
+
+describe('readSourceFile', () => {
+  test('reads the markdown fixture as a non-empty string', () => {
+    const markdown = readSourceFile(resolve(root, 'source.md'));
+    expect(typeof markdown).toBe('string');
+    expect(markdown.length).toBeGreaterThan(0);
+  });
 });
 
 describe('generateFileName', () => {
