@@ -152,20 +152,23 @@ export class TemplateGenerator {
    * 4. `undefined`
    */
   async loadPayload(templateId: string, dataPath?: string): Promise<unknown> {
-    if (dataPath) {
-      return loadData(path.resolve(this.root, dataPath));
-    }
+    const sourcePath = this.resolvePayloadPath(templateId, dataPath);
+    const payload: unknown = sourcePath
+      ? await loadData(sourcePath)
+      : this.samplePayloads[templateId];
+    return payload;
+  }
 
-    if (templateId in this.samplePayloads) {
-      return this.samplePayloads[templateId];
-    }
-
-    for (const ext of DATA_EXTENSIONS) {
-      const candidate = path.join(this.dataDir, `${templateId}${ext}`);
-      if (existsSync(candidate)) return loadData(candidate);
-    }
-
-    return undefined;
+  /**
+   * File to load the payload from, or `undefined` when the payload comes from
+   * `samplePayloads` (or is absent). Mirrors the order documented on `loadPayload`.
+   */
+  private resolvePayloadPath(templateId: string, dataPath?: string): string | undefined {
+    if (dataPath) return path.resolve(this.root, dataPath);
+    if (templateId in this.samplePayloads) return undefined;
+    return DATA_EXTENSIONS.map((ext) => path.join(this.dataDir, `${templateId}${ext}`)).find(
+      (candidate) => existsSync(candidate),
+    );
   }
 
   /**
