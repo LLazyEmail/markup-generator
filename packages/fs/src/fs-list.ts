@@ -1,5 +1,6 @@
 import { existsSync, readdirSync } from 'node:fs';
 import { resolveFromCwd } from './resolveFromCwd';
+import { MarkupGeneratorError } from './errors';
 
 const DEFAULT_SKIP = new Set(['index.js', 'index2.js', 'registry.ts', 'registry.js']);
 
@@ -16,8 +17,8 @@ export type ListTemplateFilesOptions = {
  * List template-like files in a directory.
  * Missing directories return []. Used by generate-template CLI --list.
  *
- * Note: readdir failures throw a plain Error (typed MarkupGeneratorError /
- * EREAD lives in @llazyemail/write to avoid an fs↔write cycle).
+ * readdir failures throw MarkupGeneratorError('EREAD') with the original
+ * error as `cause`.
  */
 export function listTemplateFiles(
   dir: string,
@@ -38,8 +39,10 @@ export function listTemplateFiles(
       })
       .sort();
   } catch (error) {
-    throw new Error(
-      `Failed to read directory "${absolute}": ${(error as Error).message}`
+    throw new MarkupGeneratorError(
+      'EREAD',
+      `Failed to read directory "${absolute}": ${(error as Error).message}`,
+      { cause: error }
     );
   }
 }

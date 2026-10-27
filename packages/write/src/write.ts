@@ -53,8 +53,8 @@ const writeText = async (
 
   try {
     await writeFile(fullPath, data, 'utf-8');
-  } catch {
-    throw new MarkupGeneratorError('WRITE_FAILED');
+  } catch (err) {
+    throw new MarkupGeneratorError('WRITE_FAILED', undefined, { cause: err });
   }
 };
 

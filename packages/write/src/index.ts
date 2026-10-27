@@ -11,4 +11,4 @@ export {
   MarkupGeneratorError,
   DEFAULT_MESSAGES,
 } from './errors';
-export type { MarkupGeneratorErrorCode } from './errors';
+export type { MarkupGeneratorErrorCode, MarkupGeneratorErrorOptions } from './errors';

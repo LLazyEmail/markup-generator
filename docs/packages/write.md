@@ -55,8 +55,8 @@ const p2 = await writeGeneratedFile({ content: html, fileName: 'hn.html', dir: '
 ### `generateFileName(suffix: string, ext = 'html'): string`
 Returns `` `${suffix}-${crypto.randomUUID()}.${ext}` `` and uses
 `globalThis.crypto`, so it runs in both Node 20+ and browsers. Passing
-`ext === ''` falls back to `'html'`. Leading dots are not stripped, so `'.txt'`
-produces `x-uuid..txt`. The same function is exposed as `markup-generator/browser`.
+A leading dot is stripped (`'.txt'` → `x-uuid.txt`); an empty or dot-only `ext` falls back to `'html'`.
+The same function is exposed as `markup-generator/browser`.
 
 ### `writeHTML(fileName, data, dir = 'generated', _message = ''): Promise<void>` (deprecated)
 This is a compatibility shim and will be removed in v5. It validates the same
@@ -68,7 +68,8 @@ way as `writeGeneratedFile`, but it **returns `void`**, does not support
 ```ts
 class MarkupGeneratorError extends Error {
   readonly code: MarkupGeneratorErrorCode;
-  constructor(code: MarkupGeneratorErrorCode, message?: string); // default DEFAULT_MESSAGES[code]
+  readonly cause?: unknown; // underlying error, when there is one
+  constructor(code: MarkupGeneratorErrorCode, message?: string, options?: { cause?: unknown }); // default DEFAULT_MESSAGES[code]
   // name === 'MarkupGeneratorError'
 }
 type MarkupGeneratorErrorCode =
@@ -82,11 +83,11 @@ type MarkupGeneratorErrorCode =
 | EMPTY_CONTENT | content variable is empty | write |
 | NOT_A_STRING | content variable is not a string | write |
 | FILE_EXISTS | file already exists | write (`overwrite: 'error'`) |
-| WRITE_FAILED | file not written | write |
-| JSON_READ | failed to read JSON file | read (`readJson`) |
-| JSON_PARSE | failed to parse JSON file | read (`readJson`) |
-| EIMPORT | failed to import module | *nothing currently* |
-| EREAD | failed to read path | *nothing currently* |
+| WRITE_FAILED | file not written | write (`cause` = fs error) |
+| JSON_READ | failed to read JSON file | read (`readJson`, `cause` set) |
+| JSON_PARSE | failed to parse JSON file | read (`readJson`, `cause` set) |
+| EIMPORT | failed to import module | read (`loadData` for non-JSON modules) |
+| EREAD | failed to read path | read (`loadContent`, `readSourceFile`), fs (`listTemplateFiles`) |
 
 ```ts
 try { await writeGeneratedFile({ content: '' }); }

@@ -43,11 +43,13 @@ for historical reasons.)
 - `.json` (case-insensitive): it calls `readJson`, so it can throw `JSON_READ` or `JSON_PARSE`.
 - Anything else: it runs `import(pathToFileURL(dataPath).href)` and returns
   `mod.default ?? mod` (the module namespace if there is no default export).
-  Import errors are thrown as they are (the `EIMPORT` code is not used).
+  Import failures (missing file, syntax error, module that throws) are thrown as
+  `MarkupGeneratorError` with code `EIMPORT` and the original error as `cause`.
 - Pass absolute paths. `pathToFileURL` resolves relative paths against the cwd.
 
 ### `loadContent(contentPath?: string, cwd = process.cwd()): string | null`
 Returns `null` when `contentPath` is falsy. Otherwise it reads `resolve(cwd, contentPath)` as UTF-8.
+Read failures throw `MarkupGeneratorError` `EREAD` with the original error as `cause` (same for `readSourceFile`).
 
 ### `importEsm(specifier: string): Promise<{ default?: unknown }>`
 A thin wrapper around native `import()`. The bundler preserves it as-is, so it
