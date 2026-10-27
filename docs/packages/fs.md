@@ -48,9 +48,9 @@ type ListTemplateFilesOptions = {
 - It keeps only names that match `extensions`. The result is sorted
   lexicographically (`Array.prototype.sort`).
 - Only the top level is listed, and directory entries are not filtered by type.
-- If `readdirSync` fails, it throws a **plain `Error`**:
-  `Failed to read directory "<abs>": <reason>`. It does not throw
-  `MarkupGeneratorError`, because that would create a dependency cycle.
+- If `readdirSync` fails, it throws `MarkupGeneratorError` with code `EREAD`
+  (`Failed to read directory "<abs>": <reason>`) and the original error as `cause`.
+  `MarkupGeneratorError` lives in `@llazyemail/fs` and is re-exported by `@llazyemail/write`.
 - Passing `skipFiles` **replaces** the default skip list. It does not add to it.
 
 ```ts

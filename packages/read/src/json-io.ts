@@ -10,7 +10,8 @@ export function readJson<T = unknown>(filePath: string): T {
   } catch (err) {
     throw new MarkupGeneratorError(
       'JSON_READ',
-      `Failed to read JSON file "${filePath}": ${(err as Error).message}`
+      `Failed to read JSON file "${filePath}": ${(err as Error).message}`,
+      { cause: err }
     );
   }
 
@@ -19,7 +20,8 @@ export function readJson<T = unknown>(filePath: string): T {
   } catch (err) {
     throw new MarkupGeneratorError(
       'JSON_PARSE',
-      `Failed to parse JSON file "${filePath}": ${(err as Error).message}`
+      `Failed to parse JSON file "${filePath}": ${(err as Error).message}`,
+      { cause: err }
     );
   }
 }

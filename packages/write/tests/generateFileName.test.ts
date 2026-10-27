@@ -20,3 +20,14 @@ describe('generateFileName', () => {
     expect(first).not.toBe(second);
   });
 });
+
+describe('generateFileName extension normalisation', () => {
+  test('a leading dot does not produce a double dot', () => {
+    expect(generateFileName('x', '.txt')).toMatch(new RegExp(`^x-${UUID_RE}\\.txt$`));
+  });
+
+  test('empty or dot-only ext falls back to html', () => {
+    expect(generateFileName('x', '')).toMatch(new RegExp(`^x-${UUID_RE}\\.html$`));
+    expect(generateFileName('x', '.')).toMatch(new RegExp(`^x-${UUID_RE}\\.html$`));
+  });
+});

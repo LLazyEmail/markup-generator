@@ -6,7 +6,6 @@ import { TemplateGenerator, createGenerator } from '../src/index';
 const testDir = resolve(process.cwd(), 'test-template-generator-pkg');
 const templatesDir = resolve(testDir, 'templates');
 const dataDir = resolve(testDir, 'data');
-const outDir = resolve(testDir, 'generated');
 
 afterEach(() => {
   if (existsSync(testDir)) {
@@ -89,43 +88,124 @@ describe('TemplateGenerator', () => {
     expect(payload).toEqual({ fromSample: true });
   });
 
-  test('render uses provided payload when available', async () => {
-    const generator = new TemplateGenerator();
-    const customPayload = { custom: 'data' };
-    const result = await generator.render('test-id', { payload: customPayload });
-    
-    const parsed = JSON.parse(result);
-    expect(parsed.templateId).toBe('test-id');
-    expect(parsed.payload).toEqual(customPayload);
+  test('listTemplateFiles includes .html templates and honours custom extensions', () => {
+    mkdirSync(templatesDir, { recursive: true });
+    writeFileSync(resolve(templatesDir, 'a.html'), '<p></p>');
+    writeFileSync(resolve(templatesDir, 'b.ts'), '');
+    writeFileSync(resolve(templatesDir, 'c.mjml'), '');
+
+    expect(new TemplateGenerator({ templatesDir }).listTemplateFiles()).toEqual(['a.html', 'b.ts']);
+    expect(
+      new TemplateGenerator({ templatesDir, extensions: /\.mjml$/ }).listTemplateFiles()
+    ).toEqual(['c.mjml']);
+  });
+
+  test('loadPayload resolves relative dataPath against root (via loadData)', async () => {
+    mkdirSync(dataDir, { recursive: true });
+    writeFileSync(resolve(dataDir, 'mod.mjs'), 'export default { title: "From module" };');
+    const generator = new TemplateGenerator({ root: testDir });
+    await expect(generator.loadPayload('x', 'data/mod.mjs')).resolves.toEqual({
+      title: 'From module',
+    });
+  });
+
+  test('loadPayload falls back to <dataDir>/<templateId>.json', async () => {
+    mkdirSync(dataDir, { recursive: true });
+    writeFileSync(resolve(dataDir, 'news.json'), JSON.stringify({ title: 'From dataDir' }));
+    const generator = new TemplateGenerator({ root: testDir, dataDir: 'data' });
+    await expect(generator.loadPayload('news')).resolves.toEqual({ title: 'From dataDir' });
+    await expect(generator.loadPayload('missing')).resolves.toBeUndefined();
+  });
+
+  test('loadPayload precedence: dataPath > samplePayloads > dataDir file', async () => {
+    mkdirSync(dataDir, { recursive: true });
+    writeFileSync(resolve(dataDir, 'news.json'), JSON.stringify({ title: 'From dataDir' }));
+    writeFileSync(resolve(dataDir, 'explicit.json'), JSON.stringify({ title: 'Explicit' }));
+    const generator = new TemplateGenerator({
+      root: testDir,
+      dataDir: 'data',
+      samplePayloads: { news: { title: 'Sample' } },
+    });
+    await expect(generator.loadPayload('news')).resolves.toEqual({ title: 'Sample' });
+    await expect(generator.loadPayload('news', 'data/explicit.json')).resolves.toEqual({
+      title: 'Explicit',
+    });
+  });
+
+  test('render produces an HTML document (fallback content) instead of JSON', async () => {
+    const generator = new TemplateGenerator({ root: testDir });
+    const html = await generator.render('test-id', {
+      payload: { title: 'Hello <World>', preview: 'Preview & more' },
+    });
+
+    expect(html.startsWith('<!DOCTYPE html>')).toBe(true);
+    expect(html).toContain('<title>Hello &lt;World&gt;</title>');
+    expect(html).toContain('<h1 style="margin: 0 0 8px 0;">Hello &lt;World&gt;</h1>');
+    expect(html).toContain('Preview &amp; more');
+    expect(() => JSON.parse(html)).toThrow();
   });
 
   test('render loads payload from samplePayloads when not provided', async () => {
     const generator = new TemplateGenerator({
-      samplePayloads: { 'test-id': { fromSample: true } }
+      root: testDir,
+      samplePayloads: { 'test-id': { title: 'Sample' } },
     });
-    const result = await generator.render('test-id');
-    
-    const parsed = JSON.parse(result);
-    expect(parsed.payload).toEqual({ fromSample: true });
+    const html = await generator.render('test-id');
+    expect(html).toContain('>Sample</h1>');
   });
 
-  test('write creates directory and writes HTML file', async () => {
-    const generator = new TemplateGenerator({ outDir });
-    const result = await generator.write('test-template');
-    
+  test('render uses <templatesDir>/<id>.html with {{placeholders}}', async () => {
+    mkdirSync(templatesDir, { recursive: true });
+    writeFileSync(
+      resolve(templatesDir, 'news.html'),
+      '<html><body data-id="{{templateId}}"><h1>{{title}}</h1><p>{{meta.author}}</p>{{{rawHtml}}}{{missing}}</body></html>'
+    );
+    const generator = new TemplateGenerator({ templatesDir });
+    const html = await generator.render('news', {
+      payload: { title: 'A & B', meta: { author: 'Arthur' }, rawHtml: '<b>x</b>' },
+    });
+    expect(html).toBe(
+      '<html><body data-id="news"><h1>A &amp; B</h1><p>Arthur</p><b>x</b></body></html>'
+    );
+  });
+
+  test('render delegates to config.renderTemplate', async () => {
+    const generator = new TemplateGenerator({
+      root: testDir,
+      renderTemplate: (id, { string, data }) => `<main id="${id}">${data.title}|${string.includes('<table')}</main>`,
+    });
+    await expect(generator.render('x', { payload: { title: 'T' } })).resolves.toBe(
+      '<main id="x">T|true</main>'
+    );
+  });
+
+  test('findCatalogEntry returns the entry listing the id', () => {
+    const entry = { ids: ['a', 'b'], label: 'AB' };
+    const generator = new TemplateGenerator({ catalog: [entry] });
+    expect(generator.findCatalogEntry('b')).toBe(entry);
+    expect(generator.findCatalogEntry('z')).toBeUndefined();
+  });
+
+  test('write resolves outDir against root and writes HTML', async () => {
+    const generator = new TemplateGenerator({ root: testDir });
+    const result = await generator.write('test-template', { payload: { title: 'Hi' } });
+
+    expect(result).toBe(resolve(testDir, 'generated', 'test-template.html'));
+    expect(readFileSync(result, 'utf-8')).toContain('>Hi</h1>');
+  });
+
+  test('write resolves a relative out against root, not process.cwd()', async () => {
+    const generator = new TemplateGenerator({ root: testDir });
+    const result = await generator.write('x', { out: 'custom/out.html' });
+    expect(result).toBe(resolve(testDir, 'custom', 'out.html'));
     expect(existsSync(result)).toBe(true);
-    expect(result).toContain('test-template.html');
-    
-    const content = readFileSync(result, 'utf-8');
-    const parsed = JSON.parse(content);
-    expect(parsed.templateId).toBe('test-template');
   });
 
-  test('write uses custom output path when provided', async () => {
+  test('write uses custom absolute output path when provided', async () => {
     const customOutPath = resolve(testDir, 'custom', 'output.html');
     const generator = new TemplateGenerator();
     const result = await generator.write('test-id', { out: customOutPath });
-    
+
     expect(result).toBe(customOutPath);
     expect(existsSync(customOutPath)).toBe(true);
   });
@@ -134,7 +214,7 @@ describe('TemplateGenerator', () => {
     const nestedPath = resolve(testDir, 'deep', 'nested', 'path.html');
     const generator = new TemplateGenerator();
     const result = await generator.write('test-id', { out: nestedPath });
-    
+
     expect(existsSync(result)).toBe(true);
     expect(existsSync(resolve(testDir, 'deep', 'nested'))).toBe(true);
   });

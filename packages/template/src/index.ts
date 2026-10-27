@@ -17,6 +17,9 @@ export {
   TemplateGenerator,
   createGenerator,
   DEFAULT_OUT_DIR,
+  DEFAULT_TEMPLATE_EXTENSIONS,
+  interpolate,
+  wrapHtmlDocument,
 } from './templateGenerator';
 export type {
   TemplateCatalogEntry,
