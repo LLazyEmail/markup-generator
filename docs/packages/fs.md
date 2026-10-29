@@ -4,12 +4,13 @@ Filesystem and path primitives. This package has no workspace dependencies and
 uses only `node:fs` and `node:path`. It is Node-only.
 
 ```bash
-pnpm add @llazyemail/fs
+npm install markup-generator
+# (internal module @llazyemail/fs is bundled; not published separately)
 ```
 
 ```ts
-import { ensureDir, resolveFromCwd, pathExists, listTemplateFiles } from '@llazyemail/fs'; // ESM
-const { ensureDir } = require('@llazyemail/fs');                                            // CJS
+import { ensureDir, resolveFromCwd, pathExists, listTemplateFiles } from 'markup-generator'; // ESM
+const { ensureDir } = require('markup-generator');                                            // CJS
 ```
 
 ## Exports

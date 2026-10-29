@@ -5,12 +5,13 @@ the **only** package that depends on `gray-matter`. It also depends on
 `@llazyemail/write` for `MarkupGeneratorError`. It is Node-only.
 
 ```bash
-pnpm add @llazyemail/read
+npm install markup-generator
+# (internal module @llazyemail/read is bundled; not published separately)
 ```
 
 ```ts
-import { readSourceFile, readFrontMatter, readJson, writeJson, loadData, loadContent, importEsm } from '@llazyemail/read';
-const { readFrontMatter } = require('@llazyemail/read'); // CJS
+import { readSourceFile, readFrontMatter, readJson, writeJson, loadData, loadContent, importEsm } from 'markup-generator';
+const { readFrontMatter } = require('markup-generator'); // CJS
 ```
 
 ## Exports

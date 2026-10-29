@@ -1,9 +1,10 @@
 # markup-generator (root barrel)
 
-The root package re-exports every `@llazyemail/*` package. It also provides a
-browser-safe subpath and the `markup-generator` bin. It depends on fs, write,
-read, email, cli and template (`workspace:^`, published as `^4.0.0`). These
-dependencies are kept external and are not bundled.
+The root package is the **only** npm-published package. It bundles every
+`@llazyemail/*` workspace module into `dist/` (tsup `noExternal`) and re-exports
+their public APIs. It also provides a browser-safe subpath and the
+`markup-generator` bin. Runtime dependency on npm: `gray-matter` only. Internal
+`@llazyemail/*` packages are `private: true` and are **not** published.
 
 ```bash
 pnpm add markup-generator

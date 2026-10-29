@@ -5,11 +5,12 @@ Template generation. It depends on `@llazyemail/cli` (`parseArgv`),
 `@llazyemail/write` (`writeGeneratedFile`). It is Node-only.
 
 ```bash
-pnpm add @llazyemail/template
+npm install markup-generator
+# (internal module @llazyemail/template is bundled; not published separately)
 ```
 
 ```ts
-import { generateTemplate, buildFallbackContent, TemplateGenerator, createGenerator, DEFAULT_OUT_DIR } from '@llazyemail/template';
+import { generateTemplate, buildFallbackContent, TemplateGenerator, createGenerator, DEFAULT_OUT_DIR } from 'markup-generator';
 ```
 
 This package also re-exports `loadData`, `loadContent` and the `TemplateData`
