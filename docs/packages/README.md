@@ -2,20 +2,22 @@
 
 Reference docs for every package in this pnpm + Turborepo monorepo. Everything
 here was written from the source in `packages/*/src` and `src/` at v4.0.0, so it
-describes what the code does today, not what it should do. For upgrading from
-v3, see [MIGRATION.md](../../MIGRATION.md). For the original v4 plan, see
+describes what the code does today, not what it should do. **Only the root
+`markup-generator` package is published to npm**; `@llazyemail/*` modules stay
+private and are bundled into it. For upgrading from v3, see
+[MIGRATION.md](../../MIGRATION.md). For the original v4 plan, see
 [docs/v4-monorepo.md](../v4-monorepo.md).
 
 | Package | Published | Purpose | Doc |
 |---------|-----------|---------|-----|
-| `@llazyemail/fs` | yes | Directory and path helpers (`ensureDir`, `resolveFromCwd`, `pathExists`, `listTemplateFiles`) | [fs.md](./fs.md) |
-| `@llazyemail/write` | yes | File writing, unique filenames, `MarkupGeneratorError` | [write.md](./write.md) |
-| `@llazyemail/read` | yes | Text, front-matter and JSON reading, data/content loaders, `importEsm` | [read.md](./read.md) |
-| `@llazyemail/email` | yes | `writeGeneratedEmail`, which writes to a stable filename and has an optional logger | [email.md](./email.md) |
-| `@llazyemail/cli` | yes | `parseArgv`, `runCli` (logic behind the `markup-generator` bin) | [cli.md](./cli.md) |
-| `@llazyemail/template` | yes | `generateTemplate`, `TemplateGenerator`, `createGenerator` | [template.md](./template.md) |
-| `@llazyemail/core` | **no (private)** | Reserved-name stub | [core.md](./core.md) |
-| `markup-generator` (root) | yes | Barrel that re-exports everything, plus the `/browser` subpath and the bin | [markup-generator.md](./markup-generator.md) |
+| `@llazyemail/fs` | **no (private; bundled)** | Directory and path helpers (`ensureDir`, `resolveFromCwd`, `pathExists`, `listTemplateFiles`) | [fs.md](./fs.md) |
+| `@llazyemail/write` | **no (private; bundled)** | File writing, unique filenames, `MarkupGeneratorError` | [write.md](./write.md) |
+| `@llazyemail/read` | **no (private; bundled)** | Text, front-matter and JSON reading, data/content loaders, `importEsm` | [read.md](./read.md) |
+| `@llazyemail/email` | **no (private; bundled)** | `writeGeneratedEmail`, which writes to a stable filename and has an optional logger | [email.md](./email.md) |
+| `@llazyemail/cli` | **no (private; bundled)** | `parseArgv`, `runCli` (logic behind the `markup-generator` bin) | [cli.md](./cli.md) |
+| `@llazyemail/template` | **no (private; bundled)** | `generateTemplate`, `TemplateGenerator`, `createGenerator` | [template.md](./template.md) |
+| `@llazyemail/core` | **no (private stub)** | Reserved-name stub | [core.md](./core.md) |
+| `markup-generator` (root) | **yes (only public package)** | Self-contained package: bundles the above into `dist/`, plus `/browser` and the bin | [markup-generator.md](./markup-generator.md) |
 
 ## Architecture
 
@@ -52,15 +54,15 @@ depends on it.
 
 ### Layers
 
-1. **fs**: pure Node `fs`/`path` primitives. It has no workspace dependencies.
-   It deliberately throws plain `Error` instead of `MarkupGeneratorError`, which
-   avoids an fs↔write dependency cycle.
-2. **write**: owns the error type (`MarkupGeneratorError`, `DEFAULT_MESSAGES`)
-   and every file write.
-3. **read / email / cli**: built on top of write.
+1. **fs**: Node `fs`/`path` primitives and the shared `MarkupGeneratorError` /
+   `DEFAULT_MESSAGES` (leaf package so fs/read/write can throw without a cycle).
+2. **write**: file writing helpers; re-exports the error type from fs.
+3. **read / email / cli**: built on top of write (read also depends on `gray-matter`).
 4. **template**: combines cli (argv parsing), read (data loading) and write.
-5. **root**: re-exports all of the above and adds `markup-generator/browser` and
-   the `markup-generator` bin.
+5. **root (`markup-generator`)**: the only published package — bundles the above
+   into `dist/`, adds `markup-generator/browser` and the `markup-generator` bin.
+   Consumers should `npm install markup-generator` and import from
+   `'markup-generator'` / `'markup-generator/browser'`.
 
 ### Build order
 
@@ -84,8 +86,11 @@ pnpm turbo:test                                   # turbo run test
 pnpm --filter @llazyemail/write build             # one package
 pnpm --filter @llazyemail/write test
 pnpm --filter @llazyemail/write typecheck
-pnpm publish:dry                                  # pnpm -r publish --dry-run
+pnpm publish:dry                                  # dry-run; only root publishes (scoped pkgs private)
 ```
+
+> **Consumers:** do not `pnpm add @llazyemail/…` from npm — those packages are
+> private workspace modules. Use `npm install markup-generator`.
 
 Each package builds with
 `tsup src/index.ts --no-config --format esm,cjs --dts --clean --target node20 --platform node`.

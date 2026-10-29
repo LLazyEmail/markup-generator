@@ -166,6 +166,13 @@ importers:
 
   .:
     dependencies:
+      gray-matter:
+        specifier: ^4.0.3
+        version: 4.0.3
+    devDependencies:
+      '@eslint/js':
+        specifier: ^10.0.0
+        version: 10.0.1(eslint@10.13.0)
       '@llazyemail/cli':
         specifier: workspace:^
         version: link:packages/cli
@@ -184,10 +191,6 @@ importers:
       '@llazyemail/write':
         specifier: workspace:^
         version: link:packages/write
-    devDependencies:
-      '@eslint/js':
-        specifier: ^10.0.0
-        version: 10.0.1(eslint@10.13.0)
       '@types/node':
         specifier: ^26.0.0
         version: 26.6.5

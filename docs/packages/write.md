@@ -6,12 +6,13 @@ defines the shared error type. It depends on `@llazyemail/fs`, which provides
 browsers.
 
 ```bash
-pnpm add @llazyemail/write
+npm install markup-generator
+# (internal module @llazyemail/write is bundled; not published separately)
 ```
 
 ```ts
-import { writeGeneratedFile, generateFileName, MarkupGeneratorError } from '@llazyemail/write'; // ESM
-const { writeGeneratedFile } = require('@llazyemail/write');                                     // CJS
+import { writeGeneratedFile, generateFileName, MarkupGeneratorError } from 'markup-generator'; // ESM
+const { writeGeneratedFile } = require('markup-generator');                                     // CJS
 ```
 
 ## Exports

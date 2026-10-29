@@ -4,12 +4,13 @@ Argv parsing and the logic behind the `markup-generator` bin. It depends on
 `@llazyemail/write`.
 
 ```bash
-pnpm add @llazyemail/cli
+npm install markup-generator
+# (internal module @llazyemail/cli is bundled; not published separately)
 ```
 
 ```ts
-import { parseArgv, runCli } from '@llazyemail/cli';
-import type { CliArgs } from '@llazyemail/cli';
+import { parseArgv, runCli } from 'markup-generator';
+import type { CliArgs } from 'markup-generator';
 ```
 
 ## `parseArgv(argv: string[]): CliArgs`

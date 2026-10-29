@@ -1,13 +1,14 @@
-# Publish markup-generator + @llazyemail/* to npm when a GitHub Release is published.
+# Publish the self-contained root package `markup-generator` to npm when a
+# GitHub Release is published.
 #
-# `pnpm -r publish` walks the workspace in topological order, so the leaf
-# packages (@llazyemail/fs → write → read/email/cli → template) are published
-# before the root core barrel `markup-generator`. `workspace:^` ranges are
-# rewritten to real versions (e.g. ^4.0.0) in each published package.json.
-# Packages whose current version is already on npm are skipped, and
-# private packages (@llazyemail/core stub) are never published.
-# Auth: npm trusted publishing (OIDC, id-token: write) — each @llazyemail/*
-# package must have this repo/workflow registered as a trusted publisher.
+# Workspace packages under packages/ (@llazyemail/*) are marked private: true
+# and are bundled into markup-generator's dist via tsup `noExternal`. They are
+# not published. `pnpm -r publish` therefore publishes only the root package
+# (private workspace members are skipped).
+#
+# Auth: npm trusted publishing (OIDC, id-token: write) — register this
+# repo/workflow as a trusted publisher for the `markup-generator` package on
+# npm. If the version is already on npm, pnpm skips it (exit 0).
 
 name: Publish to npm
 
@@ -51,9 +52,9 @@ jobs:
       - run: pnpm run typecheck
       - run: pnpm exec turbo run build test lint
 
-      - name: Publish dry run (all packages, topological order)
+      - name: Publish dry run (private workspace packages skipped; only markup-generator)
         run: pnpm -r publish --dry-run --access public --no-git-checks
 
-      - name: Publish to npm (leaf packages first, markup-generator last)
+      - name: Publish markup-generator to npm
         if: ${{ github.event_name == 'release' || inputs.dry_run != true }}
         run: pnpm -r publish --access public --no-git-checks --provenance

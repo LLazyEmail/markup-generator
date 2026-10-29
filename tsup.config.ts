@@ -1,10 +1,13 @@
 import { defineConfig } from 'tsup';
 
-// Root package.json has no "type": "module", so force the extensions that
+// Root package.json has "type": "module", but force the extensions that
 // package.json `main` / `module` / `exports` / `bin` point at.
 const outExtension = ({ format }: { format: string }) => ({
   js: format === 'cjs' ? '.cjs' : '.js',
 });
+
+/** Bundle internal workspace packages so the published tarball has zero @llazyemail/* runtime deps. */
+const noExternal = [/^@llazyemail\//];
 
 export default defineConfig([
   {
@@ -20,8 +23,8 @@ export default defineConfig([
     outDir: 'dist',
     outExtension,
     platform: 'node',
-    // v4: @llazyemail/* are published dependencies, so keep them external
-    // (gray-matter is resolved through @llazyemail/read at runtime).
+    noExternal,
+    // gray-matter stays external (listed in root dependencies).
   },
   {
     entry: {
@@ -35,6 +38,7 @@ export default defineConfig([
     outDir: 'dist',
     outExtension,
     platform: 'browser',
+    // browser.ts imports only generateFileName from packages/write/src (no Node APIs).
   },
   {
     entry: {
@@ -48,6 +52,6 @@ export default defineConfig([
     outDir: 'dist',
     outExtension,
     platform: 'node',
-    // src/cli.ts already starts with a shebang; tsup preserves it.
+    noExternal,
   },
 ]);

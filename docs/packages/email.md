@@ -3,12 +3,13 @@
 Email-oriented wrapper over `@llazyemail/write`. It depends on `@llazyemail/write`.
 
 ```bash
-pnpm add @llazyemail/email
+npm install markup-generator
+# (internal module @llazyemail/email is bundled; not published separately)
 ```
 
 ```ts
-import { writeGeneratedEmail } from '@llazyemail/email';         // ESM
-const { writeGeneratedEmail } = require('@llazyemail/email');    // CJS
+import { writeGeneratedEmail } from 'markup-generator';         // ESM
+const { writeGeneratedEmail } = require('markup-generator');    // CJS
 ```
 
 ## `writeGeneratedEmail(options: WriteGeneratedEmailOptions): Promise<string | undefined>`

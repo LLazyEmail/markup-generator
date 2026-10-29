@@ -8,10 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [4.0.0] - Unreleased
 
 ### Changed
-- `markup-generator` is now the core barrel re-exporting `@llazyemail/{fs,write,read,email,template,cli}` (all published at 4.0.0)
+- `markup-generator` is the **only** published npm package (name stays `markup-generator`). Install with `npm install markup-generator`.
+- Internal workspace modules keep the `@llazyemail/*` names but are `private: true` and are **bundled into** the root `dist/` via tsup `noExternal` — the published tarball has **zero** `@llazyemail/*` runtime dependencies.
+- `gray-matter` is a direct dependency of the root package (needed at runtime for front-matter helpers).
 - `writeGeneratedEmail` is silent by default; pass `logger: console`
-- `gray-matter` is a dependency of `@llazyemail/read` only
-- Root build fixed to emit `.cjs`/`.js` matching `exports`/`bin`
+- Root build emits `.cjs`/`.js` matching `exports`/`bin`, plus `./browser` and the `markup-generator` CLI bin
 
 ### Deprecated
 - `writeHTML` (use `writeGeneratedFile`), `isFolderExists` (use `ensureDir`)

@@ -1,8 +1,12 @@
 # Migration to 4.0.0 (v3 → v4)
 
-v4 splits the library into scoped packages (`@llazyemail/*`). The root
-`markup-generator` package is now a **core barrel** that re-exports all of them,
-so most v3 code keeps working with only the changes listed under *Breaking*.
+v4 organizes the codebase as a monorepo with internal `@llazyemail/*` workspace
+packages. The **only** package published to npm is still named **`markup-generator`**.
+Those workspace modules are bundled into its `dist/`, so `npm install markup-generator`
+gives you a fully working package with no `@llazyemail/*` runtime deps (the npm
+scope does not need to exist). Most v3 code keeps working with only the changes
+listed under *Breaking*. Prefer `import { … } from 'markup-generator'` and
+`import { … } from 'markup-generator/browser'`.
 
 Related: [#272 Re-organization Version #4](https://github.com/LLazyEmail/markup-generator/issues/272).
 
@@ -17,15 +21,19 @@ Related: [#272 Re-organization Version #4](https://github.com/LLazyEmail/markup-
    ```
    The return value and `process.exitCode = 1` behaviour on `MarkupGeneratorError`
    are unchanged.
-3. **`gray-matter` lives only in `@llazyemail/read`.** `markup-generator` no longer
-   bundles it; it is installed transitively through `@llazyemail/read`. If your own
-   code imports `gray-matter` directly, add it to your own `package.json`.
-4. **The root no longer inlines its internals.** `markup-generator` depends on the
-   published `@llazyemail/*` packages (`^4.0.0`) instead of shipping a single
-   bundled file. Deep imports into `markup-generator/dist/*` are not supported.
-5. **`parseArgv` now comes from `@llazyemail/cli`** (still re-exported by the root).
-   The root also newly exports `runCli`, `importEsm`, `DEFAULT_OUT_DIR`,
-   `OverwritePolicy` and `WriteGeneratedEmailLogger`.
+3. **`gray-matter` is a dependency of `markup-generator`.** Front-matter helpers
+   need it at runtime. If your own code imports `gray-matter` directly, you may
+   still add it to your own `package.json`, but installing `markup-generator` is
+   enough for the library's own `readFrontMatter` / related APIs.
+4. **The published tarball is self-contained.** Internal `@llazyemail/*` packages
+   are not published (they are `private: true` workspace modules). They are
+   bundled into `markup-generator`'s `dist/` at build time. Do not `npm install
+   @llazyemail/…` — those packages are not on the registry. Deep imports into
+   `markup-generator/dist/*` are not supported; use the public exports (`.` and
+   `./browser`).
+5. **`parseArgv` / `runCli` are exported from `markup-generator`** (implemented in
+   the internal `@llazyemail/cli` module). The root also newly exports `importEsm`,
+   `DEFAULT_OUT_DIR`, `OverwritePolicy` and `WriteGeneratedEmailLogger`.
 
 ## Deprecated (still work, removed in v5)
 
@@ -36,23 +44,23 @@ Related: [#272 Re-organization Version #4](https://github.com/LLazyEmail/markup-
 
 ## Old → new imports
 
-Everything below is still importable from `markup-generator`; the right-hand
-column is where it lives now if you want the smaller scoped package.
+Everything below is importable from `markup-generator`. The right-hand column is
+the **internal** monorepo module name (not a separate npm package).
 
-| v3 (`markup-generator`) | v4 scoped package |
-|-------------------------|-------------------|
+| v3 (`markup-generator`) | v4 internal module (bundled; not published) |
+|-------------------------|-----------------------------------------------|
 | `ensureDir`, `isFolderExists` *(deprecated)* | `@llazyemail/fs` |
 | `resolveFromCwd`, `pathExists`, `listTemplateFiles` | `@llazyemail/fs` |
 | `writeGeneratedFile`, `generateFileName` | `@llazyemail/write` |
 | `writeHTML` *(deprecated)* | `@llazyemail/write` |
-| `writingFile` | **removed** → `writeGeneratedFile` from `@llazyemail/write` |
-| `MarkupGeneratorError`, `DEFAULT_MESSAGES` | `@llazyemail/write` |
+| `writingFile` | **removed** → `writeGeneratedFile` |
+| `MarkupGeneratorError`, `DEFAULT_MESSAGES` | `@llazyemail/write` (error class lives in `@llazyemail/fs`) |
 | `readSourceFile`, `readFrontMatter` | `@llazyemail/read` |
 | `readJson`, `writeJson`, `loadData`, `loadContent` | `@llazyemail/read` |
 | `writeGeneratedEmail` | `@llazyemail/email` |
 | `generateTemplate`, `buildFallbackContent` | `@llazyemail/template` |
 | `TemplateGenerator`, `createGenerator` | `@llazyemail/template` |
-| `parseArgv` | `@llazyemail/cli` |
+| `parseArgv` / `runCli` | `@llazyemail/cli` |
 | `generateFileName` from `markup-generator/browser` | unchanged (`markup-generator/browser`) |
 | `npx markup-generator …` (bin) | unchanged |
 
@@ -62,9 +70,8 @@ import { writingFile, writeGeneratedEmail } from 'markup-generator';
 await writingFile(html, 'newsletter');
 await writeGeneratedEmail({ content: html, fileName: 'n.html', label: 'N' });
 
-// v4
-import { writeGeneratedFile } from '@llazyemail/write';
-import { writeGeneratedEmail } from '@llazyemail/email';
+// v4 — always import from the published package name
+import { writeGeneratedFile, writeGeneratedEmail } from 'markup-generator';
 await writeGeneratedFile({ content: html, prefix: 'newsletter' });
 await writeGeneratedEmail({ content: html, fileName: 'n.html', label: 'N', logger: console });
 ```
