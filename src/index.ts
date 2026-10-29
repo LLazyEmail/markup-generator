@@ -1,9 +1,10 @@
 /**
- * markup-generator v4 — core barrel.
+ * markup-generator v4 — published entry (self-contained).
  *
- * Re-exports every scoped package so `import { … } from 'markup-generator'`
- * keeps working. Import from the scoped package directly when you only need
- * one slice (e.g. `@llazyemail/read` for gray-matter front-matter parsing).
+ * Re-exports the internal `@llazyemail/*` workspace modules so
+ * `import { … } from 'markup-generator'` is the supported public API.
+ * Those modules are bundled into `dist/` (not published separately).
+ * Browser-safe helper: `import { generateFileName } from 'markup-generator/browser'`.
  *
  * Legacy APIs:
  * - `writeHTML`      — deprecated (use `writeGeneratedFile`), removed in v5
