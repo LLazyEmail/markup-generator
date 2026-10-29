@@ -17,16 +17,15 @@ Requires **Node 20+**. Ships as a dual CJS/ESM build with bundled TypeScript typ
 
 ## Packages (v4)
 
-`markup-generator` 4.x is a **core barrel**: it re-exports the scoped packages below, keeps the `markup-generator` CLI bin, and keeps the `markup-generator/browser` subpath (only `generateFileName`). Install a scoped package directly if you only need one slice.
+`npm install markup-generator` is the only install path. Version 4.x ships as a **self-contained** package: the monorepo's internal `@llazyemail/*` modules are built and **bundled into** this package's `dist/`. They are not published separately (and the `@llazyemail` npm scope does not need to exist).
 
-| Package | Contents |
-|---------|----------|
-| [`@llazyemail/fs`](packages/fs) | `ensureDir`, `resolveFromCwd`, `pathExists`, `listTemplateFiles` |
-| [`@llazyemail/write`](packages/write) | `writeGeneratedFile`, `generateFileName`, `MarkupGeneratorError`, `DEFAULT_MESSAGES` |
-| [`@llazyemail/read`](packages/read) | `readSourceFile`, `readFrontMatter` (gray-matter), `readJson`, `writeJson`, `loadData`, `loadContent` |
-| [`@llazyemail/email`](packages/email) | `writeGeneratedEmail` |
-| [`@llazyemail/template`](packages/template) | `generateTemplate`, `buildFallbackContent`, `TemplateGenerator`, `createGenerator` |
-| [`@llazyemail/cli`](packages/cli) | `parseArgv`, `runCli` |
+| Import from | Contents |
+|-------------|----------|
+| `markup-generator` | Full API: fs / write / read / email / template / cli helpers |
+| `markup-generator/browser` | Browser-safe `generateFileName` only |
+| `markup-generator` bin | `npx markup-generator name|write …` |
+
+Internal layout (contributors only): [`packages/`](packages/) holds `@llazyemail/{fs,write,read,email,template,cli,core}`.
 
 Upgrading from 3.x? See [MIGRATION.md](MIGRATION.md). Monorepo layout: [docs/v4-monorepo.md](docs/v4-monorepo.md).
 
@@ -87,7 +86,7 @@ generateFileName('hackernoon-email');
 
 ### `readJson(path)` / `writeJson(path, data)`
 
-Typed JSON read/write helpers (from `@llazyemail/read`).
+Typed JSON read/write helpers (included in `markup-generator`).
 
 ```js
 const { readJson, writeJson } = require('markup-generator');
