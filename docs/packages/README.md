@@ -106,3 +106,22 @@ placeholders for now.
 | `isFolderExists(dir)` | `@llazyemail/fs` | `ensureDir(dir)` |
 
 `writingFile` was **removed** in v4. Use `writeGeneratedFile({ content, prefix })` instead.
+
+## Open API notes (verified on main)
+
+These are intentional current behaviours, documented so consumers are not surprised.
+Product follow-ups may change them later.
+
+| Behaviour | Notes |
+|-----------|--------|
+| `writeGeneratedEmail` failure sets `process.exitCode = 1` and returns `undefined` | Node-only; not browser-safe despite optional silent logger. See [email.md](./email.md). |
+| `buildFallbackContent` does **not** HTML-escape title/preview | Only `TemplateGenerator.render` escapes before calling it. |
+| Deprecated `writeHTML` ignores 4th arg `_message` | Callers own logging. |
+| `writeJson` (in `@llazyemail/read`) does not wrap errors in `MarkupGeneratorError` | Unlike `readJson`. Tracked with clearer errors / debug work (#214). |
+| Passing `skipFiles` **replaces** the default skip list (does not merge) | `new Set(options.skipFiles ?? DEFAULT_SKIP)`. |
+| `markup-generator/browser` only exports `generateFileName` | Built from source; not a full Node API surface. |
+| `generateTemplate` treats a path as “has directory” only when `outPath.includes('/')` | Backslash-only Windows paths stay under `generated/`. |
+| `@llazyemail/core` has no package README | Private stub. |
+
+Error ownership: `MarkupGeneratorError` / `DEFAULT_MESSAGES` live in `@llazyemail/fs`
+and are re-exported by `@llazyemail/write` (and the root barrel). See Layers above.

@@ -18,12 +18,13 @@ import type { CliArgs } from 'markup-generator';
 
 - It skips `argv[0]` and `argv[1]` (node and the script), so pass `process.argv`
   or something with the same shape.
-- `--key=value` produces `{ key: 'value' }`. **Only the part up to the next `=`
-  is kept**, so `--q=a=b` produces `'a'`.
+- `--key=value` produces `{ key: 'value' }`. **Only the first `=` splits**, so
+  `--q=a=b` produces `'a=b'` and `--key=` produces `''`.
 - `--key value` produces `{ key: 'value' }`, as long as the next token does not start with `--`.
 - `--flag` (last token, or followed by another `--x`) produces `{ flag: true }`.
 - Tokens that do not start with `--` (positionals, `-x` short flags) are ignored.
 - If a key repeats, the last value wins. Values are never converted to numbers or booleans.
+- This is the **single** argv parser shared with `generateTemplate`.
 
 ```ts
 parseArgv(['node', 'x', '--template', 'hn', '--out=generated/hn.html', '--dry']);
@@ -41,9 +42,9 @@ parseArgv(['node', 'x', '--template', 'hn', '--out=generated/hn.html', '--dry'])
 | anything else / none | none | prints usage to stdout and resolves normally |
 
 - `write` without `--file` throws `Error('usage: markup-generator write --file …')`.
-  `src/cli.ts` prints the message and exits with code 1.
-- The flag reader inside `runCli` is **not** `parseArgv`. It supports only the
-  `--flag value` form, not `--flag=value`. An empty or missing value uses the default.
+  The root `src/cli.ts` wrapper prints the message and exits with code 1.
+- `runCli` uses **`parseArgv`**, so both `--flag value` and `--flag=value` work.
+  Bare flags and empty values fall back to the defaults in the table above.
 - Read and write errors propagate. For example, a missing `--file` path throws
   ENOENT, and an empty file throws `EMPTY_CONTENT`.
 
