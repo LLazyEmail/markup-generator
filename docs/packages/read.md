@@ -1,8 +1,10 @@
 # @llazyemail/read
 
-Helpers for reading text, front matter, JSON and data/content files. This is
-the **only** package that depends on `gray-matter`. It also depends on
-`@llazyemail/write` for `MarkupGeneratorError`. It is Node-only.
+Helpers for reading text, front matter, JSON and data/content files. Inside the
+monorepo, **`@llazyemail/read` is the only workspace package that imports
+`gray-matter`**. The published root package also lists `gray-matter` so the
+self-contained tarball can resolve front-matter helpers at runtime. Depends on
+`@llazyemail/write` for `MarkupGeneratorError`. Node-only.
 
 ```bash
 npm install markup-generator
@@ -57,6 +59,19 @@ A thin wrapper around native `import()`. The bundler preserves it as-is, so it
 also works from the CJS build.
 
 ### `type TemplateData = { title?: string; preview?: string; [key: string]: unknown }`
+
+
+## Why `gray-matter` (issue #278)
+
+**Decision: keep and document** (do not slim, do not peer-dep).
+
+| Option | Risk | Why not (for now) |
+|--------|------|-------------------|
+| Replace / slim | High | Would reimplement YAML front-matter parsing; easy to get wrong; no consumer demand |
+| Peer dependency | Medium | Breaks zero-config `npm install markup-generator` for `readFrontMatter` |
+| **Document + keep** | **Low** | Current behaviour; Dependabot alert on transitive `sprintf-js` was **withdrawn** ([GHSA-hp3w-g68c-fv3c](https://github.com/advisories/GHSA-hp3w-g68c-fv3c), 2026-10-22) |
+
+`readFrontMatter` is a public API. Until a deliberate replacement lands, `gray-matter@^4.0.3` stays on `@llazyemail/read` and on the root package for the bundled publish. Refs #278.
 
 ## Testing and building
 ```bash
