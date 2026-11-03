@@ -195,10 +195,10 @@ importers:
         specifier: ^26.0.0
         version: 26.6.6
       eslint:
-        specifier: ^10.14.0
+        specifier: ^10.0.0
         version: 10.14.0
       globals:
-        specifier: ^17.14.0
+        specifier: ^17.13.0
         version: 17.14.0
       tsup:
         specifier: ^9.0.0
