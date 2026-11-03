@@ -1,6 +1,6 @@
 {
   "name": "markup-generator",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "Generate unique filenames and write HTML (or any text) to disk. Self-contained: workspace packages are bundled into the published tarball.",
   "author": "Arthur Tkachenko",
   "license": "MIT",
