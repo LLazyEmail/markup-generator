@@ -4,3 +4,11 @@ packages:
 
 allowBuilds:
   esbuild: true
+
+# pnpm@12 defaults minimumReleaseAge to 1440m; Renovate can land lockfile
+# bumps for packages younger than that (e.g. vitest 5.1.0), which then fail
+# frozen CI installs with ERR_PNPM_MINIMUM_RELEASE_AGE_VIOLATION. Exclude
+# the test runner family we trust so those PRs stay installable.
+minimumReleaseAgeExclude:
+  - vitest
+  - "@vitest/*"
