@@ -75,7 +75,7 @@ class MarkupGeneratorError extends Error {
 }
 type MarkupGeneratorErrorCode =
   'EMPTY_CONTENT' | 'NOT_A_STRING' | 'FILE_EXISTS' | 'WRITE_FAILED' |
-  'JSON_READ' | 'JSON_PARSE' | 'EIMPORT' | 'EREAD';
+  'JSON_READ' | 'JSON_PARSE' | 'JSON_WRITE' | 'EIMPORT' | 'EREAD';
 ```
 
 ### `DEFAULT_MESSAGES: Record<MarkupGeneratorErrorCode, string>`
@@ -87,6 +87,7 @@ type MarkupGeneratorErrorCode =
 | WRITE_FAILED | file not written | write (`cause` = fs error) |
 | JSON_READ | failed to read JSON file | read (`readJson`, `cause` set) |
 | JSON_PARSE | failed to parse JSON file | read (`readJson`, `cause` set) |
+| JSON_WRITE | failed to write JSON file | read (`writeJson`, `cause` set) |
 | EIMPORT | failed to import module | read (`loadData` for non-JSON modules) |
 | EREAD | failed to read path | read (`loadContent`, `readSourceFile`), fs (`listTemplateFiles`) |
 

@@ -36,9 +36,9 @@ const { frontMatter, markdown } = readFrontMatter('content/post.md');
 ### `writeJson(filePath: string, value: unknown, pretty = true): void`
 Creates the parent directories, then writes JSON. With `pretty`, it uses
 2-space indentation and a trailing newline. With `pretty = false`, it writes a
-single line with no newline. Errors are **not** wrapped in
-`MarkupGeneratorError`, and the function is synchronous. (It lives in "read"
-for historical reasons.)
+single line with no newline. Failures throw `MarkupGeneratorError('JSON_WRITE', …)`
+with the original error as `cause` (same pattern as `readJson`). Synchronous.
+(It lives in "read" for historical reasons.)
 
 ### `loadData(dataPath: string): Promise<TemplateData>`
 - `.json` (case-insensitive): it calls `readJson`, so it can throw `JSON_READ` or `JSON_PARSE`.

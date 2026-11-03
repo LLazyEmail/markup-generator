@@ -35,4 +35,18 @@ describe('json-io', () => {
       expect((error as MarkupGeneratorError).code).toBe('JSON_READ');
     }
   });
+
+  test('writeJson wraps failures as JSON_WRITE with cause', () => {
+    const circular: Record<string, unknown> = {};
+    circular.self = circular;
+    try {
+      writeJson(filePath, circular);
+      throw new Error('expected throw');
+    } catch (error) {
+      expect(error).toBeInstanceOf(MarkupGeneratorError);
+      expect((error as MarkupGeneratorError).code).toBe('JSON_WRITE');
+      expect((error as MarkupGeneratorError).cause).toBeInstanceOf(TypeError);
+    }
+  });
+
 });

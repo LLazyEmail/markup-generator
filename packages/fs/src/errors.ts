@@ -5,6 +5,7 @@ export type MarkupGeneratorErrorCode =
   | 'WRITE_FAILED'
   | 'JSON_READ'
   | 'JSON_PARSE'
+  | 'JSON_WRITE'
   | 'EIMPORT'
   | 'EREAD';
 
@@ -15,6 +16,7 @@ export const DEFAULT_MESSAGES: Record<MarkupGeneratorErrorCode, string> = {
   WRITE_FAILED: 'file not written',
   JSON_READ: 'failed to read JSON file',
   JSON_PARSE: 'failed to parse JSON file',
+  JSON_WRITE: 'failed to write JSON file',
   EIMPORT: 'failed to import module',
   EREAD: 'failed to read path',
 };

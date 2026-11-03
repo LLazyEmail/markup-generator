@@ -1,7 +1,9 @@
 #!/usr/bin/env node
-import { runCli } from '@llazyemail/cli';
+import { runCli, isVerboseArgv, formatCliError } from '@llazyemail/cli';
+
+const verbose = isVerboseArgv(process.argv);
 
 runCli().catch((error) => {
-  console.error(error instanceof Error ? error.message : error);
+  console.error(formatCliError(error, verbose));
   process.exit(1);
 });
