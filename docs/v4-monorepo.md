@@ -21,7 +21,7 @@ Real implementations (not stubs):
 |---------|----------|
 | `@llazyemail/read` | `readSourceFile`, `readFrontMatter`, `readJson`, `writeJson`, `loadData`, `loadContent`, `importEsm`, `TemplateData` |
 
-**`gray-matter` is a dependency of `@llazyemail/read` only.** Root `markup-generator` must not list `gray-matter` in `package.json` (addresses the dependency surface called out in #278).
+**`gray-matter` is imported only by `@llazyemail/read` in the monorepo.** The root `markup-generator` package also lists it so the self-contained npm tarball resolves front-matter at runtime (see #278 — keep/document; advisory withdrawn).
 
 ## Phase 3 — extract `@llazyemail/email`, `@llazyemail/template`, `@llazyemail/cli`
 
