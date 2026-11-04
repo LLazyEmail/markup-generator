@@ -51,6 +51,18 @@ if (!out) { /* failed; process.exitCode is now 1 */ }
 await writeGeneratedEmail({ content: html, fileName: 'n.html', label: 'N', logger: { error: (m) => myLog.warn(m) } });
 ```
 
+
+## Node / browser caveats
+
+- **`process.exitCode = 1` on failure.** Even when silent (no `logger`), a caught
+  `MarkupGeneratorError` or other `Error` sets `process.exitCode = 1` and resolves
+  to `undefined`. That is a **Node** `process` surface — do not treat
+  `writeGeneratedEmail` as browser-safe. For browsers use
+  `markup-generator/browser` (`generateFileName` only) or call `writeGeneratedFile`
+  yourself and handle errors without touching `process`.
+- The optional `logger` only controls **console output**. It does not stop the
+  `exitCode` assignment. Check the return value (or `process.exitCode`) after await.
+
 ## Testing and building
 ```bash
 pnpm --filter @llazyemail/email test
