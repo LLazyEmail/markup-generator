@@ -28,7 +28,18 @@ export function readJson<T = unknown>(filePath: string): T {
 
 /** Serialize a value and write it as JSON, creating parent dirs as needed. */
 export function writeJson(filePath: string, value: unknown, pretty = true): void {
-  mkdirSync(dirname(filePath), { recursive: true });
-  const text = pretty ? `${JSON.stringify(value, null, 2)}\n` : JSON.stringify(value);
-  writeFileSync(filePath, text, 'utf-8');
+  try {
+    mkdirSync(dirname(filePath), { recursive: true });
+    const text = pretty
+      ? `${JSON.stringify(value, null, 2)}\n`
+      : JSON.stringify(value);
+    writeFileSync(filePath, text, 'utf-8');
+  } catch (err) {
+    if (err instanceof MarkupGeneratorError) throw err;
+    throw new MarkupGeneratorError(
+      'JSON_WRITE',
+      `Failed to write JSON file "${filePath}": ${(err as Error).message}`,
+      { cause: err }
+    );
+  }
 }

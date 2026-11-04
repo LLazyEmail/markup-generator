@@ -51,7 +51,12 @@ parseArgv(['node', 'x', '--template', 'hn', '--out=generated/hn.html', '--dry'])
 ```bash
 npx markup-generator name --prefix newsletter --ext html
 npx markup-generator write --file ./in.html --prefix newsletter --dir generated
+# clearer failures (stack + cause): add --verbose or -v
+npx markup-generator write --file ./missing.html --verbose
 ```
+
+Global flags (read by the root bin, not by `runCli` itself): `--verbose` / `-v`
+print `MarkupGeneratorError` code, stack, and `cause` on failure.
 
 ## Testing and building
 ```bash
