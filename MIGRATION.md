@@ -1,4 +1,4 @@
-# Migration to 4.0.0 (v3 → v4)
+# Migration guide (v3 → v4 / 4.1.0)
 
 v4 organizes the codebase as a monorepo with internal `@llazyemail/*` workspace
 packages. The **only** package published to npm is still named **`markup-generator`**.
@@ -118,3 +118,16 @@ try {
 npx markup-generator name --prefix newsletter
 npx markup-generator write --file ./in.html --prefix newsletter --dir generated
 ```
+
+
+---
+
+# 4.0.0 → 4.1.0
+
+Published 2026-11-03. **No breaking API changes** from 4.0.0.
+
+- Keep installing `markup-generator` (not `@llazyemail/*`).
+- `gray-matter` remains a direct dependency of the published package (front-matter helpers).
+- `writeGeneratedEmail` silence + `process.exitCode = 1` on failure is unchanged from 4.0.0.
+- If you already migrated with the 4.0.0 guide above, you do not need further code changes for 4.1.0.
+

@@ -5,7 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [4.0.0] - Unreleased
+## [4.1.0] - 2026-11-03
+
+Published to npm as `markup-generator@4.1.0` on 2026-11-03 (see npm `time["4.1.0"]`).
+
+### Changed
+- Docs, MIGRATION, and package metadata aligned with the **self-contained** publish model: only `markup-generator` is on npm; `@llazyemail/*` workspace packages stay `private: true` and are bundled into `dist/`.
+- Maintenance: Renovate weekly + automerge for low-risk updates; `@types/node` and GitHub Actions bumps.
+
+### Notes
+- No public API break versus 4.0.0. See `MIGRATION.md` (§ 4.0.0 → 4.1.0).
+
+## [4.0.0] - 2026-10-29
+
+Published to npm as `markup-generator@4.0.0` on 2026-10-29 (see npm `time["4.0.0"]`).
+
 
 ### Changed
 - `markup-generator` is the **only** published npm package (name stays `markup-generator`). Install with `npm install markup-generator`.
@@ -22,7 +36,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 See MIGRATION.md.
 
-## [3.0.0] - Unreleased
+## [3.0.0] - 2026-09-13
+
+Published to npm as `markup-generator@3.0.0` on 2026-09-13.
+
 
 ### Added
 - Dual CJS + ESM build via `tsup`
