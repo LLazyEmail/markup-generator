@@ -2,7 +2,8 @@ import { formatMarkupError } from './formatError';
 
 export interface Logger {
   info?: (message: string) => void;
-  error?: (message: string) => void;
+  /** Accepts a string or any thrown value. Non-strings are formatted via formatMarkupError. */
+  error?: (message: unknown) => void;
   debug?: (message: string) => void;
 }
 
