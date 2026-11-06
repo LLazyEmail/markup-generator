@@ -97,3 +97,19 @@ This is the same pattern used in `packages/write/tests/` and
   dependency on `save-file` is required.
 - #153 — the testing helpers that lived in other repos have been largely
   superseded by the typed errors + temp-dir tests shown above.
+
+## Structured validation
+
+Before writing, you can run the pure validator from `@llazyemail/template`:
+
+```ts
+import { validateTemplateData, hasErrors } from 'markup-generator';
+
+const results = validateTemplateData({ title: '', preview: 123 });
+if (hasErrors(results)) {
+  // present results however you like
+  console.error(results);
+}
+```
+
+This returns `{ level: 'error' | 'warning', message, field? }[]` and never prints itself.
