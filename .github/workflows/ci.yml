@@ -19,7 +19,7 @@ jobs:
   check:
     name: Node ${{ matrix.node }}
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
@@ -44,3 +44,7 @@ jobs:
           pnpm run lint
           pnpm run typecheck
           pnpm exec turbo run build test
+
+      - name: Coverage (root + packages)
+        if: matrix.node == 22
+        run: pnpm run test:coverage
