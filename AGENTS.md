@@ -80,3 +80,22 @@ Node: `engines.node` is `>=20` (do not lower). CI runs on Node **22, 24, and 26*
   codes over string matching.
 - Logging: prefer optional logger injection (see `writeGeneratedEmail`) over
   hard-coded `console`. Never call `process.exit` from library code.
+
+## Chat / link rules for AI agents
+
+When working from a chat UI (or any interface where the user cannot easily
+click around the repo), always return a full clickable link for anything you
+create or reference:
+
+- **Branch you create**:  
+  `https://github.com/LLazyEmail/markup-generator/tree/<branch-name>`
+- **Pull request you open**:  
+  `https://github.com/LLazyEmail/markup-generator/pull/<number>`
+- **Issue you reference or close**:  
+  `https://github.com/LLazyEmail/markup-generator/issues/<number>`
+- **Commit you push**:  
+  `https://github.com/LLazyEmail/markup-generator/commit/<sha>`
+
+Do this in the same message where you announce the action. Do not make the
+user hunt for the URL. Prefer the GitHub web URL over a bare branch name or
+issue number.
