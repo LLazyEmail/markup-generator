@@ -27,3 +27,5 @@ export type {
   RenderOptions,
   WriteOptions,
 } from './templateGenerator';
+export { validateTemplateData, hasErrors } from './validate';
+export type { ValidationResult, ValidationLevel } from './validate';
