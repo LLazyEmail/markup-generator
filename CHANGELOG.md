@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- `createConsoleLogger` in `@llazyemail/fs` (uses `formatMarkupError`).
+- `validateTemplateData` / `hasErrors` in `@llazyemail/template` for structured title/preview/bodyContent checks.
+- Source aliases in root `vitest.config.ts` so coverage instruments TypeScript sources.
+- AI agent rule in `AGENTS.md`: always return full GitHub links for branches, PRs, issues, and commits.
+
+### Changed
+- CLI `runCli` uses the logger; failures set `process.exitCode` and write to stderr instead of throwing.
+- Coverage thresholds re-enabled at modest levels after the alias fix.
+
+
 ## [4.1.0] - 2026-11-03
 
 Published to npm as `markup-generator@4.1.0` on 2026-11-03 (see npm `time["4.1.0"]`).
