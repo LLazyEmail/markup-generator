@@ -25,7 +25,7 @@ registry** (trusted publishing / OIDC), not GitHub Packages.
 | `packages/core` | `@llazyemail/core` — private stub (not published) |
 | `tests/` | Root vitest suite |
 | `docs/` | Architecture / upgrade notes (extend; do not delete) |
-| `.github/workflows/ci.yml` | Lint, typecheck, turbo build + test |
+| `.github/workflows/ci.yml` | Lint, typecheck, turbo build + test + coverage |
 | `.github/workflows/npm-publish.yml` | Release / dry-run publish to npm |
 
 Internal deps use `workspace:^`. Do not replace them with git URLs.
@@ -38,6 +38,7 @@ pnpm run lint
 pnpm run typecheck
 pnpm exec turbo run build test
 pnpm test                 # root vitest
+pnpm run test:coverage    # with coverage report
 pnpm run publish:dry      # dry-run publish all packages
 ```
 
@@ -48,10 +49,13 @@ Node: `engines.node` is `>=20` (do not lower). CI runs on Node **22, 24, and 26*
 - Keep TypeScript `strict` on in package tsconfigs. Prefer enabling
   `noUncheckedIndexedAccess` when touching a package’s tsconfig rather than
   turning strictness down.
-- Root vitest has no coverage gate yet; do not remove existing tests. When
-  adding runtime code under `src/` or `packages/*/src`, add tests beside the
-  change (package or root `tests/`).
+- New runtime code under `src/` or `packages/*/src` **must** have tests
+  (package or root `tests/`). Prefer testing error paths and edge cases.
+- Aim for high coverage on changed files. CI fails if overall coverage drops
+  below the threshold defined in vitest configs (currently soft; raise over time).
 - `pnpm run lint` is soft in CI today; still fix new lint issues you introduce.
+- When you fix a bug or implement an issue, **close the GitHub issue** (or
+  comment with the PR link and request closure if you lack permissions).
 
 ## Release flow
 
@@ -71,3 +75,27 @@ Node: `engines.node` is `>=20` (do not lower). CI runs on Node **22, 24, and 26*
 - Do not invent scripts; check root `package.json` and `turbo.json`.
 - Avoid conflicting with open Renovate PRs that only touch lockfiles /
   typescript majors unless your change requires it.
+- Error handling: always throw or return `MarkupGeneratorError` for expected
+  failures. Preserve `cause` when wrapping underlying errors. Prefer explicit
+  codes over string matching.
+- Logging: prefer optional logger injection (see `writeGeneratedEmail`) over
+  hard-coded `console`. Never call `process.exit` from library code.
+
+## Chat / link rules for AI agents
+
+When working from a chat UI (or any interface where the user cannot easily
+click around the repo), always return a full clickable link for anything you
+create or reference:
+
+- **Branch you create**:  
+  `https://github.com/LLazyEmail/markup-generator/tree/<branch-name>`
+- **Pull request you open**:  
+  `https://github.com/LLazyEmail/markup-generator/pull/<number>`
+- **Issue you reference or close**:  
+  `https://github.com/LLazyEmail/markup-generator/issues/<number>`
+- **Commit you push**:  
+  `https://github.com/LLazyEmail/markup-generator/commit/<sha>`
+
+Do this in the same message where you announce the action. Do not make the
+user hunt for the URL. Prefer the GitHub web URL over a bare branch name or
+issue number.

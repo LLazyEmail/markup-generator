@@ -1,26 +1,29 @@
 # Contributing to markup-generator
 
-The package lives at the repository root.
+This is a pnpm + Turborepo monorepo. The published package is the root
+`markup-generator` (it bundles the internal `@llazyemail/*` packages).
 
 ## Setup
 
 ```bash
-npm install
-npm test
-npm run build
+pnpm install --frozen-lockfile
+pnpm run lint
+pnpm run typecheck
+pnpm exec turbo run build test
 ```
 
 ## Pull requests
 
-- Keep PRs small and focused.
-- Do not change the public API without a changelog note.
-- New behavior needs a test.
-- File-system helpers are Node-only. Browser entry may only export pure helpers.
+- Keep PRs small, focused, and open them as **draft** first.
+- Do not change the public API without a changelog note and a migration note
+  if breaking.
+- New behavior needs tests (prefer package-level tests next to the source).
+- File-system helpers are Node-only. The `markup-generator/browser` entry may
+  only export pure helpers.
+- When fixing an open issue, link the PR and close the issue.
 
 ## Publishing
 
-```bash
-npm test
-npm run build
-npm pack --dry-run
-```
+See `AGENTS.md` for the release flow. Prefer GitHub Releases or the
+`npm-publish.yml` workflow. Never publish from a local machine unless
+coordinated.
