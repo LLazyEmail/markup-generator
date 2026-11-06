@@ -8,3 +8,4 @@ export { pathExists, listTemplateFiles } from './fs-list';
 export type { ListTemplateFilesOptions } from './fs-list';
 export { MarkupGeneratorError, DEFAULT_MESSAGES } from './errors';
 export type { MarkupGeneratorErrorCode, MarkupGeneratorErrorOptions } from './errors';
+export { formatMarkupError } from './formatError';
