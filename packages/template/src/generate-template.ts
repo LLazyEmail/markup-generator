@@ -3,6 +3,7 @@ import { parseArgv } from '@llazyemail/cli';
 import { loadData, loadContent } from '@llazyemail/read';
 import type { TemplateData } from '@llazyemail/read';
 import { writeGeneratedFile } from '@llazyemail/write';
+import { validateTemplateData, hasErrors } from './validate';
 
 export type { TemplateData } from '@llazyemail/read';
 
@@ -70,6 +71,11 @@ export async function generateTemplate(
   );
 
   const data = await loadData(dataPath);
+  const validation = validateTemplateData(data);
+  if (hasErrors(validation)) {
+    const summary = validation.map((v) => `${v.level}: ${v.message}`).join("; ");
+    throw new Error(`template data validation failed: ${summary}`);
+  }
   const content =
     loadContent(typeof args.content === 'string' ? args.content : undefined, cwd) ||
     buildFallbackContent(data);
