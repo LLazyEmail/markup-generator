@@ -9,3 +9,5 @@ export type { ListTemplateFilesOptions } from './fs-list';
 export { MarkupGeneratorError, DEFAULT_MESSAGES } from './errors';
 export type { MarkupGeneratorErrorCode, MarkupGeneratorErrorOptions } from './errors';
 export { formatMarkupError } from './formatError';
+export { createConsoleLogger } from './logger';
+export type { Logger, CreateConsoleLoggerOptions } from './logger';

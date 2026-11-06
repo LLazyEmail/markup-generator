@@ -17,8 +17,20 @@ function captureStdout() {
   return { spy, text: () => chunks.join('') };
 }
 
+function captureStderr() {
+  const chunks: string[] = [];
+  const spy = vi
+    .spyOn(process.stderr, 'write')
+    .mockImplementation((chunk: string | Uint8Array) => {
+      chunks.push(String(chunk));
+      return true;
+    });
+  return { spy, text: () => chunks.join('') };
+}
+
 afterEach(() => {
   vi.restoreAllMocks();
+  process.exitCode = 0;
 });
 
 describe('runCli', () => {
@@ -62,7 +74,10 @@ describe('runCli', () => {
     }
   });
 
-  test('write without --file throws usage', async () => {
-    await expect(runCli(['node', 'cli', 'write', '--file'])).rejects.toThrow(/usage/);
+  test('write without --file sets exitCode and writes usage to stderr', async () => {
+    const err = captureStderr();
+    await runCli(['node', 'cli', 'write', '--file']);
+    expect(process.exitCode).toBe(1);
+    expect(err.text()).toMatch(/usage/);
   });
 });
