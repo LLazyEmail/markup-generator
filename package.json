@@ -96,6 +96,6 @@
     "type": "git",
     "url": "git+https://github.com/LLazyEmail/markup-generator.git"
   },
-  "packageManager": "pnpm@12.16.1",
+  "packageManager": "pnpm@12.18.0",
   "sideEffects": false
 }
