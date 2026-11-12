@@ -4,7 +4,8 @@ import { formatMarkupError } from '../src/formatError';
 describe('formatMarkupError edge cases', () => {
   test('handles null and undefined', () => {
     expect(formatMarkupError(null)).toBe('null');
-    expect(formatMarkupError(undefined)).toBe('undefined');
+    const nothing: unknown = undefined;
+    expect(formatMarkupError(nothing)).toBe('undefined');
   });
 
   test('handles numbers and objects', () => {
