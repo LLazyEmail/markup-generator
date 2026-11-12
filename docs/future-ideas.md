@@ -25,3 +25,8 @@ that could be revisited in v4.x. None are committed work.
 - Logger abstraction: done (`createConsoleLogger` in `@llazyemail/fs`).
 - Structured validation: done (`validateTemplateData` in `@llazyemail/template`).
 - Remaining high-value items: HTML sanity check, template option guards beyond the current validator, real-world fixtures.
+
+## Status update
+
+Logger and validation helpers are available. The render CI job exercises the write path on every PR.
+
