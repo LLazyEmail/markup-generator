@@ -1,10 +1,9 @@
 # Examples
 
-From the repo root:
+Small scripts that show how to use the public API.
 
-```bash
-npm install
-npm run example
-```
+- `write-newsletter.ts` — basic writeGeneratedFile usage.
+- `read-frontmatter.ts` — load front-matter.
+- `validate-and-write.ts` — validateTemplateData then write.
 
-That runs `examples/write-newsletter.ts` with tsx and writes a file under `generated/`.
+Run with: `pnpm exec tsx examples/<file>.ts`
