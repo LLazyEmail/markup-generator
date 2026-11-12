@@ -3,7 +3,7 @@
 
 A small, dependency-light module for writing generated content to files — handles directory creation, UTF-8 defaults, stable/unique filenames, and typed errors, so consuming projects don't have to hand-roll `mkdirSync`/`writeFileSync` logic. 
 
-Written on TypeScript, can generate a unique filenames.
+Written on TypeScript, can generate a uniquie filenames.
 
 Arthur calling it **WRITE** because one of the main goals for this project was to write a file on a disk
 
@@ -199,7 +199,7 @@ See `MIGRATION.md` for breaking-change notes between major versions.
 
 See `LICENSE`.
 
-## Using with email-template-workflows
+## Guardrails
 
-This package is designed to be the write layer under [email-template-workflows](https://github.com/LLazyEmail/email-template-workflows). See the new CI workflow for a working example.
+CI runs coverage, typecheck, and a render smoke test via email-template-workflows on every PR.
 
