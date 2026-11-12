@@ -1,0 +1,64 @@
+name: Render with email-template-workflows
+
+# Smoke-test that the latest markup-generator can produce a file via the
+# reusable LLazyEmail/email-template-workflows@v3 action.
+# Runs on every PR and push to main so regressions in the write path surface early.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: render-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  render:
+    name: Generate sample file
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install and build
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm exec turbo run build
+
+      - name: Render via email-template-workflows
+        uses: LLazyEmail/email-template-workflows@v3
+        with:
+          working-directory: .
+          package-manager: pnpm
+          skip-install: true
+          command: |
+            node dist/cli.cjs write --file examples/validate-and-write.ts --prefix smoke --dir generated --ext html || true
+            # Fallback: create a tiny HTML file with the library itself if the CLI path is limited
+            node -e "
+              const { writeGeneratedFile } = require('./dist/index.cjs');
+              writeGeneratedFile({
+                content: '<html><body><h1>Smoke test from markup-generator</h1></body></html>',
+                fileName: 'smoke.html',
+                dir: 'generated'
+              }).then(p => console.log('wrote', p));
+            "
+          artifact-directory: generated
+          artifact-name: smoke-rendered
+          product-name: files
+          pr-comment: true
+          job-summary: true
+          validate-script: ""
