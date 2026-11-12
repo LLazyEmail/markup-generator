@@ -198,3 +198,8 @@ See `MIGRATION.md` for breaking-change notes between major versions.
 ## License
 
 See `LICENSE`.
+
+## Using with email-template-workflows
+
+This package is designed to be the write layer under [email-template-workflows](https://github.com/LLazyEmail/email-template-workflows). See the new CI workflow for a working example.
+
