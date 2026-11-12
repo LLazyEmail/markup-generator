@@ -111,3 +111,12 @@ numbers allow. Do not lower them without a reason.
 
 The render job complements unit tests by exercising the real write path end-to-end.
 
+
+## Changesets
+
+Versions and changelogs are managed with [Changesets](https://github.com/changesets/changesets), modeled on generate-template.
+
+- Add a fragment for user-facing changes: `pnpm changeset`
+- Do not hand-edit the published package version or released CHANGELOG sections.
+- On push to main, `.github/workflows/changesets.yml` opens a Version Packages PR (or publishes when that PR merges).
+- Only the root `markup-generator` package is versioned; workspace `@llazyemail/*` packages are ignored.
