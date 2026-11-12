@@ -114,7 +114,7 @@ if (hasErrors(results)) {
 
 This returns `{ level: 'error' | 'warning', message, field? }[]` and never prints itself.
 
-## Integration with email-template-workflows
+## Typed errors in pipelines
 
-The render workflow in `.github/workflows/render-with-action.yml` demonstrates generating a file with the latest code using the reusable action.
+When this module is the write layer, always check for MarkupGeneratorError codes rather than string matching.
 
