@@ -204,3 +204,8 @@ See also [docs/using-as-core-of-larger-project.md](docs/using-as-core-of-larger-
 
 All failures throw or return `MarkupGeneratorError` with a stable `code`. See the Error handling section.
 
+
+## Release
+
+Versions are managed with Changesets. Run `pnpm changeset` for user-facing changes. Merging the Version Packages PR updates `package.json` and `CHANGELOG.md`.
+
