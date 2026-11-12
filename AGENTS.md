@@ -106,3 +106,8 @@ Root `vitest.config.ts` aliases `@llazyemail/*` to the TypeScript sources so
 coverage instruments the code that actually runs. Thresholds are currently
 modest (lines/functions/statements 50, branches 40). Raise them when the
 numbers allow. Do not lower them without a reason.
+
+## Render smoke test
+
+A workflow uses email-template-workflows@v3 to generate a file on every PR. Agents should not remove it without a replacement.
+
