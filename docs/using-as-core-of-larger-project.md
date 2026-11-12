@@ -113,3 +113,8 @@ if (hasErrors(results)) {
 ```
 
 This returns `{ level: 'error' | 'warning', message, field? }[]` and never prints itself.
+
+## Integration with email-template-workflows
+
+The render workflow in `.github/workflows/render-with-action.yml` demonstrates generating a file with the latest code using the reusable action.
+
