@@ -199,7 +199,5 @@ See `MIGRATION.md` for breaking-change notes between major versions.
 
 See `LICENSE`.
 
-## Guardrails
-
-CI runs coverage, typecheck, and a render smoke test via email-template-workflows on every PR.
+See also [docs/using-as-core-of-larger-project.md](docs/using-as-core-of-larger-project.md) for integration patterns.
 
