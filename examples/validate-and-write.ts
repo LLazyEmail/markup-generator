@@ -9,7 +9,7 @@ const data = { title: 'Hello', preview: 'World' };
 const results = validateTemplateData(data);
 
 if (hasErrors(results)) {
-  console.error(results);
+  process.stderr.write(JSON.stringify(results, null, 2) + '\n');
   process.exit(1);
 }
 
@@ -19,4 +19,4 @@ const path = await writeGeneratedFile({
   fileName: 'example.html',
   dir: 'generated',
 });
-console.log(path);
+process.stdout.write(path + '\n');
