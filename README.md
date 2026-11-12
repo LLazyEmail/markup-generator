@@ -200,4 +200,7 @@ See `MIGRATION.md` for breaking-change notes between major versions.
 See `LICENSE`.
 
 See also [docs/using-as-core-of-larger-project.md](docs/using-as-core-of-larger-project.md) for integration patterns.
+## Typed errors
+
+All failures throw or return `MarkupGeneratorError` with a stable `code`. See the Error handling section.
 
