@@ -73,3 +73,8 @@ All scoped packages except `@llazyemail/core` are publishable at 4.0.0 (Phase 4)
 ## Explicitly not done yet
 
 - No actual npm publish yet (dry run only)
+
+## CI smoke test
+
+A dedicated workflow uses email-template-workflows@v3 to generate a sample file and upload it as an artifact.
+
