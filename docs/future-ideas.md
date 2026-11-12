@@ -19,3 +19,9 @@ that could be revisited in v4.x. None are committed work.
    needed, re-add trimmed copies under `tests/fixtures/` from git history.
 6. **Front-matter driven lists** — the `recipes:` YAML array (title, subtitle,
    image, link) is a nice generic "card list" model for templates.
+
+## Status (2026-11-06)
+
+- Logger abstraction: done (`createConsoleLogger` in `@llazyemail/fs`).
+- Structured validation: done (`validateTemplateData` in `@llazyemail/template`).
+- Remaining high-value items: HTML sanity check, template option guards beyond the current validator, real-world fixtures.
