@@ -107,7 +107,7 @@ coverage instruments the code that actually runs. Thresholds are currently
 modest (lines/functions/statements 50, branches 40). Raise them when the
 numbers allow. Do not lower them without a reason.
 
-## Render smoke test
+## Link rules reminder
 
-A workflow uses email-template-workflows@v3 to generate a file on every PR. Agents should not remove it without a replacement.
+Always return full GitHub URLs when creating branches or referencing issues.
 
