@@ -107,7 +107,7 @@ coverage instruments the code that actually runs. Thresholds are currently
 modest (lines/functions/statements 50, branches 40). Raise them when the
 numbers allow. Do not lower them without a reason.
 
-## Link rules reminder
+## Coverage
 
-Always return full GitHub URLs when creating branches or referencing issues.
+The render job complements unit tests by exercising the real write path end-to-end.
 
