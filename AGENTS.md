@@ -99,3 +99,10 @@ create or reference:
 Do this in the same message where you announce the action. Do not make the
 user hunt for the URL. Prefer the GitHub web URL over a bare branch name or
 issue number.
+
+## Coverage note
+
+Root `vitest.config.ts` aliases `@llazyemail/*` to the TypeScript sources so
+coverage instruments the code that actually runs. Thresholds are currently
+modest (lines/functions/statements 50, branches 40). Raise them when the
+numbers allow. Do not lower them without a reason.
