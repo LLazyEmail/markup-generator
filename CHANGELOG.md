@@ -76,6 +76,6 @@ Published to npm as `markup-generator@3.0.0` on 2026-09-13.
 
 - Initial TypeScript migration under Nx
 
-### Added
-- Render smoke-test workflow using email-template-workflows@v3.
+### Changed
+- Documentation expanded around using this module as the write layer for larger pipelines.
 
