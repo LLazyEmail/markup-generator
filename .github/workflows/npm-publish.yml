@@ -1,5 +1,13 @@
-# Publish the self-contained root package `markup-generator` to npm when a
-# GitHub Release is published.
+# Publish the self-contained root package `markup-generator` to npm.
+#
+# Triggers:
+# - workflow_dispatch from changesets.yml after a Version packages PR merges
+#   (`--ref markup-generator@<version> -f dry_run=false`). This is the normal
+#   release path.
+# - A GitHub Release published by a person (releases created by
+#   GITHUB_TOKEN, like the ones changesets.yml makes, don't fire this event).
+# - Manual workflow_dispatch; dry_run defaults to true, so a manual run only
+#   packs unless you untick it.
 #
 # Workspace packages under packages/ (@llazyemail/*) are marked private: true
 # and are bundled into markup-generator's dist via tsup `noExternal`. They are

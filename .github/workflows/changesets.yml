@@ -1,3 +1,16 @@
+# Version packages, tag the release, and hand publishing to npm-publish.yml.
+#
+# - While `.changeset/*.md` fragments are pending, keeps a "Version packages"
+#   PR open (`changeset version`).
+# - When that PR merges (no fragments left), runs `pnpm run release`
+#   (scripts/release-tag.sh -> `changeset git-tag`), which tags
+#   `markup-generator@<version>` if that version isn't on npm yet. The action
+#   pushes the tag and creates the GitHub Release from CHANGELOG.md.
+# - Then dispatches npm-publish.yml for the new tag. npm trusted publishing
+#   (OIDC) is registered for npm-publish.yml, so no NPM_TOKEN secret is used.
+#   Releases created with GITHUB_TOKEN don't fire `release: published`, which
+#   is why the workflow is dispatched explicitly.
+
 name: Version packages
 
 on:
@@ -11,10 +24,11 @@ concurrency:
 permissions:
   contents: write
   pull-requests: write
+  actions: write
 
 jobs:
   version:
-    name: Open version PR or publish
+    name: Open version PR, or tag and release
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -28,20 +42,34 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
-          registry-url: https://registry.npmjs.org
 
       - name: Install
         run: pnpm install --frozen-lockfile
 
-      - name: Create version PR, or publish after it merges
+      - name: Create version PR, or tag + GitHub Release after it merges
+        id: changesets
         uses: changesets/action@v2
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ github.token }}
           version-script: pnpm run version-packages
           publish-script: pnpm run release
           pr-title: Version packages
           commit-message: Version packages
           create-github-releases: true
+
+      # changesets/action@v2 sets `published` and `published-packages`
+      # (kebab-case) outputs.
+      - name: Publish the new tag to npm (npm-publish.yml)
+        if: steps.changesets.outputs.published == 'true'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+          PUBLISHED: ${{ steps.changesets.outputs.published-packages }}
+        run: |
+          version="$(echo "$PUBLISHED" | jq -r '.[] | select(.name == "markup-generator") | .version')"
+          if [ -z "$version" ]; then
+            echo "markup-generator was not tagged in this run; nothing to publish."
+            exit 0
+          fi
+          tag="markup-generator@${version}"
+          gh workflow run npm-publish.yml --ref "$tag" -f dry_run=false
+          echo "Dispatched npm-publish.yml for \`${tag}\` (dry_run=false)." >> "$GITHUB_STEP_SUMMARY"
