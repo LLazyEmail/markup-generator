@@ -37,6 +37,8 @@ Related: [#272 Re-organization Version #4](https://github.com/LLazyEmail/markup-
 
 ## Deprecated (still work, removed in v5)
 
+The step-by-step plan for 5.0.0 (affected repos, tests to move, docs to update) is in [docs/v5-deprecation-plan.md](docs/v5-deprecation-plan.md).
+
 | API | Replacement | Why deprecated rather than dropped |
 |-----|-------------|------------------------------------|
 | `writeHTML(fileName, data, dir)` | `writeGeneratedFile({ fileName, content: data, dir })` | Widely used in v3 consumers and has an exact 1:1 replacement; kept as a thin shim to ease the upgrade. |

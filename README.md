@@ -151,6 +151,7 @@ generateTemplate({
 
 - `writeHTML(fileName, data, dir)` — **deprecated**, use `writeGeneratedFile({ fileName, content, dir })`. Removed in v5.
 - `isFolderExists(dir)` — **deprecated** alias of `ensureDir(dir)`. Removed in v5.
+- The removal plan, affected repos and steps for 5.0.0 are in [docs/v5-deprecation-plan.md](docs/v5-deprecation-plan.md).
 - `writingFile(content, prefix)` — **removed**, use `writeGeneratedFile({ content, prefix })`.
 
 ## Error handling
@@ -207,5 +208,5 @@ All failures throw or return `MarkupGeneratorError` with a stable `code`. See th
 
 ## Release
 
-Versions are managed with Changesets. Run `pnpm changeset` for user-facing changes. Merging the Version Packages PR updates `package.json` and `CHANGELOG.md`.
+Versions are managed with Changesets. Run `pnpm changeset` for user-facing changes. Merging the Version Packages PR updates `package.json` and `CHANGELOG.md`, then the same workflow publishes to npm and creates a GitHub Release, so merging it **is** the release. The next planned versions (4.2.0 for the `[Unreleased]` work, then 5.0.0 removing deprecated APIs) are described in [docs/v5-deprecation-plan.md](docs/v5-deprecation-plan.md).
 

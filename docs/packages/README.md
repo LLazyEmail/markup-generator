@@ -105,6 +105,8 @@ placeholders for now.
 | `writeHTML(fileName, data, dir?, _message?)` | `@llazyemail/write` | `writeGeneratedFile({ fileName, content, dir })` |
 | `isFolderExists(dir)` | `@llazyemail/fs` | `ensureDir(dir)` |
 
+Plan and checklist for the removal: [../v5-deprecation-plan.md](../v5-deprecation-plan.md).
+
 `writingFile` was **removed** in v4. Use `writeGeneratedFile({ content, prefix })` instead.
 
 ## Open API notes (verified on main)
