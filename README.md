@@ -191,6 +191,19 @@ pnpm run publish:dry                  # pnpm -r publish --dry-run (never publish
 
 Test runner: **Vitest** (migrated from Jest). Build tool: **tsup**.
 
+## CI / GitHub Actions
+
+| Workflow | File | Runs on | What it does |
+| --- | --- | --- | --- |
+| CI | `ci.yml` | Push and PRs to `main` | On Node 22, 24 and 26: `pnpm install --frozen-lockfile`, lint, root typecheck, Turbo build and test for every workspace package, then `pnpm run test:coverage`. |
+| Render with email-template-workflows | `render-with-action.yml` | Push and PRs to `main`, manual | Builds, renders a smoke HTML file with the built CLI and library, and uploads it as the `smoke-rendered` artifact. On PRs it also comments the file list; the run summary shows the same table. |
+| Version packages | `changesets.yml` | Push to `main` | While unreleased `.changeset/*.md` files exist, keeps a *Version packages* PR open (`changeset version`). Merging it runs `changeset publish` and creates GitHub Releases. |
+| Publish to npm | `npm-publish.yml` | A published GitHub release, or manual | Typecheck, Turbo build/test/lint, a `--dry-run` pack, then `pnpm -r publish --provenance` of the root `markup-generator` package using npm trusted publishing (OIDC). The `@llazyemail/*` workspace packages are private and bundled into it, so they are never published. A version that is already on npm is skipped. |
+
+There are no scheduled jobs or report issues in this repo.
+
+> **Known gap:** the publish step in `changesets.yml` passes `secrets.NPM_TOKEN`, which isn't set in this repo, and the npm trusted publisher is registered for `npm-publish.yml`, not `changesets.yml`. Until that's changed, publish from the GitHub Release (which runs `npm-publish.yml`) after merging the *Version packages* PR.
+
 ## Migration
 
 See `MIGRATION.md` for breaking-change notes between major versions.
