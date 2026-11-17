@@ -198,12 +198,10 @@ Test runner: **Vitest** (migrated from Jest). Build tool: **tsup**.
 | --- | --- | --- | --- |
 | CI | `ci.yml` | Push and PRs to `main` | On Node 22, 24 and 26: `pnpm install --frozen-lockfile`, lint, root typecheck, Turbo build and test for every workspace package, then `pnpm run test:coverage`. |
 | Render with email-template-workflows | `render-with-action.yml` | Push and PRs to `main`, manual | Builds, renders a smoke HTML file with the built CLI and library, and uploads it as the `smoke-rendered` artifact. On PRs it also comments the file list; the run summary shows the same table. |
-| Version packages | `changesets.yml` | Push to `main` | While unreleased `.changeset/*.md` files exist, keeps a *Version packages* PR open (`changeset version`). Merging it runs `changeset publish` and creates GitHub Releases. |
-| Publish to npm | `npm-publish.yml` | A published GitHub release, or manual | Typecheck, Turbo build/test/lint, a `--dry-run` pack, then `pnpm -r publish --provenance` of the root `markup-generator` package using npm trusted publishing (OIDC). The `@llazyemail/*` workspace packages are private and bundled into it, so they are never published. A version that is already on npm is skipped. |
+| Version packages | `changesets.yml` | Push to `main` | While unreleased `.changeset/*.md` files exist, keeps a *Version packages* PR open (`changeset version`). Merging it runs `pnpm run release` (`scripts/release-tag.sh`), which tags `markup-generator@<version>` and creates the GitHub Release, then dispatches `npm-publish.yml`. |
+| Publish to npm | `npm-publish.yml` | A published GitHub release, a dispatch from `changesets.yml`, or manual | Typecheck, Turbo build/test/lint, a `--dry-run` pack, then `pnpm -r publish --provenance` of the root `markup-generator` package using npm trusted publishing (OIDC). The `@llazyemail/*` workspace packages are private and bundled into it, so they are never published. A version that is already on npm is skipped. No `NPM_TOKEN` is used. |
 
 There are no scheduled jobs or report issues in this repo.
-
-> **Known gap:** the publish step in `changesets.yml` passes `secrets.NPM_TOKEN`, which isn't set in this repo, and the npm trusted publisher is registered for `npm-publish.yml`, not `changesets.yml`. Until that's changed, publish from the GitHub Release (which runs `npm-publish.yml`) after merging the *Version packages* PR.
 
 ## Migration
 
@@ -221,5 +219,21 @@ All failures throw or return `MarkupGeneratorError` with a stable `code`. See th
 
 ## Release
 
-Versions are managed with Changesets. Run `pnpm changeset` for user-facing changes. Merging the Version Packages PR updates `package.json` and `CHANGELOG.md`, then the same workflow publishes to npm and creates a GitHub Release, so merging it **is** the release. The next planned versions (4.2.0 for the `[Unreleased]` work, then 5.0.0 removing deprecated APIs) are described in [docs/v5-deprecation-plan.md](docs/v5-deprecation-plan.md).
+Versions are managed with [Changesets](https://github.com/changesets/changesets), and npm publishing goes through **npm trusted publishing** (OIDC) in `npm-publish.yml`. No `NPM_TOKEN` secret is used anywhere. The next planned versions (4.2.0 for the `[Unreleased]` work, then 5.0.0 removing deprecated APIs) are described in [docs/v5-deprecation-plan.md](docs/v5-deprecation-plan.md).
+
+1. **Add a changeset** for every user-facing change: `pnpm changeset` (commit the `.changeset/*.md` file with your PR).
+2. **Version packages PR.** On every push to `main`, `changesets.yml` (changesets/action v2) keeps a *Version packages* PR open while fragments are pending. It runs `changeset version`, which bumps `package.json` and writes `CHANGELOG.md`.
+3. **Tag and GitHub Release.** When you merge that PR, the same workflow runs `pnpm run release` (`scripts/release-tag.sh`). If the new version isn't on npm yet, it runs `changeset git-tag`, and the action pushes the tag `markup-generator@<version>` and creates the GitHub Release from the changelog entry. If the version is already on npm, nothing is tagged.
+4. **Publish.** `changesets.yml` then dispatches `npm-publish.yml` on that tag with `dry_run=false`. That workflow typechecks, builds, tests, does a dry-run pack and runs `pnpm -r publish --provenance`. Only the root `markup-generator` package is published; the `@llazyemail/*` workspace packages are private and bundled into it. A version already on npm is skipped.
+
+Why the dispatch: npm's trusted publisher for `markup-generator` is registered for `npm-publish.yml`, so `changesets.yml` can't publish itself, and a GitHub Release created with `GITHUB_TOKEN` doesn't fire `release: published`.
+
+Other ways to run `npm-publish.yml`:
+
+- Publish a GitHub Release by hand (fires `release: published`).
+- Run it manually from the Actions tab. `dry_run` defaults to **true**, so a manual run only packs unless you untick it.
+
+Tags: releases up to 4.1.0 used `v<version>` tags. From the next release on, tags are `markup-generator@<version>` (the Changesets monorepo format).
+
+Never hand-edit `version` in `package.json` or released sections of `CHANGELOG.md`, and don't publish from a local machine.
 

@@ -59,11 +59,21 @@ Node: `engines.node` is `>=20` (do not lower). CI runs on Node **22, 24, and 26*
 
 ## Release flow
 
-1. Land changes on `main` via small draft PRs.
-2. Publish a GitHub Release (or run `npm-publish.yml` manually).
-3. Workflow runs `pnpm -r publish` in topological order to `registry.npmjs.org`
-   with provenance (`id-token: write`). Packages already on npm are skipped;
-   private packages are never published.
+1. Land changes on `main` via small draft PRs, each with a changeset
+   (`pnpm changeset`) when it is user-facing.
+2. `changesets.yml` (changesets/action v2) keeps a *Version packages* PR open.
+3. Merging it runs `pnpm run release` (`scripts/release-tag.sh` ->
+   `changeset git-tag`): tag `markup-generator@<version>` plus a GitHub
+   Release, skipped when that version is already on npm.
+4. `changesets.yml` dispatches `npm-publish.yml` on the tag with
+   `dry_run=false`. That workflow runs `pnpm -r publish --provenance` through
+   npm trusted publishing (OIDC, `id-token: write`); no `NPM_TOKEN`.
+   Versions already on npm are skipped; private packages are never published.
+5. A hand-published GitHub Release or a manual `npm-publish.yml` run
+   (`dry_run` defaults to true) also works.
+
+Never add an npm publish step (or `NPM_TOKEN`) to `changesets.yml`: the npm
+trusted publisher is bound to `npm-publish.yml`.
 
 ## Conventions
 

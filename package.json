@@ -58,7 +58,7 @@
     "test:coverage": "vitest run --coverage",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "changeset publish"
+    "release": "bash scripts/release-tag.sh"
   },
   "dependencies": {
     "gray-matter": "^4.0.3"
