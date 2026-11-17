@@ -154,7 +154,7 @@ Merged after Phase 5 (all on main as of 2026-10-27 Europe/Sofia):
 - Review sub-package documentation (`docs/packages/` / docs PR) — the dedicated review issue was still pending create when this plan was written
 - **Claim / configure the `@llazyemail` npm org** and grant packages publish access
 - **Trusted publishing** (OIDC) for GitHub Actions → npm so releases do not rely on long-lived tokens
-- No production npm publish yet (dry-run only; see [v4-monorepo.md](./v4-monorepo.md))
+- ~~No production npm publish yet (dry-run only)~~ Resolved: `markup-generator` 4.0.0 / 4.1.0 were published to npm as one self-contained package; the `@llazyemail/*` packages stay private (see [v4-monorepo.md § Phase 4](./v4-monorepo.md#phase-4--core-barrel-published-as-one-self-contained-package))
 
 ---
 

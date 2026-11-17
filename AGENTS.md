@@ -129,4 +129,6 @@ Versions and changelogs are managed with [Changesets](https://github.com/changes
 - Add a fragment for user-facing changes: `pnpm changeset`
 - Do not hand-edit the published package version or released CHANGELOG sections.
 - On push to main, `.github/workflows/changesets.yml` opens a Version Packages PR (or publishes when that PR merges).
+- Never merge the Version Packages PR on your own: merging it publishes to npm.
+- Removing `writeHTML` / `isFolderExists` is v5 work. Follow `docs/v5-deprecation-plan.md`; do not remove them in a 4.x release.
 - Only the root `markup-generator` package is versioned; workspace `@llazyemail/*` packages are ignored.

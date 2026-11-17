@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CLI `runCli` uses the logger; failures set `process.exitCode` and write to stderr instead of throwing.
 - Coverage thresholds re-enabled at modest levels after the alias fix.
 
+### Release notes
+- These entries are queued for the next minor (4.2.0) by `.changeset/unreleased-logger-and-validation.md`. The Changesets Version packages PR will turn them into the 4.2.0 section.
+- v5.0.0 will remove the deprecated `writeHTML` and `isFolderExists`. Plan: [docs/v5-deprecation-plan.md](docs/v5-deprecation-plan.md).
+
 
 ## [4.1.0] - 2026-11-03
 
